@@ -170,7 +170,7 @@
 - **不追蹤：** `codes/renders/`（影片，用 `render_all.bat` 重新輸出）、`codes/latex_cache/`、`__pycache__/`、LaTeX 的 `.aux/.log/.out/.toc`。講義 PDF 與 `ref/` 的原始資料**有**追蹤。
 - **換行：** `.gitattributes` 設成 `* -text`，檔案原封不動存進去（這台電腦的 `core.autocrlf` 是 `true`，不設的話會改動換行）。`.bat` 必須維持 CRLF。
 - **習慣：** 每完成一件事就 commit 一次（`git add -A`、`git commit -m "…"`）；要看改了什麼用 `git status`、`git diff`。
-- 這台電腦的 git 使用者名稱與信箱還是預設的 `userName`／`userEmail`，要改可以在本資料夾執行 `git config user.name "…"`、`git config user.email "…"`（只影響之後的 commit）。
+- 本 repo 的 git 使用者名稱設為 `newton313313`（只設在本資料夾，`git config user.name`）；信箱還是這台電腦預設的 `userEmail`，要改就在本資料夾執行 `git config user.email "…"`。
 
 ---
 
