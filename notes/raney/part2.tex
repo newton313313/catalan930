@@ -1,0 +1,350 @@
+% =====================================================================
+\section{字串、秩與字（原文 §2 前半）}\label{sec:words}
+% =====================================================================
+
+\subsection{字串與循環變形}
+
+\textbf{字串}（string）是自然數 $0,1,2,\ldots$ 的有限序列；項數叫\textbf{長度} \paper{p.~442}。
+長度 $m$ 的字串 $\sigma$ 看成函數 $\sigma:\{0,1,\ldots,m-1\}\to\mathbb N$，定義域記作 $D(\sigma)$。
+（Raney 從 0 開始編號，和 Chu 講義第 7 節的「第 0 步」一致。）
+
+對 $k\in D(\sigma)$，$g_k$ 是 $D(\sigma)$ 上「加 $k$、超過就減 $m$」的置換：$g_k(x)=x+k\bmod m$。
+合成函數 $\sigma g_k$，也就是 $(\sigma g_k)(x)=\sigma(x+k\bmod m)$，叫做 $\sigma$ 的\textbf{循環變形}（cyclic variant）。
+白話說：\textbf{從第 $k$ 項開始讀一圈}。
+
+\begin{exbox}[例]
+取長度 5 的字串 $\sigma=00202$，則 $\sigma g_2$ 是從第 2 項讀起的 $20200$。全部五個循環變形是
+\[
+\sigma g_0=00202,\quad \sigma g_1=02020,\quad \sigma g_2=20200,\quad \sigma g_3=02002,\quad \sigma g_4=20020 .
+\]
+\end{exbox}
+
+\subsection{秩}
+
+$p_i(\sigma)$ 是 $\sigma$ 裡符號 $i$ 的個數。\textbf{秩}（rank）定義為
+\[
+r(\sigma)=\sum_{i\ge0}(i-1)\,p_i(\sigma),
+\]
+也就是：每個 0 記 $-1$，每個 1 記 $0$，每個 2 記 $+1$，每個 3 記 $+2$，……全部加起來。
+循環變形不改變秩；接起來的字串秩相加：$r(\sigma\tau)=r(\sigma)+r(\tau)$。
+
+若 $\gamma=\sigma\tau$，就說 $\sigma$ 是 $\gamma$ 的\textbf{開頭}（head）；若 $\tau$ 不是空字串，$\sigma$ 是\textbf{真開頭}（proper head）。
+空字串也算開頭（秩 0）。
+
+\begin{exbox}[例：$\sigma=230200010$]
+$p_0=5$、$p_1=1$、$p_2=2$、$p_3=1$，所以 $r(\sigma)=-5+0+2+2=-1$。各個開頭的秩：
+\begin{center}
+\RanRankF
+\end{center}
+右邊的圖叫\textbf{秩路徑}：從 0 出發，讀到符號 $x$ 就走 $x-1$。
+所有真開頭的秩都 $\ge0$（路徑在虛線 0 以上），最後一步才掉到 $-1$（桃紅虛線）。
+\end{exbox}
+
+\subsection{字與 Rosenbloom 判別法}
+
+\textbf{字}（word）的遞迴定義 \paper{p.~442}：
+\begin{itemize}
+  \item 只有一項 $0$ 的字串是字（一個引數）；
+  \item 若 $n\ge1$，$\alpha_1,\ldots,\alpha_n$ 都是字，則 $n\,\alpha_1\alpha_2\cdots\alpha_n$ 是字（$n$ 元運算子接上 $n$ 個引數）。
+\end{itemize}
+所以字就是\textbf{用前序記法寫出來的平面樹}（有序有根樹）：$i$ 元符號是有 $i$ 個小孩的節點，0 是葉子。
+
+\begin{thmbox}[Rosenbloom 判別法 \paper{p.~442}]
+字串 $\gamma$ 是字 $\iff$ $r(\gamma)=-1$，而且 $\gamma$ 的每個真開頭 $\sigma$ 都有 $r(\sigma)\ge0$。
+\end{thmbox}
+
+\begin{notebox}[為什麼？「還欠幾個引數」\extra]
+讀一個前序運算式時，記住「還要再讀幾個完整的引數，這個運算式才結束」。一開始欠 1 個（整個運算式本身）。
+讀到 $i$ 元符號：它填掉 1 個空位，又開出 $i$ 個新空位，欠的數目變化 $i-1$；讀到 0：填掉 1 個，變化 $-1$。
+所以讀完開頭 $\sigma$ 之後，\textbf{還欠 $r(\sigma)+1$ 個引數}。
+運算式在「欠 0 個」的那一刻結束，也就是秩第一次到達 $-1$ 的時候。
+因此「是字」等於說：秩到最後一項才第一次變成 $-1$。這就是判別法。
+\end{notebox}
+
+\textbf{例。}
+\begin{itemize}
+  \item $22000$ 與 $20200$：秩路徑分別是 \RanWalkPlusOne\ 與 \RanWalkPlusTwo，都是字。
+  \item $020$：秩是 $-1$，但真開頭「$0$」的秩已經是 $-1$。讀完第一個 0 運算式就結束了，後面的 $20$ 是多餘的，所以不是字：
+        \RanNotWord。它的循環變形 $200$（$k=1$）才是字。
+\end{itemize}
+
+\subsection{字列}
+
+\textbf{字列}（list of words）\paper{p.~442}：空字串是 0 字列；若 $\alpha$ 是字、$\beta$ 是 $(n-1)$ 字列，則 $\alpha\beta$ 是 $n$ 字列。
+也就是 $n$ 個字接在一起，\textbf{一片有 $n$ 棵樹的森林}。
+
+\begin{thmbox}[字列的判別法 \paper{p.~442}]
+$\gamma$ 是 $n$ 字列 $\iff$ $r(\gamma)=-n$，而且每個真開頭 $\sigma$ 都有 $r(\sigma)>-n$。
+\end{thmbox}
+（用「還欠幾個引數」來想：一開始欠 $n$ 個，欠到 0 的那一刻才結束。）
+
+字列切成字的方法也很機械：取\textbf{最短的、秩為 $-1$ 的開頭}當第一個字，剩下的部分重複這個做法。
+
+\begin{exbox}[例]
+\begin{itemize}[leftmargin=1.2em]
+  \item $3000200$：秩 $-2$，真開頭的秩都 $>-2$，所以是 2 字列；切成 $3000\mid200$（一棵三元樹、一棵二元樹）。
+  \item 組成為「2 個字、1 個二元符號」的字列有 2 個：$0\mid200$ 與 $200\mid0$。
+  \item 組成為「1 個字、一元與二元各一個」的字有 3 個：$1200$、$2010$、$2100$。
+\end{itemize}
+\end{exbox}
+
+\subsection{和 Chu 講義的路徑互換}\label{ssec:convert}
+
+\begin{thmbox}[換算規則 \extra]
+把 Raney 的字串 $\sigma$ \textbf{倒過來讀}，符號 $j$ 換成高度變化 $1-j$（引數 $\to$ ↑ 步 $+1$，二元 $\to$ 弦型步 $-1$，三元 $\to$ 三角形型步 $-2$），
+就得到 Chu 講義第 7 節的路徑。而且
+\[
+\sigma\ \text{是 $n$ 字列}\iff\text{倒過來的路徑是終點高度 $n$ 的好路徑（出發後每點高度都 $>0$）}.
+\]
+\end{thmbox}
+
+\textbf{證明。}倒過來讀到第 $j$ 步時，讀過的是 $\sigma$ 的一段後綴 $\tau$，路徑高度是 $\sum_{x\in\tau}(1-x)=-r(\tau)$。
+寫 $\sigma=\rho\tau$，則 $r(\tau)=r(\sigma)-r(\rho)=-n-r(\rho)$。
+「$\rho$ 是真開頭」等於「$\tau$ 非空」，而 $r(\rho)>-n\iff r(\tau)<0\iff$ 高度 $>0$。終點高度是 $-r(\sigma)=n$。\hfill$\square$
+
+\begin{figure}[H]
+\centering
+\RanTwoViews
+\caption{同一個 2 字列 $3000200$ 的兩種畫法。左：Raney 的秩路徑（停在桃紅虛線 $-2$ 之上，最後一步才碰到）。
+中：倒過來讀的 Chu 講義路徑（出發後一直在 0 之上，終點高度 2）。右：對應的兩棵樹。}
+\label{fig:twoviews}
+\end{figure}
+
+% =====================================================================
+\section{循環引理（定理 2.1）}\label{sec:cycle}
+% =====================================================================
+
+\begin{thmbox}[定理 2.1 \paper{p.~442}]
+設 $n\ge1$，字串 $\sigma$ 的秩是 $-n$。則恰有 $n$ 個 $k\in D(\sigma)$ 使得 $\sigma g_k$ 是 $n$ 字列。
+\end{thmbox}
+
+這就是 Chu 講義第 7.2 節的循環引理（換成倒過來讀的語言）。$n=1$ 的情形是 Dvoretzky--Motzkin (1947) 的「cycle lemma」；
+Gessel 稱一般 $n$ 的版本為「Raney 的引理」\gref{p.~244}。
+
+\subsection{兩個例子}
+
+\begin{figure}[H]
+\centering
+\RanCycOne
+\caption{$\sigma=00202$（秩 $-1$）的 5 個循環變形。恰有 1 個（$k=2$，即 $+a+bc$ 的型 $20200$）是字。}
+\label{fig:cyc1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\RanCycTwo
+\caption{$\sigma=0020030$（秩 $-2$）的 7 個循環變形，恰有 2 個是 2 字列（$k=2,5$）。
+第三欄是倒過來讀的 Chu 講義路徑：$\sigma$ 本身倒過來正是 Chu 講義第 7.2 節例子裡的路徑「↑、三角形、↑、↑、弦、↑、↑」。}
+\label{fig:cyc2}
+\end{figure}
+
+\textbf{Raney 的 $k$ 與 Chu 講義的 $j$。}Raney 從第 $k$ 項讀起；倒過來讀時，這相當於 Chu 講義從第 $(m-k)\bmod m$ 步讀起。
+圖~\ref{fig:cyc2} 中 $m=7$，Raney 的 $\{2,5\}$ 對應 Chu 講義的 $\{5,2\}$——恰好是同一個集合，這只是巧合。
+
+\subsection{Raney 的證明，一步一步}
+
+Raney 的證明和 Chu 講義的「光線」證明不同。以 $\sigma=0020030$（$n=2$）為例，跟著做一次。
+
+\textbf{第 1 步：找最大的一段。}在所有循環變形的所有開頭中，取\textbf{秩最大}的；同樣大的，取\textbf{最長}的。叫它 $\alpha$。
+（開頭的秩就是圓周上「一段連續的符號」的秩總和，所以 $\alpha$ 是\textbf{圓周上總秩最大的一段弧，一樣大就取最長的}。）
+例子中只有符號 3 的秩是 $+2$，任何更長的一段都會被 0 拉低，所以 $\alpha=3$，$r(\alpha)=2$。
+
+\textbf{第 2 步：從 $\alpha$ 開始讀。}令 $\sigma_1$ 為以 $\alpha$ 開頭的循環變形：$\sigma_1=\sigma g_5=3000200$。
+\textbf{主張：}$\sigma_1$ 的每個真開頭 $\tau$ 都有 $r(\tau)>-n$。假設某個真開頭 $r(\tau)\le-n$：
+\begin{itemize}
+  \item 若 $\tau$ 是 $\alpha$ 的開頭，寫 $\alpha=\tau\gamma$，則 $r(\gamma)=r(\alpha)-r(\tau)\ge r(\alpha)+n>r(\alpha)$。
+        但 $\gamma$ 也是圓周上的一段，和 $\alpha$ 秩最大矛盾。
+  \item 若 $\tau$ 比 $\alpha$ 長，寫 $\sigma_1=\alpha\delta\epsilon$，$\tau=\alpha\delta$，$\epsilon$ 非空。
+        則 $r(\epsilon)=-n-r(\tau)\ge0$，所以 $r(\epsilon\alpha)\ge r(\alpha)$；而 $\epsilon\alpha$ 是循環變形 $\epsilon\alpha\delta$ 的開頭，又比 $\alpha$ 長。
+        這和 $\alpha$「最大、同秩中最長」矛盾。
+\end{itemize}
+
+\textbf{第 3 步：切成 $n$ 個字。}依序取最短的、秩為 $-1$ 的開頭：$\sigma_1=\alpha_1\alpha_2\cdots\alpha_n$。
+（第 2 步保證不會在湊滿 $n$ 個字之前把字串用完，也不會有剩。）把這 $n$ 個字輪流放到最前面：
+\[
+\sigma_1=\alpha_1\alpha_2\cdots\alpha_n,\quad \sigma_2=\alpha_2\cdots\alpha_n\alpha_1,\quad\ldots,\quad \sigma_n=\alpha_n\alpha_1\cdots\alpha_{n-1},
+\]
+每一個都是 $n$ 字列，對應 $n$ 個不同的 $k$。
+
+\begin{figure}[H]
+\centering
+\RanAlpha
+\caption{例子 $\sigma=0020030$ 的第 2--3 步。淡黃色是 $\alpha=3$；從 $\alpha$ 開始讀的秩路徑一直停在 $-2$ 之上。
+桃紅點把 $\sigma_1$ 切成兩個字，交換順序得到另一個 2 字列。}
+\label{fig:alpha}
+\end{figure}
+
+\textbf{第 4 步：沒有別的。}若還有另一個 $k'$ 使 $\sigma g_{k'}$ 是 $n$ 字列，它一定從某個字 $\alpha_i$ 的中間開始讀：
+$\sigma g_{k'}=\beta\gamma\delta$，其中 $\delta\beta=\alpha_i$，$\beta,\delta$ 都非空。
+$\delta$ 是字 $\alpha_i$ 的真開頭，由判別法 $r(\delta)\ge0$，所以真開頭 $\beta\gamma$ 的秩 $=-n-r(\delta)\le-n$，矛盾。\hfill$\square$
+
+\begin{notebox}[兩個細節]
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{數的是 $k$，不是字串。}$\sigma_1,\ldots,\sigma_n$ 可能有重複。例如 $\sigma=200200$：$k=0$ 與 $k=3$ 給出同一個字串 $200200$。
+        定理說的是「恰有 $n$ 個 $k$」\paper{p.~443}。下一節的雙重計數也是數 $(k,\sigma)$ 的配對，所以重複不影響。
+  \item \textbf{$\alpha$ 可以是空的。}例如 $\sigma=00$（$n=2$）：每一段的秩都是負的，秩最大（0）的只有空開頭。證明照樣成立。
+\end{itemize}
+\end{notebox}
+
+\begin{figure}[H]
+\centering
+\RanCycThree
+\caption{$\sigma=200200$：$k=0$ 與 $k=3$ 都是 2 字列，而且是同一個字串。}
+\label{fig:cyc3}
+\end{figure}
+
+\begin{notebox}[和 Chu 講義的光線證明比較 \extra]
+Chu 講義第 7.2 節把路徑無限重複，從右邊照來水平光線，「被照到的點」就是好讀法的起點，每個週期恰有 $t$ 個。
+Raney 則先用「最大的一段弧」找到\textbf{一個}好的起點，再把那一讀法切成 $n$ 個字，得到全部 $n$ 個起點。
+兩個證明都很短。光線證明比較直觀；Raney 的證明直接告訴你好的讀法長什麼樣子：\textbf{同一組字的 $n$ 種輪換}。
+\end{notebox}
+
+% =====================================================================
+\section{數字列：定理 2.2、2.3、2.4}\label{sec:count}
+% =====================================================================
+
+\textbf{組成。}若 $r(\sigma)=-n$，而且 $p_i(\sigma)=a_i$（$i=1,2,\ldots$），就說 $\sigma$ 的\textbf{組成}是 $(n;a_1,a_2,\ldots)$ \paper{p.~443}。
+這時 0 的個數 $a_0=n+\sum(i-1)a_i$，長度 $m=n+\sum ia_i$，都由組成決定。
+
+\subsection{定理 2.2：$mL=nM$}
+
+\begin{thmbox}[定理 2.2 \paper{p.~443}]
+設 $\RL{n}{a_1,a_2,\ldots}$ 是組成為 $(n;a_1,a_2,\ldots)$ 的 $n$ 字列個數。則
+\[
+m\,\RL{n}{a_1,a_2,\ldots}=n\,M(a_0,a_1,a_2,\ldots),\qquad M(a_0,a_1,\ldots)=\frac{(a_0+a_1+\cdots)!}{a_0!\,a_1!\cdots}.
+\]
+另外 $\RL{0}{0,0,\ldots}=1$（空字串），而 $n=0$ 但某個 $a_i\neq0$ 時 $L=0$。
+\end{thmbox}
+
+\textbf{證明（雙重計數）。}令 $S$ 為組成 $(n;a)$ 的所有字串（共 $M$ 個，因為只是把 $a_0$ 個 0、$a_1$ 個 1、……排成一列），
+$W\subseteq S$ 為其中的 $n$ 字列，$G=\{g_0,\ldots,g_{m-1}\}$。數集合
+\[
+P=\{(g,\sigma):\ g\in G,\ \sigma\in S,\ \sigma g\in W\}.
+\]
+\begin{itemize}
+  \item 固定 $\sigma$：由定理 2.1，恰有 $n$ 個 $g$，所以 $|P|=nM$。
+  \item 固定 $g$ 與 $\lambda\in W$：恰有一個 $\sigma$ 使 $\sigma g=\lambda$（把 $\lambda$ 轉回去）。
+        Raney 寫成 $\theta(g,\lambda)=(g,g^{-1}\lambda)$，它是 $G\times W\to P$ 的一一對應，所以 $|P|=m|W|=mL$。\hfill$\square$
+\end{itemize}
+
+用 Chu 講義的記號：取 $a_{v_i}=n_i$、字數 $n=t$，則 $m=N+t$、$a_0=\ell$、$M=\binom{N+t}{\vn}$，定理 2.2 就是
+\[
+\RL{t}{a}=\frac{t}{N+t}\binom{N+t}{\vn}=A_t(\vn),
+\]
+也就是 Chu 講義第 7.3 節的式 $G_t(\vn)=A_t(\vn)$。
+
+\begin{exbox}[例：Chu 原文 Fig.~1]
+組成 $(1;0,1,1)$：1 個字，一個二元、一個三元符號。$a_0=1+0+1\cdot1+2\cdot1=4$，$m=1+2+3=6$，
+\[
+M(4,0,1,1)=\frac{6!}{4!\,1!\,1!}=30,\qquad \RL{1}{0,1,1}=\frac{1}{6}\cdot30=5 .
+\]
+30 個字串中，每個恰有 1 種循環讀法是字，而每個字被 6 個字串讀到，所以 $30=6\times5$。
+這 5 個字對應 Chu 原文 Fig.~1 的 5 種分法：
+\begin{center}
+\RanChuFigOne
+\end{center}
+\textbf{對應方式}\extra（就是 Chu 講義第 4 節「固定一個點」）：點 1（桃紅）所在的 $v$ 點群組當樹根，記符號 $v$；
+這個群組把其餘的點順時針切成 $v$ 段（可以是空的），依序寫出每一段的字，空段寫 0。
+例如第三個圖：點 1 在弦 $\{1,2\}$ 上，根是 $2$；第一段（1 與 2 之間）是空的，寫 $0$；
+第二段是 $\{3,4,5\}$，它們組成三角形，三角形的三段都空，寫 $3000$。合起來是 $2\,0\,3000=203000$。
+\end{exbox}
+
+\begin{notebox}[直接的組合證明 \extra]
+上面的對應對任意 $(\vn,\vv)$ 都成立：不交叉分法與「組成為 $(1;a)$、$a_{v_i}=n_i$」的字一一對應
+（\texttt{raney.py} 對多組參數用電腦逐一檢查過）。所以 Chu 的主定理
+$d(\vn)=\Cv(\vn)$ 也可以直接由 Raney 的定理 2.2 得到，不必經過生成函數。
+這正是 Chu 講義第 8.1 節「群組 $\leftrightarrow$ 內部節點」那張圖的精確版本。
+\end{notebox}
+
+\textbf{例：$n=2$。}組成 $(2;0,1,1)$：$a_0=5$、$m=7$、$M(5,0,1,1)=42$，所以 $\RL{2}{0,1,1}=\frac27\cdot42=12$，
+就是 Chu 講義的 $G_2(1,1)=12$。
+
+\textbf{Cayley 的問題} \paper{p.~444}。$n=1$、只有二元符號 $a_2=k$：$a_0=k+1$、$m=2k+1$，
+\[
+\RL{1}{0,k}=\frac{1}{2k+1}\cdot\frac{(2k+1)!}{(k+1)!\,k!}=\frac{1}{k+1}\binom{2k}{k}=C_k .
+\]
+Raney 寫成 $(k+1)^{-1}C_{2k,k}$，這裡的 $C_{2k,k}$ 是二項式係數。$k=0$ 到 $7$ 依序是 1、1、2、5、14、42、132、429。
+
+\begin{table}[H]
+\centering
+\small
+\RanLTable
+\caption{定理 2.2 的例子。「$\frac nmM$」是公式，「暴力」是把所有字串列出來、用判別法篩選後數出來的個數。
+後兩欄是 Chu 講義的說法（$\vn$ 只列出用到的群組）。}
+\label{tab:L}
+\end{table}
+
+\textbf{一元運算子。}表中有兩列用到符號 1（例如 $K(u)$，或是負號 $-x$）。
+在 Chu 的幾何裡，它對應 \textbf{1 點群組}（只有一個點的「多邊形」）。Chu 講義的例子都是 $v_i\ge2$；
+把 $v_i=1$ 放進去，公式照樣成立（表中由電腦枚舉驗證）。
+例如組成 $(1;1,1)$ 的 3 個字 $1200$、$2010$、$2100$，分別對應圓周 3 點上的
+$\{1\},\{2,3\}$、$\{1,2\},\{3\}$、$\{1,3\},\{2\}$。
+
+\subsection{定理 2.3：切成兩段（Raney 公式）}
+
+\begin{thmbox}[定理 2.3 \paper{p.~444}]
+對所有自然數 $m,n$，
+\[
+\RL{m+n}{a_1,a_2,\ldots}=\sum\RL{m}{b_1,b_2,\ldots}\,\RL{n}{c_1,c_2,\ldots},
+\]
+其中求和跑遍所有滿足 $b_i+c_i=a_i$（$i=1,2,\ldots$）的數列對。
+\end{thmbox}
+
+\textbf{證明。}$(m+n)$ 字列 $\alpha$ \textbf{恰有一個}開頭是 $m$ 字列，就是前 $m$ 個字：
+如果 $\alpha=\beta\gamma\delta$，$\beta$ 是 $m$ 字列而 $\gamma$ 非空，那麼 $\beta\gamma$ 有一個秩 $-m$ 的真開頭 $\beta$，不可能是 $m$ 字列。
+寫 $\alpha=\tau\sigma$，$\tau$ 是 $m$ 字列，則 $\sigma$ 是 $n$ 字列，而且兩者的組成相加等於 $\alpha$ 的組成。\hfill$\square$
+
+\begin{figure}[H]
+\centering
+\RanThmTwoThree
+\caption{2 字列 $2003000$ 唯一的「1 字列開頭」是 $200$（桃紅點），剩下的 $3000$ 是 1 字列。}
+\label{fig:thm23}
+\end{figure}
+
+用 Chu 講義的記號，這就是 Raney 公式 $A_{s+t}(\vn)=\sum_{\vr}A_s(\vr)A_t(\vn-\vr)$（Chu 原文式 (9)）。
+下表重做 Chu 講義第 7.4 節的驗算：
+
+\begin{table}[H]
+\centering
+\RanThmTwoThreeTable
+\caption{$\RL{2}{0,1,1}=12$ 依「第一個字的組成 $b$」分組，$5+1+1+5=12$。}
+\end{table}
+
+\textbf{和 Chu 講義的切法一樣嗎？}Chu 講義在「最後一次落在高度 $s$ 的點」把路徑切開。
+倒過來讀時，Raney 的「前 $m$ 個字」變成路徑的\textbf{後段}，所以 Raney 的 $(m,n)$ 對應 Chu 講義的 $(t,s)$。
+例如 Chu 講義第 7.4 節切開的那條路徑「↑、↑、弦、↑、↑、↑、三角形」，倒過來就是 Raney 的 2 字列 $3000200$。
+Raney 切成 $3000\mid200$（前 1 個字＋其餘）；Chu 講義切成前段「↑、↑、弦」（$=200$ 倒過來）與後段「↑、↑、↑、三角形」（$=3000$ 倒過來）。
+兩種切法都唯一，切出來的兩段相同，只是前後顛倒。
+
+\subsection{定理 2.4：看第一個符號}
+
+\begin{thmbox}[定理 2.4 \paper{p.~444}]
+對所有自然數 $k$，
+\[
+\RL{k+1}{a_1,a_2,\ldots}=\RL{k}{a_1,a_2,\ldots}+\sum_{i:\,a_i>0}\RL{k+i}{a_1,\ldots,a_i-1,\ldots}.
+\]
+\end{thmbox}
+
+\textbf{證明。}看 $(k+1)$ 字列 $\alpha$ 的第一個符號：
+若是 0，則 $\alpha=0\beta$，$\beta$ 是組成相同的 $k$ 字列；
+若是 $i>0$，則 $\alpha=i\beta\gamma$，$\beta$ 是 $i$ 字列（根的 $i$ 棵子樹）、$\gamma$ 是 $k$ 字列，
+把開頭的 $i$ 拿掉，$\beta\gamma$ 就是組成 $(k+i;\ldots,a_i-1,\ldots)$ 的字列。\hfill$\square$
+
+\begin{exbox}[例]
+\begin{itemize}[leftmargin=1.2em]
+  \item $k=1$：$\RL{2}{0,1,1}=\RL{1}{0,1,1}+\RL{3}{0,0,1}+\RL{4}{0,1,0}=5+3+4=12$。
+  \item $k=0$：$\RL{1}{0,1,1}=\RL{0}{0,1,1}+\RL{2}{0,0,1}+\RL{3}{0,1,0}=0+2+3=5$。
+        這正是 Chu 講義第 6 節「收尾」的計算：$\frac{v_1}{N}\binom{N}{\vn-\ve_1}=\frac25\cdot5=2$、$\frac{v_2}{N}\binom{N}{\vn-\ve_2}=\frac35\cdot5=3$，
+        也是 manim 第 6 場景的「驗算 $2+3=5$」。
+\end{itemize}
+\end{exbox}
+
+\begin{keybox}[用生成函數看定理 2.3、2.4 \extra]
+令 $F_n=\sum_a\RL{n}{a}\,x^a$（$x^a=x_1^{a_1}x_2^{a_2}\cdots$）。
+\begin{itemize}[leftmargin=1.4em]
+  \item 定理 2.3 說 $F_{m+n}=F_mF_n$，所以 $F_n=F_1^{\,n}$：\textbf{$n$ 字列的生成函數是字的生成函數的 $n$ 次方}。
+  \item 定理 2.4 說 $F_{k+1}=F_k+\sum_ix_iF_{k+i}$。取 $k=0$ 就是 $F_1=1+\sum_ix_iF_1^{\,i}$——Chu 原文式 (6) 的形式；
+        一般的 $k$ 只是兩邊同乘 $F_1^{\,k}$。
+\end{itemize}
+這正是 Raney 在第 4 節用「大代數」語言寫下的定理 4.1。
+\end{keybox}

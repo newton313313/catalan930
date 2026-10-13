@@ -1,0 +1,128 @@
+% =====================================================================
+\section{卷積公式（原文 §7）}\label{sec:conv}
+% =====================================================================
+
+\subsection{定理 7.1}
+
+\begin{thmbox}[定理 7.1 \paper{p.~449}]
+$A$ 是有單位元的交換環。設 $a:\mathbb N\times\mathbb N\to A$ 滿足
+\begin{equation}\tag{7.1}
+a(m_1+m_2,n)=\sum_{n_1+n_2=n}a(m_1,n_1)\,a(m_2,n_2).
+\end{equation}
+定義 $b(m,n)=\dfrac{m}{m+n}\,a(m+n,n)$（$m,n$ 不全為 0），$b(0,0)=1$。則 $b$ 也滿足同樣的卷積：
+\begin{equation}\tag{7.3}
+b(m_1+m_2,n)=\sum_{n_1+n_2=n}b(m_1,n_1)\,b(m_2,n_2).
+\end{equation}
+\end{thmbox}
+
+\textbf{(7.1) 的意思。}令 $a_n=a(1,n)$、$\phi(x)=\sum a_nx^n$。(7.1) 說的正是 $a(m,n)=\coef{x^n}\phi^m$
+（「$\phi^{m_1+m_2}=\phi^{m_1}\phi^{m_2}$」逐係數寫出來）。
+
+\textbf{Raney 的證明。}把 $\phi^{m+n}$ 用多項式定理展開，$b(m,n)=\sum\frac{m}{m+n}M(p_0,p_1,\ldots)a_0^{p_0}a_1^{p_1}\cdots$，
+求和跑遍 $\sum p_i=m+n$、$\sum ip_i=n$。這是「$m$ 個字、長度 $m+n$」的情形，由定理 2.2，
+\[
+b(m,n)=\sum\RL{m}{p_1,p_2,\ldots}\;a_0^{p_0}a_1^{p_1}a_2^{p_2}\cdots ,
+\]
+也就是\textbf{$m$ 棵樹、共 $n$ 條邊的森林}的權重和（$i$ 個小孩的節點權重 $a_i$）。森林可以唯一地切成兩片（定理 2.3），所以 (7.3) 成立。\hfill$\square$
+
+\textbf{生成函數的說法} \paper{p.~450}。若 $a_0\neq0$，令 $y=x/\phi(x)$、$\psi(y)=\phi(x)$，則
+\[
+\psi(y)^m=\sum_{n\ge0}b(m,n)\,y^n .
+\]
+\extra{} 理由：$x=y\,\phi(x)$ 是方程 (5.3)（變數換成 $y$），所以由上一節的冪次版本，
+$\coef{y^n}\psi^m=\coef{y^n}(x/y)^m=\coef{y^{n+m}}x^m=\frac{m}{n+m}\coef{x^n}\phi^{n+m}=b(m,n)$。
+
+\subsection{例子}
+
+\begin{exbox}[例 1：$\phi=\frac1{1-x}$，投票數]
+$a(m,n)=\binom{m+n-1}{n}$，所以
+\[
+b(m,n)=\frac{m}{m+n}\binom{m+2n-1}{n}\qquad\text{（投票數、ballot numbers）}.
+\]
+$y=x(1-x)$ 解出 $\frac1{1-x}=c(y)$（卡塔蘭生成函數），所以 $\psi=c$，$b(m,n)=\coef{y^n}c(y)^m$。
+\begin{center}
+\RanBallotTable
+\end{center}
+$b(1,n)=C_n$，$b(2,n)=C_{n+1}$。卷積的例子：$b(2,3)=14=b(1,0)b(1,3)+b(1,1)b(1,2)+b(1,2)b(1,1)+b(1,3)b(1,0)=5+2+2+5$，
+就是卡塔蘭遞迴。
+\end{exbox}
+
+\begin{exbox}[例 2：$\phi=(1+x)^p$，Fuss--Catalan]
+$a(m,n)=\binom{pm}{n}$，$b(m,n)=\frac{m}{m+n}\binom{p(m+n)}{n}$。
+由 Gessel (3.3.2)，$1+x=c_p(y)$，所以 $\psi=c_p^{\,p}$，$b(m,n)=\coef{y^n}c_p(y)^{pm}=A_{pm}\big((n),(p)\big)$。
+$p=2$、$m=2$：$1,4,14,48,165$。
+\end{exbox}
+
+\subsection{連續參數 $\alpha$：式 (7.4)--(7.6)}
+
+(7.3) 說 $b(m,\cdot)$ 對 $m$ 是「指數型」的。Raney 把它推廣到任意參數 $\alpha$ \paper{p.~450}：
+\begin{equation}\tag{7.4}
+\exp(\alpha\xb)=\exp\big(\alpha\bar y\,\psi(\bar y)\big)=\sum_{k\ge0}c(\alpha,k)\,\bar y^k,
+\end{equation}
+\begin{equation}\tag{7.5}
+c(\alpha,k)=\sum_{m=0}^{k}\frac{\alpha^m\,b(m,k-m)}{m!}=\sum_{m=0}^{k}\frac mk\,\frac{\alpha^m\,a(k,k-m)}{m!},
+\end{equation}
+\begin{equation}\tag{7.6}
+c(\alpha_1+\alpha_2,n)=\sum_{n_1+n_2=n}c(\alpha_1,n_1)\,c(\alpha_2,n_2).
+\end{equation}
+(7.5) 是把 $\exp(\alpha y\psi)=\sum_m\frac{\alpha^m}{m!}y^m\psi^m$ 展開；(7.6) 來自 $e^{(\alpha_1+\alpha_2)x}=e^{\alpha_1x}e^{\alpha_2x}$。
+
+\textbf{例。}$\phi=\frac1{1-x}$ 時，
+$c(\alpha,0)=1$、$c(\alpha,1)=\alpha$、$c(\alpha,2)=\alpha+\frac{\alpha^2}2$、$c(\alpha,3)=2\alpha+\alpha^2+\frac{\alpha^3}6$。
+$\alpha=1$ 時是 $1,1,\frac32,\frac{19}6$。（驗算：$x=yc(y)=y+y^2+2y^3+\cdots$，展開 $e^{\alpha x}$ 取 $y^3$ 的係數，得 $2\alpha+\alpha^2+\frac{\alpha^3}{6}$。）
+
+\subsection{Gould 的卷積：Abel 與 Vandermonde 型}
+
+Gould (1957) 提出一個同時包含 Vandermonde 與 Abel 卷積的公式 \paper{p.~450}：
+\begin{equation}\tag{7.7}
+G(\alpha,0;\beta,\gamma)=1,\qquad G(\alpha,n;\beta,\gamma)=\frac{\alpha}{n!}\prod_{m=1}^{n-1}(\alpha+\beta n-\gamma m)\quad(n\ge1),
+\end{equation}
+\begin{equation}\tag{7.8}
+G(\alpha_1+\alpha_2,n;\beta,\gamma)=\sum_{n_1+n_2=n}G(\alpha_1,n_1;\beta,\gamma)\,G(\alpha_2,n_2;\beta,\gamma).
+\end{equation}
+兩個特例：
+\begin{itemize}
+  \item $\gamma=0$：$G(\alpha,n;\beta,0)=\dfrac{\alpha(\alpha+\beta n)^{n-1}}{n!}$，(7.8) 是 \textbf{Abel 卷積}。
+  \item $\gamma=1$：$G(\alpha,n;\beta,1)=\dfrac{\alpha}{\alpha+\beta n}\dbinom{\alpha+\beta n}{n}$（Raney 寫成 $\frac{\alpha}{\alpha+\beta n}C_{\alpha+\beta n,n}$），
+        (7.8) 是 \textbf{Vandermonde 型卷積}（今天常叫 Hagen--Rothe 恆等式）。
+\end{itemize}
+
+\begin{keybox}[$\gamma=1$ 就是 Chu 的 Raney 公式 \extra]
+取 $\alpha=t$、$\beta=v$：
+\[
+G(t,n;v,1)=\frac{t}{t+vn}\binom{t+vn}{n}=A_t\big((n),(v)\big)\qquad\text{（Chu 講義的記號，只有一種群組）}.
+\]
+所以 (7.8) 在 $\gamma=1$ 時正是單一型的 Raney 公式 $A_{s+t}=\sum A_sA_t$。差別是：
+\textbf{(7.8) 對任意 $\alpha_1,\alpha_2$ 都成立}（兩邊都是 $\alpha_1,\alpha_2$ 的多項式，對所有正整數成立就對所有數成立）。
+例如 $\alpha_1=\alpha_2=\frac12$、$\beta=2$：$G(\frac12,n;2,1)=1,\frac12,\frac78,\frac{33}{16},\ldots$ 是 $c(x)^{1/2}$ 的係數，而
+\[
+\textstyle G(1,2;2,1)=2=1\cdot\frac78+\frac12\cdot\frac12+\frac78\cdot1 .
+\]
+\end{keybox}
+
+\begin{exbox}[Abel 卷積的例子]
+$\beta=1$、$\gamma=0$、$\alpha_1=\alpha_2=1$、$n=3$。乘上 $3!$：
+\[
+3!\,G(2,3;1,0)=2\cdot5^2=50,\qquad
+\sum_{i=0}^{3}\binom3i\,(i+1)^{i-1}\,(4-i)^{2-i}=16+9+9+16=50 .
+\]
+組合意義（Gessel 式 (3.2.3)）：$k(n+k)^{n-1}=n!\,G(k,n;1,0)$ 是頂點集 $\{1,\ldots,n+k\}$、根恰為 $1,\ldots,k$ 的有根森林個數。
+卷積就是「把森林分成兩片」。這對應 Gessel 的第二個 Abel 恆等式 \gref{p.~230}。
+\end{exbox}
+
+\subsection{Raney 怎麼證明 (7.8)}
+
+取 \paper{p.~451}
+\begin{equation}\tag{7.9}
+\phi(x)=\phi(x;\beta,\gamma)=\frac{\gamma\,x\,e^{\beta x}}{e^{\gamma x}-1}\qquad(\phi(0)=1).
+\end{equation}
+令 $z^{1/\delta}=e^{\gamma x}$、$w=\gamma x/\phi(x)=\gamma y$。直接驗證 $1-z^{1/\delta}+wz^{(1/\delta)(\beta/\gamma)}=0$：
+$w\,e^{\beta x}=(e^{\gamma x}-1)e^{-\beta x}e^{\beta x}=e^{\gamma x}-1$。
+再用 Pólya--Szegő 第 212 題的級數解，令 $\alpha=\delta\gamma$，得 $z=e^{\alpha x}=1+\sum_{n\ge1}\frac{\alpha\gamma^{n-1}}{n}\binom{\alpha/\gamma+(\beta/\gamma)n-1}{n-1}y^n$。
+比較 (7.4)：$c(\alpha,n)=G(\alpha,n;\beta,\gamma)$，再由 (7.6) 得到 (7.8)。
+
+\begin{notebox}[程式驗證]
+\texttt{raney.py} 對 $(\beta,\gamma)=(1,0),(2,1),(\frac32,\frac12),(1,1)$ 與幾個 $\alpha$（含分數與負數），
+直接展開 (7.9) 的 $\phi$，再用 (7.5) 算 $c(\alpha,n)$，確認等於 $G(\alpha,n;\beta,\gamma)$（$n\le6$），並檢查 (7.8)。
+$\gamma\to0$ 時 $\phi\to e^{\beta x}$，回到上一節的樹函數。
+\end{notebox}

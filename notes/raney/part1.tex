@@ -1,0 +1,258 @@
+% =====================================================================
+\section{閱讀地圖}\label{sec:map}
+% =====================================================================
+
+\subsection{這篇論文在做什麼}
+
+Chu (1987) 證明主定理的最後一步，引用了「Raney 公式」\churef{第 6 節}：
+\[
+A_{s+t}(\vn)=\sum_{\vr}A_s(\vr)\,A_t(\vn-\vr),\qquad A_t(\vn)=\frac{t}{N+t}\binom{N+t}{\vn}.
+\]
+Chu 講義第 7 節用「路徑」與「循環引理」補了一個證明。這份導讀讀的是公式的出處：
+G.~N.~Raney 在 1960 年的論文。它比 Chu 需要的更一般，也更早：
+\begin{itemize}
+  \item 運算子可以是任意元數，\textbf{包括一元}（Chu 的群組大小 $v_i\ge2$ 只是其中一部分）；
+  \item 一次處理所有元數，用的是「無限多個變數的形式級數」（第 3--4 節）；
+  \item 最後的目標是 \textbf{Lagrange 反演公式}：Raney 說明這個公式「需要的組合資訊」全部包含在字列的計數裡。
+        Gessel (2016) 稱它是「Lagrange 反演最早的組合證明」\gref{p.~243}。
+\end{itemize}
+
+\subsection{原文結構與本導讀的對應}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+原文 & 頁 & 內容 & 本導讀／Chu 講義\\
+\midrule
+§1 & 441--442 & 引言：Cayley 的問題、前序記法、字 & 第 \ref{sec:motive} 節\\
+§2 & 442--444 & 字串、秩、字列；定理 2.1--2.4 & 第 \ref{sec:words}--\ref{sec:count} 節；Chu 講義第 7 節\\
+§3 & 444--445 & 半群的大代數、誘導同態 $H(\theta,\beta,h)$ & 第 \ref{sec:algebra} 節\\
+§4 & 445--446 & 特殊元素 $\Lst$；定理 4.1 & 第 \ref{sec:lstar} 節；Chu 講義第 5--6 節\\
+§5 & 446--448 & Lagrange 反演公式 & 第 \ref{sec:lagrange} 節\\
+§6 & 448--449 & 用級數解方程（三項式方程） & 第 \ref{sec:equations} 節；Problem 4983\\
+§7 & 449--451 & 卷積公式（Gould、Abel、Vandermonde 型） & 第 \ref{sec:conv} 節\\
+\bottomrule
+\end{tabular}
+\caption{原文各節與本導讀的對應。}
+\end{table}
+
+\begin{keybox}[建議的讀法]
+\begin{enumerate}[leftmargin=1.6em]
+  \item 先讀第 \ref{sec:notation} 節的記號對照表，特別是「三種讀法」那一框。Raney 的符號方向和 Chu 講義剛好相反。
+  \item 第 \ref{sec:words}--\ref{sec:count} 節（原文 §2）是全文的核心。每個定理都附了例子，最好拿紙筆跟著算。
+  \item 第 \ref{sec:algebra} 節（原文 §3）只是「記帳的語言」，第一次讀可以只看例子。
+  \item 第 \ref{sec:lstar}--\ref{sec:conv} 節是應用。讀完第 \ref{sec:lstar} 節，就能看懂 Chu 的第三步其實是 Raney 定理 4.1 的一個影像。
+\end{enumerate}
+\end{keybox}
+
+\textbf{標記。}\paper{p.~442} 是 Raney 原文的頁碼，\churef{第 7 節} 是 Chu 講義的節次，\gref{p.~219} 是 Gessel (2016) 的頁碼。
+\extra{} 表示不在 Raney 原文裡、為了幫助理解而加的內容。原文的逐字謄寫在
+\texttt{C:\textbackslash mypython\textbackslash manim\textbackslash projects\textbackslash ref\textbackslash raney\textbackslash md\textbackslash raney1960\_text.md}。
+
+\textbf{題目的一個字。}Raney 的標題是 power series \emph{reversion}（冪級數的反轉，也就是求反函數）。
+Chu 原文的參考文獻 [14] 寫成 \emph{inversion}，指的是同一篇。
+
+\textbf{本導讀的數字都經過程式檢查。}\nolinkurl{codes/utils/raney.py} 用暴力列舉驗證每個定理；
+\nolinkurl{notes/raney/make_figs.py} 先檢查正文寫到的每一個數字，再畫出所有的圖與表。
+
+% =====================================================================
+\section{記號對照表}\label{sec:notation}
+% =====================================================================
+
+Raney 的記號和 Chu 講義有三處\textbf{撞名}，請先記住：
+\begin{notebox}[撞名警告]
+\begin{itemize}[leftmargin=1.4em]
+  \item $L$：Raney 的 $\RL{n}{a_1,a_2,\ldots}$ 是「字列的個數」（一定帶分號和括號）；Chu 講義的 $L=1+\sum n_i(v_i-1)$ 是葉子數。
+  \item $D$：Raney 第 5 節的 $D$ 是\textbf{微分}；Chu 講義的 $D$ 是不交叉分法的生成函數。
+  \item $C$：Raney 的 $C_{n,k}$ 是\textbf{二項式係數} $\binom nk$；Chu 講義的 $C_n$ 是卡塔蘭數，$\Cv(\vn)$ 是廣義卡塔蘭數。
+  \item 另外，Raney 的 $n$ 是「字的個數」，對應 Chu 講義的 $t$；Chu 的 $n_i$ 對應 Raney 的 $a_{v_i}$。
+\end{itemize}
+\end{notebox}
+
+\subsection{組合部分（原文 §1--§2）}
+
+{\small
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}>{\raggedright}p{3.1cm}>{\raggedright}p{3.9cm}>{\raggedright}p{4.1cm}>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\toprule
+Raney 原文 & 意思 & Chu 講義 & Gessel (2016)\\
+\midrule
+\endhead
+字串 $\sigma$（string） & 自然數的有限序列；第 $x$ 項 $=$ 第 $x$ 個符號的元數 & 一條路徑（各型步的排列），但要\textbf{倒過來讀} & 整數序列 $a_1\cdots a_n$\\
+長度 $m$ & 項數 & $N+t$（總步數） & $n$（頂點數）\\
+定義域 $D(\sigma)=\{0,\ldots,m-1\}$ & 位置 & 第 $0,\ldots,N+t-1$ 步 & —\\
+$g_k$、循環變形 $\sigma g_k$ & 從第 $k$ 項開始讀一圈 & 循環讀法（從第 $(m-k)\bmod m$ 步讀起） & $a_i\cdots a_na_1\cdots a_{i-1}$\\
+$p_i(\sigma)$ & 符號 $i$ 出現的次數 & $p_0=\ell$（↑ 步數），$p_{v_i}=n_i$ & $n_i$（有 $i$ 個小孩的頂點數）\\
+秩 $r(\sigma)=\sum(i-1)p_i$ & 符號 $i$ 貢獻 $i-1$，引數貢獻 $-1$ & 路徑終點高度的\textbf{負號} & reduced code 的總和\\
+開頭（head）、真開頭 & 前綴；真開頭 $=$ 不是整串的前綴 & 倒過來讀之後的「後段」 & —\\
+字（word） & 前序寫出的一棵平面樹 & $t=1$ 的好路徑（倒過來讀） & ordered tree\\
+$n$ 字列（list of $n$ words） & $n$ 個字接起來 $=$ $n$ 棵樹的森林 & 終點高度 $t=n$ 的好路徑 & $k$-forest\\
+組成 $(n;a_1,a_2,\ldots)$ & 字數與各符號的個數 & $(t;\vn)$，其中 $a_{v_i}=n_i$ & $k$；$n_1,n_2,\ldots$\\
+$a_0=n+\sum(i-1)a_i$ & 引數（葉子）的個數 & $\ell=t+\sum n_i(v_i-1)$；$t=1$ 時 $=L$ & $n_0$\\
+$m=n+\sum ia_i$ & 字串長度 $=$ 總節點數 & $N+t$，$N=\ip{\vn}{\vv}$ & $n$\\
+$M(a_0,a_1,\ldots)$ & 多項式係數 $\frac{(\sum a_i)!}{\prod a_i!}$ & $\binom{N+t}{\vn}$ & $\binom{n}{n_0,n_1,\ldots}$\\
+$\RL{n}{a_1,a_2,\ldots}$ & 組成為 $(n;a)$ 的 $n$ 字列個數 & $A_t(\vn)=G_t(\vn)$；$t=1$ 時 $=\Cv(\vn)$ & 式 (4.4.1)\\
+$C_{n,k}$ & 二項式係數 $\binom nk$ & （不是卡塔蘭數） & $\binom nk$\\
+定理 2.1 & 循環引理 & 第 7.2 節循環引理 & 引理 4.5.2\\
+定理 2.2 & $mL=nM$ & 式 $G_t(\vn)=A_t(\vn)$（第 7.3 節） & 式 (4.4.1)、(2.5.1)\\
+定理 2.3 & 字列唯一地切成兩段 & Raney 公式（原文式 (9)、第 7.4 節） & $f^{k+l}=f^kf^l$\\
+定理 2.4 & 看第一個符號 & 原文式 (10)（第 6 節「收尾」） & —\\
+\bottomrule
+\end{longtable}
+}
+
+\subsection{代數部分（原文 §3--§7）}
+
+{\small
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}>{\raggedright}p{3.1cm}>{\raggedright}p{3.9cm}>{\raggedright}p{4.1cm}>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\toprule
+Raney 原文 & 意思 & Chu 講義 & Gessel (2016)\\
+\midrule
+\endhead
+半群 $S$、條件 (D) & 每個元素只有有限多種拆法 & $\vn\in\mathbb N^k$ & —\\
+大代數 $A^S$ & 以 $S$ 為指標的形式級數 & 多變數冪級數環 & $C[[x]]$ 等\\
+$P$、$\bp=(p_1,p_2,\ldots)$ & 只有有限多項非零的序列 & $\vn$ & —\\
+$E_0^*$、$E_i^*$（$i\ge1$） & 1、第 $i$ 個變數 & 1、$x_i$（當 $i=v_i$） & $R(t)=\sum r_it^i$ 的 $r_i$\\
+$E^*_{\bp}=\prod(E_i^*)^{p_i}$ & 單項式 & $x^{\vn}$ & $r_0^{n_0}r_1^{n_1}\cdots$\\
+$\Lst=\sum_{\bp}\RL1{\bp}E^*_{\bp}$ & 所有字（樹）的生成函數 & $D=C$（取所有元數） & $f=R(f)$ 的解（定理 2.4.1）\\
+$(\Lst)^n$ & $n$ 字列的生成函數 & $D^t$、$C^t$ & $f^k$\\
+式 (4.1) $\Lst=\sum E_i^*(\Lst)^i$ & 樹的萬用方程 & 原文式 (6) $D=1+\sum x_iD^{v_i}$ & $f=R(f)$\\
+$H=H(\theta,\beta,h)$ & 代換：把 $E_i^*$ 換成別的東西 & $E^*_{v_i}\mapsto x_i$，其餘 $\mapsto0$ & admissible substitution\\
+$\xb$、$\zb=\sum a_n\xb^n$、$\wb$ & $x$、$\phi(x)$、$w=x\phi(w)$ 的解 & — & $x$、$R(t)$、$f$\\
+$D$（第 5 節） & 微分 & （注意：不是生成函數） & $d/dt$\\
+$\dfrac{(D^{n-1}\zb^n)(0)}{n!}$ & $=\dfrac1n\coef{x^{n-1}}\zb^n$ & — & $\dfrac1n\coef{t^{n-1}}R(t)^n$\\
+$a(m,n)$、$b(m,n)$（第 7 節） & $\coef{x^n}\phi^m$、$\frac m{m+n}a(m+n,n)$ & $A_t(\vn)$ 的單變數版 & —\\
+$G(\alpha,n;\beta,\gamma)$ & Gould 的函數 & $\gamma=1$、$\alpha=t$、$\beta=v$：$A_t\big((n),(v)\big)$ & 式 (3.3.3) 的係數\\
+\bottomrule
+\end{longtable}
+}
+
+\subsection{三種讀法：同一片森林，三種編碼}
+
+\begin{keybox}[Raney、Chu 講義、Gessel 的方向]
+以同一片森林（$n$ 棵平面樹）為例：
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}>{\raggedright}p{2.6cm}>{\raggedright}p{3.2cm}>{\raggedright}p{3.6cm}>{\raggedright\arraybackslash}p{4.6cm}@{}}
+\toprule
+ & 讀的順序 & 每個符號的貢獻 & 「合格」的條件\\
+\midrule
+Raney（前序碼） & 先根、再依序寫子樹 & 引數 $-1$，$i$ 元 $+(i-1)$ & 秩 $=-n$，每個真開頭的秩 $>-n$\\
+Chu 講義（路徑） & Raney 的碼\textbf{倒過來} & 葉子 $+1$，第 $i$ 型 $1-v_i$ & 終點高度 $n$，出發後高度都 $>0$\\
+Gessel（後序碼） & 先寫子樹、最後寫根 & 每項減 1（reduced code） & 總和 $-n$，每個部分和都 $<0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{換算。}把 Raney 的字串倒過來讀，符號 $j$ 換成高度變化 $1-j$，就是 Chu 講義的路徑；
+讀到某處時的高度 $=-($已讀過的那一段後綴的秩$)$（第 \ref{ssec:convert} 節證明）。
+Gessel 的後序碼則是「把森林左右鏡射之後的 Raney 碼倒過來」，三者都是同一個對應的不同寫法。
+\end{keybox}
+
+% =====================================================================
+\section{動機：Cayley 的問題與 Problem 4983}\label{sec:motive}
+% =====================================================================
+
+\subsection{Cayley 的問題}
+
+Raney 的第一句話 \paper{p.~441}：1859 年 Cayley 解決了「給定的項、給定的順序，在\textbf{不滿足結合律}的乘法之下，
+有幾種不同的乘積」。4 個因子 $abcd$ 有 5 種：
+
+\begin{figure}[H]
+\centering
+\RanCayley
+\caption{4 個因子的 5 種乘積。上面是對應的二元樹，中間是 Raney 的「字」（前序記法，只記元數），下面是加括號的寫法。}
+\label{fig:cayley}
+\end{figure}
+
+這就是卡塔蘭數 $C_3=5$（Chu 講義第 1.4 節的完全括號化）。
+
+\subsection{前序記法與「型」}
+
+Raney 用\textbf{前序記法}（prefix notation，又叫波蘭記法）：運算子寫在它的引數前面，不需要括號。
+例如 $(a+b)+c$ 寫成 $++abc$，$a+(b+c)$ 寫成 $+a+bc$。
+再把每個符號換成它的「重量」：引數是 $0$，$n$ 元運算子是 $n$，就得到運算式的\textbf{型}（type）\paper{p.~441}：
+
+\begin{figure}[H]
+\centering
+\RanIntroTrees
+\caption{原文第 441 頁的三個例子。圓形節點是運算子（顏色表示元數：\textcolor{cU}{一元}、\textcolor{cA}{二元}、\textcolor{cB}{三元}），方形是引數。
+依「先根、再由左到右寫子樹」的順序讀出符號，就是型。}
+\label{fig:intro}
+\end{figure}
+
+Raney 依照 Rosenbloom 的用語，把「能當作某個運算式的型」的數字串叫做\textbf{字}（word）。
+於是 Cayley 問題的推廣是：
+
+\begin{thmbox}[Raney 的問題 \paper{p.~441}]
+給定只有有限多項非零的自然數列 $a_1,a_2,\ldots$。有幾個字恰好含 $a_1$ 個 1、$a_2$ 個 2、……？
+（0 的個數不必指定，因為字裡一定有 $a_0=1+\sum_{i\ge1}(i-1)a_i$ 個 0。）
+\end{thmbox}
+
+\textbf{例。}$F(G(x,H(y,z),t),K(u))$ 有 1 個一元（$K$）、2 個二元（$F,H$）、1 個三元（$G$），
+所以 $a_0=1+0\cdot1+1\cdot2+2\cdot1=5$，正好是 $x,y,z,t,u$ 五個引數；字的長度是 $9$。
+
+\textbf{為什麼 0 的個數是 $1+\sum(i-1)a_i$？}把運算式看成樹：$i$ 元運算子有 $i$ 個小孩。
+邊數 $=\sum ia_i$，節點數 $=a_0+\sum a_i$，而樹的節點數比邊數多 1，所以 $a_0=1+\sum(i-1)a_i$。
+這和 Chu 講義第 8.2 節「$L$ 是樹的葉子數」是同一個計算。
+
+\subsection{Problem 4983：每次乘 $r+1$ 個}
+
+1961 年 Klamkin 與 Shepp 在 \emph{Amer.\ Math.\ Monthly} 提出 Problem 4983 \kref{68 (1961) 807}：
+在 $a_1a_2\cdots a_n$ 中加括號，\textbf{每一對括號恰好包住 $r+1$ 個項}（順序不變），有幾種乘積 $P_n(r)$？
+$r=1$ 就是 Cayley 的問題，例如 $P_4(1)=5$。
+
+\textbf{Kelly 的解法} \kref{69 (1962) 930--931}。
+令 $y=\sum_{n\ge1}P_n(r)x^n$。最外層的括號把 $n$ 個因子分成 $r+1$ 段，各段獨立，所以
+\[
+P_n(r)=\sum_{n_1+\cdots+n_{r+1}=n}P_{n_1}(r)\cdots P_{n_{r+1}}(r)\quad(n\ge2),
+\qquad\text{也就是}\qquad y^{r+1}-y+x=0 .
+\]
+用 Frame 的三項式反演法（或 Pólya--Szegő 第 I 卷第 211 題）解出
+\[
+P_n(r)=\begin{cases}\dfrac1n\dbinom{(r+1)k}{k}, & n=kr+1,\\[6pt] 0, & n\not\equiv1\pmod r.\end{cases}
+\]
+
+\begin{table}[H]
+\centering
+\RanKellyTable
+\caption{$P_n(r)$ 的值（公式與直接數括號兩種算法一致）。$r=1$ 是卡塔蘭數。}
+\label{tab:kelly}
+\end{table}
+
+\textbf{例。}$r=2$（每次乘 3 個）：
+\begin{itemize}
+  \item $n=4$ 不可能：乘掉 3 個之後剩 2 項，再也湊不成 3 個，所以 $P_4(2)=0$；
+  \item $n=5$ 有 3 種：$((abc)de)$、$(a(bcd)e)$、$(ab(cde))$，公式給出 $\frac15\binom{6}{2}=3$。
+\end{itemize}
+
+\textbf{編輯附註。}這個結果早就包含在 Etherington (1940) 與 Erdélyi--Etherington (1940) 的論文裡；
+Etherington 還指出 $P_n(r)$ 等於\textbf{用不交叉的對角線把凸 $(n+1)$ 邊形切成 $(r+2)$ 邊形}的方法數。
+附註的最後一句是：「包含此結果為特例的相關問題，見 G.~N.~Raney, \emph{Functional composition patterns and power series reversion}。」
+
+\begin{figure}[H]
+\centering
+\RanHexagon
+\caption{$n=5$、$r=2$：凸六邊形切成兩個四邊形，恰有 $P_5(2)=3$ 種。（八邊形切成四邊形有 $P_7(2)=12$ 種，切成五邊形有 $P_7(3)=4$ 種；都用程式窮舉驗證過。）}
+\label{fig:hexagon}
+\end{figure}
+
+\begin{keybox}[同一個數的三種說法]
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}>{\raggedright}p{4.2cm}>{\raggedright}p{5.4cm}>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\toprule
+Problem 4983 & Raney & Chu 講義\\
+\midrule
+$n=kr+1$ 個因子、每次乘 $r+1$ 個 & $k$ 個 $(r+1)$ 元符號的字 & $k$ 個 $(r+1)$ 點群組\\
+$P_n(r)=\frac1n\binom{(r+1)k}{k}$ & $\RL1{k\bd_{r+1}}=\frac{1}{1+rk}\binom{(r+1)k}{k}$（式 (6.4)） & $C_{r+1}(k)$（高階卡塔蘭數）\\
+\bottomrule
+\end{tabular}
+\end{center}
+這裡 $k\bd_{r+1}$ 表示「第 $r+1$ 項是 $k$、其餘是 0」的序列（Raney 的寫法，見第 \ref{sec:lstar} 節）。
+注意 $n=1+rk$ 正好是葉子數 $a_0$。
+\end{keybox}

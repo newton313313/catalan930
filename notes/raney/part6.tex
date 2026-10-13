@@ -1,0 +1,220 @@
+% =====================================================================
+\section{補充：Gessel (2016) 怎麼看這些東西}\label{sec:gessel}
+% =====================================================================
+
+Gessel 的 \emph{Lagrange inversion} 是一篇 38 頁的綜述，只談單變數，但談得很細。下面挑和 Raney 直接相關的部分。
+
+\subsection{Lagrange 反演的幾種形式}
+
+Gessel 定理 2.1.1 \gref{p.~214}：$R(t)$ 是冪級數，$f=xR(f)$ 的唯一解滿足（$n\neq0$）
+\[
+\coef{x^n}\varphi(f)=\frac1n\coef{t^{n-1}}\varphi'(t)R(t)^n,\qquad
+\coef{x^n}\varphi(f)=\coef{t^n}\big(1-tR'(t)/R(t)\big)\varphi(t)R(t)^n,\ \ldots
+\]
+共五種等價形式 (2.1.1)--(2.1.5)。Raney 的 (5.5) 是第一種取 $\varphi(t)=t$；上一節的冪次版本是取 $\varphi(t)=t^k$，也就是 Gessel 的 (2.2.1)：
+$\coef{x^n}f^k=\frac kn\coef{t^{n-k}}R(t)^n$。
+
+\textbf{一個漂亮的副產品。}Gessel 的 (2.2.9) 給出 $\coef{x^m}\log(f/x)=\frac1m\coef{t^m}R(t)^m$。用在卡塔蘭數（$R=(1+t)^2$，$f/x=c^2$）\gref{p.~218}：
+\[
+\log c(x)=\sum_{m\ge1}\frac{1}{2m}\binom{2m}{m}x^m=x+\frac32x^2+\frac{10}3x^3+\frac{35}4x^4+\cdots
+\]
+（程式直接展開 $\log c(x)$ 核對到 $x^8$。）
+
+\subsection{「未定元」的版本 = Raney 的 $\Lst$}
+
+Gessel 第 2.4 節先處理 $c=1+xc^2$：不寫成 $f=xR(f)$ 的形式，而是考慮 $F=z(1+xF^2)$，把 $F$ 看成 $z$ 的冪級數，最後令 $z=1$ \gref{p.~219--220}。
+接著是定理 2.4.1：係數 $r_n$ 都是未定元時，$f=R(f)$ 有唯一解，而且
+$\varphi(f)=\varphi(0)+\sum_{n\ge1}\frac1n\coef{t^{n-1}}\varphi'(t)R(t)^n$。
+這和 Raney 的 (4.1)、(6.2) 是同一件事（$r_n\leftrightarrow E_n^*$），第 \ref{sec:lstar} 節最後已經比較過。
+
+\subsection{組合證明與 Raney 的證明}
+
+Gessel 第 4.4 節 \gref{p.~241--242}：$f=xR(f)$ 中 $\coef{x^n}f^k$ 是 $k$ 棵平面樹、共 $n$ 個頂點的森林的權重和，所以 Lagrange 反演等價於
+「$n_i$ 個頂點有 $i$ 個小孩的 $k$-森林有 $\frac kn\binom{n}{n_0,n_1,\ldots}$ 個」（式 (4.4.1)）。
+\textbf{這就是 Raney 的定理 2.2}。Gessel 提到 Tutte (1964) 給出了 $k=1$ 的情形；Raney (1960) 更早，而且是一般的 $k$。
+
+Gessel 第 4.5 節「Raney 的證明」\gref{p.~243--244}說：「Lagrange 反演最早的組合證明是 Raney 的。」
+他用的是\textbf{後序}的編碼，細節不同：
+\begin{itemize}
+  \item suffix code：$c(T)=c(T_1)\cdots c(T_j)\,j$（先寫子樹，最後寫根的小孩數）；森林就把各棵樹的碼接起來；
+  \item reduced code：每一項減 1；
+  \item 引理 4.5.1：森林由 reduced code 唯一決定；$a_1\cdots a_n$（每項 $\ge-1$）是 $k$-森林的 reduced code
+        $\iff$ 總和 $-k$、而且每個部分和都 $<0$；
+  \item 引理 4.5.2（Raney 的引理）：每項 $\ge-1$、總和 $-k<0$ 的序列，恰有 $k$ 個循環輪換的部分和都 $<0$。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\RanGesselCodes
+\caption{Gessel 圖 3 的森林（一棵二元樹、一棵一元樹）的三種編碼。Gessel 的部分和取負號，就是 Chu 講義路徑的高度。}
+\label{fig:gessel}
+\end{figure}
+
+注意 Gessel 的後序碼 $00201$ \textbf{不是} Raney 前序碼 $20010$ 倒過來（那是 $01002$）。
+後序碼等於「把森林左右鏡射之後的前序碼倒過來」。三種編碼都是同一個一一對應的不同寫法，計數完全相同。
+
+\subsection{Fuss--Catalan 數與 Hagen--Rothe 恆等式}
+
+Gessel 第 3.3 節 \gref{p.~231--232}：$c_p=1+xc_p^{\,p}$，
+\[
+c_p(x)^k=\sum_{n\ge0}\frac{k}{pn+k}\binom{pn+k}{n}x^n\qquad\text{（$=A_k\big((n),(p)\big)$，Chu 講義的記號）}.
+\]
+由 $c_p^kc_p^l=c_p^{k+l}$ 得到 Hagen--Rothe 恆等式
+\[
+\sum_{i+j=n}\frac{k}{pi+k}\binom{pi+k}{i}\cdot\frac{l}{pj+l}\binom{pj+l}{j}=\frac{k+l}{pn+k+l}\binom{pn+k+l}{n},
+\]
+也就是 Raney (7.8) 的 $\gamma=1$ 情形，或 Chu 的 Raney 公式（一種群組）。
+有趣的是，Gessel 練習 3.3.6 引用的 [13] 正是 \textbf{Wenchang Chu} 的另一篇論文：
+\emph{Elementary proofs for convolution identities of Abel and Hagen--Rothe}, Electron.\ J.\ Combin.\ 17 (2010)。
+
+\begin{exbox}[Gessel 練習 3.3.2：$c_{p+q}(x)=c_p\big(x\,c_{p+q}(x)^q\big)$ \extra]
+\textbf{組合解釋。}在一棵 $(p+q)$ 元樹裡，把每個節點的小孩分成「前 $p$ 個」和「後 $q$ 個」。
+只看前 $p$ 個小孩，得到一棵 $p$ 元樹；每個節點的後 $q$ 個小孩各帶著一棵 $(p+q)$ 元子樹，是掛在這個節點上的「裝飾」。
+所以「$(p+q)$ 元樹 $=$ 每個節點帶 $q$ 棵 $(p+q)$ 元樹的 $p$ 元樹」，生成函數就是把 $c_p$ 裡的 $x$ 換成 $x\,c_{p+q}^{\,q}$。
+（程式核對了 $(p,q)=(1,1),(2,1),(1,2)$ 到 $x^8$。）
+\end{exbox}
+
+\subsection{另一篇「Raney」}
+
+Gessel 第 3.5 節的標題是「Raney's equation」，講的是 $f=\sum_mA_me^{B_mf}$ \gref{p.~237}。
+那是 Raney 的\textbf{另一篇}論文（\emph{A formal solution of $\sum A_ie^{B_iX}=X$}, Canad.\ J.\ Math.\ 16 (1964)），不是本文。
+
+% =====================================================================
+\section{補充：文獻脈絡}\label{sec:history}
+% =====================================================================
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lp{12.3cm}@{}}
+\toprule
+年 & 事件\\
+\midrule
+1770 年代 & Lagrange 的反演公式（Raney 引的是 \emph{Oeuvres} 第 3 卷）\\
+1791 & Fuss 研究 Fuss--Catalan 數 \gref{p.~231}\\
+1859 & Cayley：非結合乘積的個數（Raney 的起點）\\
+1940 & Etherington、Erdélyi--Etherington：每次 $r+1$ 個的非結合乘積、多邊形切成 $(r+2)$ 邊形\\
+1947 & Dvoretzky--Motzkin：cycle lemma（$n=1$ 的循環引理）\\
+1948 & Motzkin：超曲面交比、多邊形分割、非結合乘積（Raney [11]、Chu [5]）\\
+1950 & Rosenbloom：前序記法的「字」與判別法（Raney [13]）\\
+1957 & Gould：Vandermonde 卷積的推廣（Raney [8]）\\
+1960 & \textbf{Raney：本文}；同年 Good 發表多變數 Lagrange 展開（Chu [15]）\\
+1961--62 & Klamkin--Shepp 提出 Problem 4983，Kelly 解答；編輯附註指向 Raney\\
+1964 & Tutte：給定分割的平面樹個數（Gessel 的 (4.4.1) $k=1$）\\
+1987 & Chu：廣義卡塔蘭數的新組合詮釋（引用 Raney、Good、Klamkin）\\
+2016 & Gessel：\emph{Lagrange inversion} 綜述\\
+\bottomrule
+\end{tabular}
+\caption{與本文相關的文獻時間線（只列本專案資料裡出現過的）。}
+\end{table}
+
+\subsection{關於 \texttt{others/1013.txt} 的閱讀建議}
+
+\texttt{1013.txt} 是你和 AI 助理（Gemini）的對話紀錄，裡面有一份「讀懂 Raney 的五個階段」。
+大方向是對的：先建立直觀，再讀循環引理，再讀字與樹，最後是 Lagrange 反演與卷積。下面幾點和原文不符，讀的時候請以本導讀為準：
+\begin{enumerate}[leftmargin=1.6em]
+  \item Raney 原文\textbf{沒有}「L-patterns、M-patterns」這種東西：$\RL{n}{a}$ 是字列的\textbf{個數}，$M$ 是多項式係數。
+  \item Raney 的慣例是：引數重量 0，秩算 $i-1$；字的秩是 $-1$，真開頭的秩 $\ge0$。
+        對話裡「總和為 $+1$、部分和都 $>0$」的說法，是\textbf{倒過來讀並取負號}之後的版本（也就是 Chu 講義的路徑），兩者等價但方向相反。
+  \item Raney 沒有提到 Łukasiewicz，他引用的是 Rosenbloom。
+  \item 對話提到 Problem 4682 在 Klamkin 問題集的第 47 頁。你提供的 \texttt{komplete6979.pdf} 只是 11 頁的節錄，\textbf{沒有}這一題
+        （Problem 4983 在節錄的第 2--3 頁，問題集頁碼 70--71）。
+  \item 對話推薦《Concrete Mathematics》第 7.5 節。Gessel 也引用了同書（pp.~200--204）談 Fuss--Catalan 的生成函數，可以參考。
+\end{enumerate}
+
+% =====================================================================
+\section{練習}\label{sec:exercises}
+% =====================================================================
+
+答案在下一頁。所有答案都經過 \texttt{make\_figs.py} 檢查。
+
+\begin{enumerate}[leftmargin=1.8em,label=\textbf{\arabic*.}]
+  \item 寫出 $(a\cdot b)\cdot(c\cdot d)$ 與 $a\cdot((b\cdot c)\cdot d)$ 的型，並用 Rosenbloom 判別法確認它們是字。
+  \item $2100$ 是字嗎？畫出它的樹。它對應圓周 3 點上的哪一種分法（一個單點、一條弦）？
+  \item $\sigma=100200$ 的秩是多少？哪幾個 $k$ 使 $\sigma g_k$ 是字列？照 Raney 的證明找出 $\alpha$ 與 $\sigma_1$。
+  \item 算 $\RL1{0,0,0,2}$。它在 Chu 講義裡數的是什麼？在 Problem 4983 裡呢？
+  \item 算 $\RL3{0,2}$ 與 $\RL2{1,1}$，並用 Chu 講義的 $A_t(\vn)$ 核對第一個。
+  \item 圓周 4 個點分成「一個單點、一個三角形」且不交叉，有幾種？寫出對應的字。
+  \item 用 (5.6) 解釋為什麼 $w=x(1+w^2)$ 的偶數次係數都是 0，奇數次係數是卡塔蘭數。
+  \item 凸七邊形的三角剖分有幾種？凸九邊形能切成五邊形嗎？
+  \item 算 $3!\,G(1,3;1,0)$，並說明它數的是什麼。
+  \item 用第 \ref{sec:equations} 節「模 2」的方法說明：$w=1+xw^2$ 的係數 $c_n$ 滿足 $c_{2j}\equiv0\pmod2$（$j\ge1$）。
+\end{enumerate}
+
+\newpage
+\subsection*{答案}
+
+\begin{enumerate}[leftmargin=1.8em,label=\textbf{\arabic*.}]
+  \item $\cdot\,\cdot ab\,\cdot cd$ 的型是 $2200200$，$a\cdot((b\cdot c)\cdot d)$ 寫成 $\cdot\,a\,\cdot\,\cdot bc\,d$，型是 $2022000$。
+        兩者的秩都是 $3-4=-1$，開頭的秩分別是 $1,2,1,0,1,0$ 與 $1,0,1,2,1,0$，都 $\ge0$，所以是字。
+  \item 是。秩 $1+0-1-1=-1$，開頭的秩 $1,1,0\ge0$。樹：二元的根，左邊是「一元節點接一片葉子」，右邊是葉子。
+        對應分法 $\{1,3\},\{2\}$（點 1 在弦 $\{1,3\}$ 上；第一段是 $\{2\}$ 這個單點，寫 $10$；第二段是空的，寫 $0$）。
+  \item 秩 $0-1-1+1-1-1=-3$，$n=3$。$k=0,2,3$：$100200$、$020010$、$200100$。
+        $\alpha=2$（秩 1，最大），$\sigma_1=\sigma g_3=200100=200\mid10\mid0$，輪換得 $10\mid0\mid200=\sigma g_0$、$0\mid200\mid10=\sigma g_2$。
+  \item $a_0=1+3\cdot2=7$、$m=1+8=9$、$M(7,0,0,0,2)=36$，$L=\frac{36}{9}=4$。
+        Chu：圓周 8 點分成 2 個四邊形，有 4 種。Problem 4983：$r=3$、$n=7$ 個因子，$P_7(3)=4$；也就是八邊形切成兩個五邊形的 4 種方法。
+  \item $\RL3{0,2}$：$a_0=5$、$m=7$、$M(5,0,2)=21$，$L=\frac37\cdot21=9$；Chu：$A_3\big((2),(2)\big)=\frac37\binom72=9$。
+        $\RL2{1,1}$：$a_0=3$、$m=5$、$M(3,1,1)=20$，$L=\frac25\cdot20=8$。
+  \item 4 種（單點可以是 4 個點中的任何一個，其餘三點自動成三角形）。$\RL1{1,0,1}=4$，字是 $13000$、$30010$、$30100$、$31000$
+        （分別是單點在 1、4、3、2）。
+  \item $\phi=1+x^2$：只有 $a_0=a_2=1$，所以 (5.6) 只數\textbf{滿二元樹}，而滿二元樹的節點數一定是奇數 $2k+1$，個數是 $C_k$。
+        係數：$1,0,1,0,2,0,5,0,14$。
+  \item 七邊形：$P_6(1)=C_5=42$。九邊形切成五邊形：每切一刀多一塊，$k$ 塊五邊形的邊數關係是 $9-2=3k$，沒有整數解，所以 0 種。
+  \item $3!\,G(1,3;1,0)=1\cdot4^2=16$：頂點 $\{1,2,3,4\}$、根為 1 的有根樹個數，也就是 Cayley 公式 $4^{4-2}=16$。
+  \item 模 2 時 $c(x)\equiv1+x\,c(x^2)$，右邊除了常數項只有奇數次項，所以 $c_{2j}\equiv0$（$j\ge1$）。
+\end{enumerate}
+
+% =====================================================================
+\section{總結}\label{sec:summary}
+% =====================================================================
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=blue!45!black,fill=blue!4,rounded corners=2pt,inner sep=4pt,align=center,font=\small,minimum width=4.6cm},
+  app/.style={draw=orange!75!black,fill=orange!8,rounded corners=2pt,inner sep=4pt,align=center,font=\small,minimum width=3.6cm},
+  arr/.style={-{Stealth[length=5pt]},line width=0.7pt,gray!60!black},
+  node distance=4mm]
+  \node[box] (a) {前序記法 $\to$ 字（§1）\\ 秩、Rosenbloom 判別法（§2）};
+  \node[box,below=of a] (b) {定理 2.1：循環引理};
+  \node[box,below=of b] (c) {定理 2.2：$\RL{n}{a}=\frac nmM$};
+  \node[box,below=of c] (d) {定理 2.3（切開）、2.4（第一個符號）};
+  \node[box,below=of d] (e) {定理 4.1：$(\Lst)^n$ 數 $n$ 字列\\ $\Lst=\sum_iE_i^*(\Lst)^i$};
+  \node[app,below=9mm of e] (g) {§6 三項式、Problem 4983\\ Chu：$E^*_{v_i}\mapsto x_i$};
+  \node[app,left=5mm of g] (f) {§5 Lagrange 反演\\ $E_j^*\mapsto a_0^{j-1}a_j x^j$};
+  \node[app,right=5mm of g] (h) {§7 卷積\\ Abel、Hagen--Rothe};
+  \foreach \u/\w in {a/b,b/c,c/d,d/e}{\draw[arr] (\u)--(\w);}
+  \foreach \w in {f,g,h}{\draw[arr] (e)--(\w);}
+\end{tikzpicture}
+\caption{Raney (1960) 的邏輯。藍框是組合，橘框是用同態 $H$ 得到的應用。}
+\end{figure}
+
+\subsection*{和 Chu 講義的對照總表}
+
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Chu 講義 & Raney (1960)\\
+\midrule
+第 4 節：固定一個點、遞迴 & 定理 2.4 的組合版本；本導讀第 \ref{sec:count} 節「對應方式」\\
+第 5 節：$D=1+\sum x_iD^{v_i}$ & 定理 4.1(b) 在代換 $H_{\mathrm{Chu}}$ 下的影像\\
+第 6 節：$\coef{x^{\vn}}C^t=A_t(\vn)$、收尾 & 定理 4.1(a)＋定理 2.2；定理 2.4（$k=0$）\\
+第 7.1 節：路徑與好路徑 & 字列，倒過來讀（第 \ref{ssec:convert} 節）\\
+第 7.2 節：循環引理 & 定理 2.1（證明方法不同）\\
+第 7.3 節：雙重計數 & 定理 2.2 的證明\\
+第 7.4 節：切成兩段 & 定理 2.3\\
+第 8.3 節：Lagrange 反演 & §5（單變數）；多變數見 Good (1960)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{先備知識清單}
+\begin{enumerate}
+  \item 平面樹（有序有根樹）與前序走訪。
+  \item 二項式係數、多項式係數。
+  \item Chu 講義第 7 節的路徑與循環引理（讀過最好；本導讀第 \ref{ssec:convert} 節說明怎麼換算）。
+  \item 形式冪級數的乘法 $=$ 係數的卷積；「代換」是環同態。
+  \item 第 \ref{sec:conv} 節用到 $e^x$ 的冪級數；第 \ref{sec:lagrange} 節的微分只是形式的。
+\end{enumerate}
+讀懂到第 \ref{sec:count} 節（定理 2.2--2.4），就已經掌握這篇論文的核心；後面都是「同一個 $\Lst$，換不同的代換」。

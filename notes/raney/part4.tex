@@ -1,0 +1,181 @@
+% =====================================================================
+\section{Lagrange 反演（原文 §5）}\label{sec:lagrange}
+% =====================================================================
+
+\subsection{問題與公式}
+
+$A^{\mathbb N}$ 就是 $A[[x]]$。Raney 用加橫線的字母表示其中的元素：$\xb$ 是 $x$，$\bar0,\bar1$ 是 0 與 1 \paper{p.~446}。
+給定 $a_0,a_1,a_2,\ldots\in A$，方程
+\begin{equation}\tag{5.3}
+\wb=\xb\sum_{n=0}^{\infty}a_n\wb^n
+\end{equation}
+有唯一的冪級數解（比較係數就能逐項解出）。令 $\zb=\sum a_n\xb^n$，用現代的寫法就是 $w=x\,\phi(w)$，$\phi=\zb$。
+
+\begin{thmbox}[Lagrange 反演公式 \paper{p.~447}]
+\[
+\wb=\sum_{n=1}^{\infty}\frac{(D^{n-1}\zb^n)(0)}{n!}\,\xb^n,\qquad\text{也就是}\qquad
+\coef{x^n}w=\frac1n\coef{x^{n-1}}\phi(x)^n .
+\tag{5.5}
+\]
+\end{thmbox}
+這裡的 $D$ 是\textbf{微分}（不是 Chu 的生成函數）：$(D\zb)(n)=(n+1)\zb(n+1)$。
+由式 (5.2)，$(D^{k}\zb)(0)=k!\,\zb(k)$，所以 $\frac{(D^{n-1}\zb^n)(0)}{n!}=\frac{(n-1)!}{n!}\zb^n(n-1)=\frac1n\coef{x^{n-1}}\zb^n$。
+Gessel 的寫法是 $\coef{x^n}f=\frac1n\coef{t^{n-1}}R(t)^n$，$f=xR(f)$ \gref{(2.1.1)}。
+
+\subsection{第一步：係數是樹的權重和}
+
+把 $\zb^n$ 用多項式定理展開（式 (5.1)），$\frac1n\coef{x^{n-1}}\zb^n=\frac1n\sum M(p_0,p_1,\ldots)\,a_0^{p_0}a_1^{p_1}\cdots$，
+求和跑遍 $\sum p_i=n$、$\sum ip_i=n-1$。這正是「1 個字、長度 $m=n$」的情形，由定理 2.2，$\frac1nM=\RL1{\bp}$，所以
+\begin{equation}\tag{5.6}
+\coef{x^n}w=\sum_{\sum ip_i=n-1}\RL1{p_1,p_2,\ldots}\;a_0^{p_0}a_1^{p_1}a_2^{p_2}\cdots,\qquad p_0=1+\sum(i-1)p_i .
+\end{equation}
+
+\begin{keybox}[式 (5.6) 的意思]
+$\coef{x^n}w$ $=$ 所有「$n$ 個節點」的平面樹的權重和，其中\textbf{有 $i$ 個小孩的節點權重是 $a_i$}（葉子權重 $a_0$）。
+$n$ 個節點 $\iff$ 字長 $n$ $\iff$ 邊數 $\sum ip_i=n-1$。
+\end{keybox}
+
+\begin{exbox}[例：$\phi=1+x+x^2$，$n=4$]
+所有 $a_i=1$（$i\le2$），所以 $\coef{x^4}w$ 就是「4 個節點、每個節點至多 2 個小孩」的平面樹個數。邊數 3 的字有：
+\begin{center}
+\RanMotzkin
+\end{center}
+共 4 個，也就是 Motzkin 數 $M_3=4$。用公式算：$\frac14\coef{x^3}(1+x+x^2)^4=\frac14\cdot16=4$。
+\end{exbox}
+
+\subsection{第二步：用同態把 (4.1) 送到 $A[[x]]$}
+
+取第 \ref{sec:algebra} 節例 4 的代換：$\theta(\bp)=\sum ip_i$（邊數），$\beta(\bp)=a_0^{\sum(i-1)p_i}a_1^{p_1}a_2^{p_2}\cdots$，$h=$ 恆等。則 \paper{p.~447}
+\[
+HE_j^*=a_0^{\,j-1}a_j\,\xb^j\quad(j\ge1),\qquad HE_0^*=\bar1 .
+\]
+把 $H$ 作用在 (4.1) 上（引理 3.1）：
+\[
+H\Lst=\bar1+\sum_{j\ge1}a_0^{\,j-1}a_j\,\xb^j\,(H\Lst)^j .
+\]
+兩邊同乘 $a_0\xb$，並令 $\wb=a_0\xb\,(H\Lst)$：右邊第 $j$ 項變成 $a_0\xb\cdot a_0^{j-1}a_j\xb^j(H\Lst)^j=\xb\,a_j\,(a_0\xb H\Lst)^j=\xb\,a_j\wb^j$，所以
+\begin{equation}\tag{5.7}
+\wb=\xb\sum_{j\ge0}a_j\wb^j .
+\end{equation}
+也就是說，$a_0\xb\,(H\Lst)$ 就是方程 (5.3) 的解。
+
+\textbf{為什麼要乘 $a_0\xb$？}$\theta$ 數的是\textbf{邊數}，$\beta$ 裡的 $a_0^{\sum(i-1)p_i}$ 只算到葉子數少 1。
+一棵樹的節點數 $=$ 邊數 $+1$、葉子數 $=1+\sum(i-1)p_i$，多出來的那個 $\xb$ 和那個 $a_0$ 就由 $a_0\xb$ 補上。
+
+\subsection{第三步：展開比較}
+
+$H\Lst=\sum_{\bp}\RL1{\bp}\prod(HE_i^*)^{p_i}=\sum_{\bp}\RL1{\bp}\,a_0^{\sum(i-1)p_i}a_1^{p_1}\cdots\xb^{\sum ip_i}$。
+乘上 $a_0\xb$，$\xb^n$ 的係數正是 (5.6) 的右邊，所以 \paper{p.~448}
+\begin{equation}\tag{5.8}
+\wb=\sum_{n\ge1}\frac{(D^{n-1}\zb^n)(0)}{n!}\,\xb^n .
+\end{equation}
+(5.4)、(5.7)、(5.8) 合起來就是 Lagrange 反演公式。\hfill$\square$
+
+\textbf{整個證明沒有用到微積分}：$D$ 只是用來把公式寫成 Lagrange 的原始形式。真正的內容是定理 2.2（係數）與定理 4.1（方程）。
+
+\subsection{例子}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\RanLagrangeTable
+\caption{五個 $\phi$：「逐次代入」是直接解方程 (5.3) 得到的係數，「式 (5.5)」是 Lagrange 公式，兩者一致。}
+\label{tab:lagrange}
+\end{table}
+
+\begin{enumerate}[leftmargin=1.6em]
+  \item $\phi=\frac1{1-x}$（所有 $a_i=1$）：$w=x/(1-w)$，係數是\textbf{所有}平面樹依節點數的個數 $C_{n-1}$。
+        公式：$\frac1n\coef{x^{n-1}}(1-x)^{-n}=\frac1n\binom{2n-2}{n-1}=C_{n-1}$。
+  \item $\phi=(1+x)^2$：$w=x(1+w)^2$，也就是 $w=c(x)-1$，其中 $c=1+xc^2$ 是卡塔蘭生成函數（Gessel 第 2.3 節的做法）。
+        公式：$\frac1n\coef{x^{n-1}}(1+x)^{2n}=\frac1n\binom{2n}{n-1}=C_n$。
+  \item $\phi=1+x+x^2$：Motzkin 數 $1,1,2,4,9,21,\ldots$（上面的例子）。
+  \item $\phi=e^x$：$w=xe^w$ 是 Gessel 的\textbf{樹函數} $T(x)$ \gref{§3.2}，$\coef{x^n}T=\frac{n^{n-1}}{n!}$。
+        乘上 $n!$ 得 $1,2,9,64,625,7776$：$n$ 個點的有根標號樹個數（Cayley 公式）。
+  \item $\phi=2+3x+x^3$：$a_0=2\neq1$。$\coef{x^3}w=\frac13\coef{x^2}(2+3x+x^3)^3=\frac13\cdot(3\cdot2\cdot3^2)=\frac{54}{3}=18$。
+        用 (5.6)：邊數 2 的字只有 $110$（權重 $a_0a_1^2=2\cdot9=18$）與 $200$（權重 $a_0^2a_2=0$），合計 18。
+\end{enumerate}
+
+\subsection{冪次的版本 \extra}
+
+Raney 只寫了 $w$ 本身，但同樣的方法立刻給出 $w^t$：
+$w^t=(a_0x)^t(H\Lst)^t$，而 $(\Lst)^t$ 數的是 $t$ 字列（定理 4.1(a)）。$t$ 字列長 $n$ 時 $\frac tnM=\RL{t}{\bp}$（定理 2.2），所以
+\[
+\coef{x^n}w^t=\frac tn\coef{x^{n-t}}\phi(x)^n\qquad(n\ge1).
+\]
+這是 Gessel 的式 (2.2.1)（Lagrange--Bürmann 公式）。
+
+\textbf{例。}$\phi=(1+x)^2$、$t=2$：$\coef{x^n}w^2=\frac2n\binom{2n}{n-2}$，$n=2,3,4,5$ 得 $1,4,14,48$。
+
+\textbf{接回 Chu 講義（只有一種群組）。}$C=1+xC^p$。令 $f=C-1$，則 $f=x(1+f)^p$，$R=(1+t)^p$。由 Gessel (2.1.1)：
+\[
+\coef{x^n}C^k=\coef{x^n}(1+f)^k=\frac kn\coef{t^{n-1}}(1+t)^{k-1}(1+t)^{pn}=\frac kn\binom{pn+k-1}{n-1}=\frac{k}{pn+k}\binom{pn+k}{n},
+\]
+正是 Chu 原文式 (8) 的單變數情形 $A_k\big((n),(p)\big)$（Gessel 式 (2.3.2)、(3.3.3)）。
+Raney 的第 6 節則根本不需要「令 $f=C-1$」這一步：代換 $E_0^*\mapsto1$ 直接處理常數項 1。
+
+% =====================================================================
+\section{用級數解方程（原文 §6）}\label{sec:equations}
+% =====================================================================
+
+\subsection{三項式方程}
+
+Lagrange 的原始論文處理的是「用係數的冪級數表示方程的根」。Raney 指出，連結點就是 (4.1)：
+它一方面來自計數（定理 2.2--2.4），另一方面是一條「不動點型」方程，解是 \paper{p.~449}
+\begin{equation}\tag{6.2}
+\Lst=\sum_{\bp\in P}\RL1{\bp}\,(E_1^*)^{p_1}(E_2^*)^{p_2}\cdots .
+\end{equation}
+用不同的代換，就能解各種不動點型方程。例如\textbf{三項式方程}
+\begin{equation}\tag{6.3}
+\wb=1+\xb\,\wb^{\,n}
+\end{equation}
+用代換 $E_n^*\mapsto\xb$、其他 $E_j^*\mapsto0$（$\theta(\bd_n)=1$、$\beta(\bd_n)=e$，其餘 $\beta(\bd_i)=0$），得到
+\begin{equation}\tag{6.4}
+\wb=\sum_{k\ge0}\RL1{k\bd_n}\,\xb^k=\sum_{k\ge0}\frac{1}{1+(n-1)k}\binom{nk}{k}\xb^k .
+\end{equation}
+
+\begin{table}[H]
+\centering
+\RanTrinomialTable
+\caption{式 (6.4) 的係數 $\frac{1}{1+(n-1)k}\binom{nk}{k}$（Fuss--Catalan 數）。程式另外用「逐次代入解方程」與「定理 2.2」核對。}
+\label{tab:trinomial}
+\end{table}
+
+\textbf{例。}$n=3$、$k=2$：$\frac15\binom62=3$。對應的字是 $3003000$、$3030000$、$3300000$，也就是 2 個三元符號的 3 棵樹。
+
+\begin{notebox}[字母對調警告]
+Chu 講義的高階卡塔蘭數寫成 $C_k(n)=\frac{1}{nk+1}\binom{nk+1}{n}$，其中 \textbf{$k$ 是群組大小、$n$ 是群組個數}；
+Raney 的 (6.4) 裡 \textbf{$n$ 是元數、$k$ 是個數}。兩者是同一個數：$C_n(k)=\frac{1}{1+(n-1)k}\binom{nk}{k}$，只是字母對調。
+\end{notebox}
+
+\subsection{回到 Problem 4983}
+
+Kelly 的方程 $y=x+y^{r+1}$ 裡，$x$ 數的是\textbf{因子}（葉子），不是運算次數。怎麼用 Raney 的方法得到它？
+一棵 $(r+1)$ 元樹有 $k$ 個節點時，葉子數是 $1+rk$。所以取代換 $E_{r+1}^*\mapsto x^r$（其他 $\mapsto0$），令 $u=H\Lst$、$y=xu$：
+\[
+u=1+x^r u^{r+1}\quad\Longrightarrow\quad y=xu=x+x^{r+1}u^{r+1}=x+y^{r+1}.
+\]
+於是 $\coef{x^{1+rk}}y=\RL1{k\bd_{r+1}}=\frac{1}{1+rk}\binom{(r+1)k}{k}$，正是 Kelly 的 $P_n(r)$。
+這也是「選對 $\theta$」的例子：$\theta$ 數的是「葉子數 $-1$」，最後再乘一個 $x$。
+
+\subsection{多個變數：Chu 的方程}
+
+Raney 接著說 \paper{p.~449}：「同樣地，用 $A^P$ 到二重級數、三重級數……的同態，可以得到含兩個、三個或更多個變數係數的
+多項式不動點方程的形式解。這和 Appell 與 Kampé de Fériet 用廣義超幾何函數解代數方程的工作密切相關。」
+
+Chu 的方程 $D=1+x_1D^{v_1}+\cdots+x_kD^{v_k}$ 正是這種「$k$ 重級數」的情形（代換 $H_{\mathrm{Chu}}$）。
+例如 $\vv=(2,3)$：$D=1+x_1D^2+x_2D^3$ 的係數 $\RL1{0,n_1,n_2}$ 就是 Chu 講義第 3.3 節數值對照表的
+$5,21,28,180,990$（$\vn=(1,1),(2,1),(1,2),(2,2),(3,2)$）。Chu (1987) 給這些係數的，是一個\textbf{圓周上的幾何解釋}。
+
+\subsection{Dirichlet 級數與模 $p$}
+
+最後 Raney 提到 \paper{p.~449}：(6.1)、(6.2) 也可以搬到形式 Dirichlet 級數的代數（半群 $(\{1,2,\ldots\},\times)$），
+或係數模質數 $p$ 的冪級數代數（$h:\mathbb Z\to\mathbb Z/p$）。原文沒有給例子。下面是模 2 的例子。
+
+\begin{exbox}[卡塔蘭數什麼時候是奇數？ \extra]
+在 $\mathbb Z/2$ 裡 $(\sum c_nx^n)^2=\sum c_nx^{2n}$（交叉項 $2c_ic_j=0$），所以 $c(x)=1+xc(x)^2$ 變成
+\[
+c(x)\equiv1+x\,c(x^2)\pmod 2,\qquad\text{即}\quad c_0=1,\ c_{2j+1}\equiv c_j,\ c_{2j}\equiv0\ (j\ge1).
+\]
+所以 $C_n$ 是奇數 $\iff$ $n$ 的二進位全是 1，也就是 $n=0,1,3,7,15,\ldots$（$n=2^j-1$）。
+直接算 $C_0,\ldots,C_{15}$ 模 2：$1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,1$，吻合。
+\end{exbox}

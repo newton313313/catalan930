@@ -1,0 +1,168 @@
+% =====================================================================
+\section{大代數：形式級數的記帳語言（原文 §3）}\label{sec:algebra}
+% =====================================================================
+
+第 2 節的結果都是「數字」。Raney 接下來要把它們寫成方程，而且要\textbf{一次處理所有元數}：
+一元、二元、三元……每一種元數一個變數，所以需要\textbf{無限多個變數}的形式級數。
+第 3 節就是為此準備的一套記帳語言。第一次讀可以只看例子。
+
+\subsection{半群的大代數（定義 3.1）}
+
+\begin{thmbox}[定義 3.1 \paper{p.~444}]
+半群 $(S,+)$ 滿足\textbf{條件 (D)}：每個 $s\in S$ 只有有限多種寫法 $s=t+u$。
+$A$ 是有單位元 $e$ 的交換環。$A^S$ 是所有函數 $f:S\to A$ 的集合，運算是
+\[
+(f+g)(s)=f(s)+g(s),\qquad (af)(s)=af(s),\qquad (fg)(s)=\sum_{t+u=s}f(t)\,g(u).
+\]
+Raney 依 Bourbaki 稱 $A^S$ 為「$S$ 相對於 $A$ 的大代數」。
+\end{thmbox}
+
+把 $f$ 想成形式級數 $\sum_{s\in S}f(s)\,X^s$，乘法就是「指數相加、係數相乘」。條件 (D) 保證乘積的每個係數只是有限和。
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+半群 $S$ & $A^S$ 是什麼 & 在本文的用途\\
+\midrule
+$\mathbb N=\{0,1,2,\ldots\}$ & 一個變數的冪級數 $A[[x]]$（$f\leftrightarrow\sum f(n)x^n$） & 第 5、7 節\\
+$\mathbb N^k$ & $k$ 個變數的冪級數 & Chu 的 $D(\vX)$，$\vn\in\mathbb N^k$\\
+$P$（有限支撐的自然數列） & 無限多個變數 $E_1^*,E_2^*,\ldots$ 的冪級數 & 第 4 節的 $\Lst$\\
+$(\{1,2,3,\ldots\},\ \times)$ & 形式 Dirichlet 級數 $\sum f(n)\,n^{-s}$ & 第 6 節最後一句\\
+\midrule
+$\mathbb Z$（不滿足 (D)） & $0=t+(-t)$ 有無限多種寫法，乘法沒有定義 & 反例\\
+\bottomrule
+\end{tabular}
+\caption{大代數的例子。}
+\end{table}
+
+\textbf{反例的意思。}在 $\mathbb Z$ 上，「$\sum_{n\in\mathbb Z}x^n$ 的平方」的常數項是 $\sum_{t\in\mathbb Z}1\cdot1$，無限大。條件 (D) 就是排除這種情形。
+
+\subsection{可求和的族（定義 3.2）}
+
+一族元素 $F(i)$（$i\in I$）若對每個 $s$ 只有有限多個 $F(i)(s)\neq0$，就叫\textbf{可求和}，和 $\sum F$ 逐係數相加 \paper{p.~445}。
+\begin{itemize}
+  \item $\sum_{i\ge1}E_i^*$ 可求和：每個係數只有一項非零。
+  \item $\sum_{j\ge0}E_0^*$（無限多個 1 相加）不可求和：常數項是無限和。
+\end{itemize}
+有了它，式 (4.1) 的 $\sum_{i=0}^\infty E_i^*(\Lst)^i$ 這種無限和才有意義。
+
+\subsection{誘導同態 $H(\theta,\beta,h)$（定義 3.3）}
+
+\begin{thmbox}[定義 3.3 \paper{p.~445}]
+$S,T$ 都滿足 (D)；$A,B$ 是有單位元的交換環，$B$ 沒有零因子。給定
+\begin{itemize}[leftmargin=1.4em]
+  \item $\theta:S\to T$，可加：$\theta(x_1+x_2)=\theta(x_1)+\theta(x_2)$；
+  \item $\beta:S\to B$，可乘：$\beta(x_1+x_2)=\beta(x_1)\beta(x_2)$；
+  \item 有限性：對每個 $y\in T$，滿足 $\theta(x)=y$ 且 $\beta(x)\neq0$ 的 $x$ 只有有限多個；
+  \item $h:A\to B$ 是環同態。
+\end{itemize}
+定義 $H:A^S\to B^T$：$(Hf)(y)=\sum_{\theta(x)=y,\ \beta(x)\ne0}\beta(x)\,h(f(x))$。
+\end{thmbox}
+
+\textbf{白話。}$H$ 把「單項式」$X^x$ 換成 $\beta(x)\,Y^{\theta(x)}$，係數再用 $h$ 換掉。
+因為 $\theta$ 可加、$\beta$ 可乘，只要知道每個「變數」換成什麼就夠了。所以 \textbf{$H$ 就是代換}：
+在 $S=P$ 的情形，$E_i^*\mapsto\beta(\bd_i)\,Y^{\theta(\bd_i)}$。有限性條件保證代換後的每個係數仍是有限和。
+
+\begin{thmbox}[引理 3.1 \paper{p.~445}]
+$H$ 保持加法、純量乘法（$H(af)=h(a)Hf$）、乘法，而且把可求和的族送到可求和的族，並且 $H(\sum F)=\sum HF$。
+\end{thmbox}
+也就是：\textbf{先代換再計算 $=$ 先計算再代換}，連無限和也可以。
+
+\begin{exbox}[代換的例子（$S=P$，$T=\mathbb N$ 或 $\mathbb N^k$）]
+\begin{enumerate}[leftmargin=1.6em]
+  \item \textbf{依邊數數平面樹。}$\theta(\bp)=\sum ip_i$，$\beta\equiv1$：$E_i^*\mapsto x^i$。
+        有限性成立（邊數為 $e$ 的 $\bp$ 只有有限多個）。第 4 節的 $\Lst$ 經過這個代換，變成「平面樹依邊數」的生成函數 $T$，
+        而式 (4.1) 變成 $T=1+xT+x^2T^2+\cdots=\dfrac{1}{1-xT}$，也就是 $T=1+xT^2$：\textbf{$e$ 條邊的平面樹有 $C_e$ 棵}
+        （程式核對到 $e=6$）。
+  \item \textbf{反例：依內部節點數。}$\theta(\bp)=\sum p_i$，$\beta\equiv1$：$E_i^*\mapsto x$。
+        有限性\textbf{不成立}：只有一個內部節點的 $\bp$ 有無限多個（$\bd_1,\bd_2,\ldots$）。
+        的確，「只有一個內部節點的樹」有無限多棵，這個生成函數沒有意義。
+  \item \textbf{Chu 的代換。}$T=\mathbb N^k$，$\theta(\bd_{v_i})=\ve_i$，$\beta(\bd_j)=1$ 若 $j\in\{v_1,\ldots,v_k\}$、否則 $0$。
+        也就是 $E^*_{v_i}\mapsto x_i$，其他 $E_j^*\mapsto0$。$\beta$ 把用到別的元數的項全部消掉，有限性成立。
+  \item \textbf{Raney 第 5 節的代換。}$\theta(\bp)=\sum ip_i$，$\beta(\bp)=a_0^{\sum(i-1)p_i}a_1^{p_1}a_2^{p_2}\cdots$：$E_j^*\mapsto a_0^{j-1}a_j\,x^j$。
+  \item \textbf{Raney 第 6 節的代換。}$E_n^*\mapsto x$，其他 $E_j^*\mapsto0$。
+  \item \textbf{係數取模 $p$。}$h:\mathbb Z\to\mathbb Z/p\mathbb Z$，$\theta,\beta$ 照舊：把所有係數模 $p$（第 6 節最後一句）。
+\end{enumerate}
+\end{exbox}
+
+\textbf{為什麼要求 $B$ 沒有零因子？}原文沒有說明。可能是為了讓「$\beta(x)\neq0$」這個條件和 $\beta$ 的可乘性相容
+（$\beta(x_1)\beta(x_2)\ne0$ 當且僅當兩者都非零）。本文用到的 $B$（整數、多項式環、冪級數環）都滿足這個條件。
+
+% =====================================================================
+\section{特殊元素 $\Lst$（原文 §4）}\label{sec:lstar}
+% =====================================================================
+
+\subsection{$P$ 與它的大代數}
+
+$P$ 是只有有限多項非零的自然數列 $\bp=(p_1,p_2,\ldots)$，加法逐項相加 \paper{p.~445}。
+注意 \textbf{$\bp$ 從 $p_1$ 開始}：0 的個數不記，因為它由字數決定。特殊元素：
+\begin{itemize}
+  \item $\bar0=(0,0,\ldots)$；$\bd_i$ 是第 $i$ 項為 1、其餘為 0 的「Kronecker delta」；
+  \item $E_0^*$ 是 $A^P$ 的單位元（只在 $\bar0$ 取值 $e$）；$E_i^*$（$i\ge1$）只在 $\bd_i$ 取值 $e$；
+  \item $E^*_{\bp}$ 只在 $\bp$ 取值 $e$，它等於有限乘積 $\prod_i(E_i^*)^{p_i}$。
+\end{itemize}
+所以 $A^P$ 就是「以 $E_1^*,E_2^*,\ldots$ 為變數的形式冪級數」，$E^*_{\bp}$ 是單項式，$E_0^*=1$。
+$E_i^*$ 可以讀成「一個 $i$ 元節點」。
+
+\subsection{定理 4.1}
+
+\begin{thmbox}[定理 4.1 \paper{p.~446}]
+令 $\Lst\in A^P$ 為 $\Lst(\bp)=\RL1{p_1,p_2,\ldots}\,e$，也就是
+\[
+\Lst=\sum_{\bp\in P}\RL1{\bp}\,(E_1^*)^{p_1}(E_2^*)^{p_2}\cdots\qquad\text{（所有字的生成函數）}.
+\]
+則
+\begin{enumerate}[label=(\alph*)]
+  \item $(\Lst)^n(\bp)=\RL{n}{p_1,p_2,\ldots}\,e$：\textbf{$\Lst$ 的 $n$ 次方數的是 $n$ 字列}；
+  \item $\displaystyle\Lst=\sum_{i=0}^{\infty}E_i^*(\Lst)^i$。\hfill(4.1)
+\end{enumerate}
+\end{thmbox}
+
+\textbf{證明。}(a) 對 $n$ 歸納：$n=0$ 是定理 2.2 的特例（$\RL0{\bp}$ 只在 $\bp=\bar0$ 時為 1），歸納步驟就是定理 2.3。
+(b) 由定理 2.4（$k=0$）與觀察 $(E_i^*(\Lst)^i)(\bp)=(\Lst)^i(\bp-\bd_i)$（若 $p_i>0$，否則為 0）。\hfill$\square$
+
+\textbf{(4.1) 的意思。}一棵樹要嘛是一片葉子（$E_0^*=1$），要嘛是一個 $i$ 元的根（$E_i^*$）接上 $i$ 棵子樹（$(\Lst)^i$）。
+這是\textbf{樹的萬用方程}：每種元數各有一個變數。
+
+\begin{table}[H]
+\centering
+\small
+\RanLstarTable
+\caption{$\Lst$ 的前幾項（權重 $\sum ip_i\le4$，也就是邊數 $\le4$）與 $(\Lst)^2$ 的對應係數。最後一欄是一個例子。}
+\label{tab:lstar}
+\end{table}
+
+依表寫出來（把 $E_i^*$ 簡寫成 $E_i$）：
+\[
+\Lst=1+E_1+\big(E_1^2+E_2\big)+\big(E_1^3+3E_1E_2+E_3\big)+\big(E_1^4+6E_1^2E_2+2E_2^2+4E_1E_3+E_4\big)+\cdots
+\]
+
+\begin{exbox}[驗算 (4.1) 的一個係數]
+看 $E_1E_2$ 的係數（3）。右邊 $\sum_iE_i(\Lst)^i$ 中：
+\begin{itemize}[leftmargin=1.2em]
+  \item $i=1$：$E_1\cdot\Lst$ 裡 $E_2$ 的係數 $=\RL1{0,1}=1$（字 $1200$ 的根是一元）；
+  \item $i=2$：$E_2\cdot(\Lst)^2$ 裡 $E_1$ 的係數 $=\RL2{1}=2$（字列 $0\mid10$、$10\mid0$，所以字是 $2010$、$2100$）。
+\end{itemize}
+合計 $1+2=3$，和左邊相同。
+\end{exbox}
+
+\subsection{Chu 的第三步是定理 4.1 的影像}
+
+\begin{keybox}[把 $E^*_{v_i}$ 換成 $x_i$ \extra]
+用第 \ref{sec:algebra} 節例 3 的代換 $H_{\mathrm{Chu}}$：$E^*_{v_i}\mapsto x_i$，其他 $E_j^*\mapsto0$。由引理 3.1，
+\begin{itemize}[leftmargin=1.4em]
+  \item (4.1) 變成 $H\Lst=1+x_1(H\Lst)^{v_1}+\cdots+x_k(H\Lst)^{v_k}$——\textbf{Chu 原文式 (6)}；
+  \item 定理 4.1(a) 加上定理 2.2 變成 $\coef{x^{\vn}}(H\Lst)^t=\RL{t}{a}=A_t(\vn)$——\textbf{Chu 原文式 (8)}；
+  \item 定理 2.3 變成 \textbf{Chu 原文式 (9)}（Raney 公式）；定理 2.4 變成 \textbf{Chu 原文式 (10)}。
+\end{itemize}
+所以 Chu 證明的第三步（Chu 講義第 6 節）整個是 Raney 第 2、4 節在代換 $H_{\mathrm{Chu}}$ 下的影像。
+Chu 1987 的貢獻在第一、二步：\textbf{把這些係數解釋成圓周上的不交叉分法}。
+\end{keybox}
+
+\textbf{和 Gessel 的說法比較。}Gessel 的定理 2.4.1 \gref{p.~220} 說：若 $R(t)=\sum r_nt^n$ 的係數 $r_n$ 是\textbf{未定元}，
+則 $f=R(f)$ 有唯一的冪級數解，並給出它的係數。把 $r_n$ 換成 $E_n^*$，這正是 Raney 的 (4.1) 與 (6.2)。
+Gessel 也提醒，係數不是未定元時要小心：$f=x+f^2$ 有兩個冪級數解 $\frac12(1\pm\sqrt{1-4x})$，
+但 $f=x+yf^2$（多一個未定元 $y$）只有一個 \gref{p.~221}。Raney 的萬用方程避開了這個問題：
+所有東西都先在「未定元」$E_i^*$ 上算好，最後才代換。

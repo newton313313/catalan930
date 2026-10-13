@@ -1,0 +1,972 @@
+% figs.tex —— 由 raney/make_figs.py 產生，請勿手動修改。
+% 重新產生：python raney/make_figs.py（在 notes/ 裡執行）
+
+\newcommand{\RanIntroTrees}{%
+\begin{tabular}{ccc}\begin{tabular}{c}\begin{tikzpicture}[x=0.55cm,y=0.75cm,baseline=(n0.base)]
+\node[draw=cA,fill=cA!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n0) at (1.250,0) {$+$};
+\node[draw=cA,fill=cA!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n1) at (0.500,-1) {$+$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n2) at (0.000,-2) {$a$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n3) at (1.000,-2) {$b$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n4) at (2.000,-1) {$c$};
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n4);
+\end{tikzpicture}\\[4pt]$(a+b)+c\ \to\ {+}{+}abc$\\[2pt]{\small 型 22000}\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.55cm,y=0.75cm,baseline=(n0.base)]
+\node[draw=cA,fill=cA!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n0) at (0.750,0) {$+$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n1) at (0.000,-1) {$a$};
+\node[draw=cA,fill=cA!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n2) at (1.500,-1) {$+$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n3) at (1.000,-2) {$b$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n4) at (2.000,-2) {$c$};
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n2) -- (n4);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\\[4pt]$a+(b+c)\ \to\ {+}a{+}bc$\\[2pt]{\small 型 20200}\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.62cm,y=0.75cm,baseline=(n0.base)]
+\node[draw=cA,fill=cA!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n0) at (2.750,0) {$F$};
+\node[draw=cB,fill=cB!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n1) at (1.500,-1) {$G$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n2) at (0.000,-2) {$x$};
+\node[draw=cA,fill=cA!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n3) at (1.500,-2) {$H$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n4) at (1.000,-3) {$y$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n5) at (2.000,-3) {$z$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n6) at (3.000,-2) {$t$};
+\node[draw=cU,fill=cU!12,line width=0.8pt,circle,inner sep=1.2pt,minimum size=13pt,font=\small] (n7) at (4.000,-1) {$K$};
+\node[draw=gray!60,fill=gray!8,rectangle,inner sep=1.6pt,minimum size=11pt,font=\small] (n8) at (4.000,-2) {$u$};
+\draw[gray!70,line width=0.6pt] (n3) -- (n4);
+\draw[gray!70,line width=0.6pt] (n3) -- (n5);
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n1) -- (n6);
+\draw[gray!70,line width=0.6pt] (n7) -- (n8);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n7);
+\end{tikzpicture}\\[4pt]$F(G(x,H(y,z),t),K(u))$\\[2pt]{\small 型 230200010}\end{tabular}\end{tabular}}
+
+\newcommand{\RanRankF}{%
+\begin{tabular}{@{}lcccccccccc@{}}
+開頭的長度 $j$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
+第 $j$ 個符號 & — & \textcolor{cA}{2} & \textcolor{cB}{3} & \textcolor{gray!70!black}{0} & \textcolor{cA}{2} & \textcolor{gray!70!black}{0} & \textcolor{gray!70!black}{0} & \textcolor{gray!70!black}{0} & \textcolor{cU}{1} & \textcolor{gray!70!black}{0}\\
+開頭的秩 & 0 & 1 & 3 & 2 & 3 & 2 & 1 & 0 & 0 & -1\\
+\end{tabular}\qquad\begin{tikzpicture}[x=0.36cm,y=0.36cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (9,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (9,-1);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[cB,line width=1.3pt,line cap=round] (1,1) -- (2,3);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,3) -- (3,2);
+\draw[cA,line width=1.3pt,line cap=round] (3,2) -- (4,3);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,3) -- (5,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,2) -- (6,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,1) -- (7,0);
+\draw[cU,line width=1.3pt,line cap=round] (7,0) -- (8,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (8,0) -- (9,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,3) circle (1.25pt);
+\fill (3,2) circle (1.25pt);
+\fill (4,3) circle (1.25pt);
+\fill (5,2) circle (1.25pt);
+\fill (6,1) circle (1.25pt);
+\fill (7,0) circle (1.25pt);
+\fill (8,0) circle (1.25pt);
+\fill (9,-1) circle (1.25pt);
+\node[font=\tiny,cA] at (0.5,-1.9) {2};
+\node[font=\tiny,cB] at (1.5,-1.9) {3};
+\node[font=\tiny,gray!70!black] at (2.5,-1.9) {0};
+\node[font=\tiny,cA] at (3.5,-1.9) {2};
+\node[font=\tiny,gray!70!black] at (4.5,-1.9) {0};
+\node[font=\tiny,gray!70!black] at (5.5,-1.9) {0};
+\node[font=\tiny,gray!70!black] at (6.5,-1.9) {0};
+\node[font=\tiny,cU] at (7.5,-1.9) {1};
+\node[font=\tiny,gray!70!black] at (8.5,-1.9) {0};
+\end{tikzpicture}}
+
+\newcommand{\RanCayley}{%
+\begin{tabular}{ccccc}\begin{tabular}{c}\begin{tikzpicture}[x=0.42cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (0.875,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n2) at (1.750,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n4) at (2.500,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (2.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n6) at (3.000,-3) {};
+\draw[gray!70,line width=0.6pt] (n4) -- (n5);
+\draw[gray!70,line width=0.6pt] (n4) -- (n6);
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n2) -- (n4);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\\[3pt]$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[1pt]{\small $a(b(cd))$}\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.42cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (1.125,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n2) at (2.250,-1) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n3) at (1.500,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (1.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (2.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n6) at (3.000,-2) {};
+\draw[gray!70,line width=0.6pt] (n3) -- (n4);
+\draw[gray!70,line width=0.6pt] (n3) -- (n5);
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n2) -- (n6);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\\[3pt]$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[1pt]{\small $a((bc)d)$}\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.42cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (1.500,0) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n1) at (0.500,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (0.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n4) at (2.500,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (2.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n6) at (3.000,-2) {};
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n4) -- (n5);
+\draw[gray!70,line width=0.6pt] (n4) -- (n6);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n4);
+\end{tikzpicture}\\[3pt]$\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[1pt]{\small $(ab)(cd)$}\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.42cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (1.875,0) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n1) at (0.750,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (0.000,-2) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n3) at (1.500,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (1.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (2.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n6) at (3.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n3) -- (n4);
+\draw[gray!70,line width=0.6pt] (n3) -- (n5);
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n6);
+\end{tikzpicture}\\[3pt]$\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[1pt]{\small $(a(bc))d$}\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.42cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (2.125,0) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n1) at (1.250,-1) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n2) at (0.500,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (0.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (1.000,-3) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (2.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n6) at (3.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n2) -- (n4);
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n5);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n6);
+\end{tikzpicture}\\[3pt]$\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[1pt]{\small $((ab)c)d$}\end{tabular}\end{tabular}}
+
+\newcommand{\RanChuFigOne}{%
+\begin{tabular}{ccccc}\begin{tabular}{c}\PaperCfgRoot{4}{5}{1}{2}{3}\\[3pt]$\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]\begin{tikzpicture}[x=0.36cm,y=0.45cm,baseline=(n0.base)]
+\node[regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,line width=0.8pt,inner sep=2.0pt] (n0) at (1.250,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (1.000,-1) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n3) at (2.500,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (2.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (3.000,-2) {};
+\draw[gray!70,line width=0.6pt] (n3) -- (n4);
+\draw[gray!70,line width=0.6pt] (n3) -- (n5);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\draw[gray!70,line width=0.6pt] (n0) -- (n3);
+\end{tikzpicture}\end{tabular} & \begin{tabular}{c}\PaperCfgRoot{5}{1}{2}{3}{4}\\[3pt]$\textcolor{cA}{2}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]\begin{tikzpicture}[x=0.36cm,y=0.45cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (2.000,0) {};
+\node[regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,line width=0.8pt,inner sep=2.0pt] (n1) at (1.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (0.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (2.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (3.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n1) -- (n4);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n5);
+\end{tikzpicture}\end{tabular} & \begin{tabular}{c}\PaperCfgRoot{1}{2}{3}{4}{5}\\[3pt]$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]\begin{tikzpicture}[x=0.36cm,y=0.45cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (1.000,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,line width=0.8pt,inner sep=2.0pt] (n2) at (2.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (2.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (3.000,-2) {};
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n2) -- (n4);
+\draw[gray!70,line width=0.6pt] (n2) -- (n5);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\end{tabular} & \begin{tabular}{c}\PaperCfgRoot{2}{3}{4}{5}{1}\\[3pt]$\textcolor{cB}{3}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]\begin{tikzpicture}[x=0.36cm,y=0.45cm,baseline=(n0.base)]
+\node[regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,line width=0.8pt,inner sep=2.0pt] (n0) at (1.750,0) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n1) at (0.500,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (0.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (2.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (3.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n4);
+\draw[gray!70,line width=0.6pt] (n0) -- (n5);
+\end{tikzpicture}\end{tabular} & \begin{tabular}{c}\PaperCfgRoot{3}{4}{5}{1}{2}\\[3pt]$\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]\begin{tikzpicture}[x=0.36cm,y=0.45cm,baseline=(n0.base)]
+\node[regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,line width=0.8pt,inner sep=2.0pt] (n0) at (1.500,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n2) at (1.500,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n4) at (2.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n5) at (3.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n2) -- (n4);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\draw[gray!70,line width=0.6pt] (n0) -- (n5);
+\end{tikzpicture}\end{tabular}\end{tabular}}
+
+\newcommand{\RanCycOne}{%
+\begin{tabular}{c c c c}\toprule $k$ & $\sigma g_k$ & 秩路徑 & $n$ 字列？\\\midrule
+0 & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,-2);
+\draw[cA,line width=1.3pt,line cap=round] (2,-2) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[cA,line width=1.3pt,line cap=round] (4,-2) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,-2) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+1 & $\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cA,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[cA,line width=1.3pt,line cap=round] (3,-1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+2 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[cA,line width=1.3pt,line cap=round] (2,0) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\end{tikzpicture} & \textcolor{green!50!black}{\checkmark}\\[2pt]
+3 & $\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cA,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[cA,line width=1.3pt,line cap=round] (4,-2) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+4 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[cA,line width=1.3pt,line cap=round] (3,-1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]\bottomrule\end{tabular}}
+
+\newcommand{\RanCycTwo}{%
+\begin{tabular}{c c c c c}\toprule $k$ & $\sigma g_k$ & 秩路徑 & Chu 講義的路徑 & $n$ 字列？\\\midrule
+0 & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,-2);
+\draw[cA,line width=1.3pt,line cap=round] (2,-2) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-2) -- (5,-3);
+\draw[cB,line width=1.3pt,line cap=round] (5,-3) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,-2) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-3) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[cB,line width=1.3pt,line cap=round] (1,1) -- (2,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,-1) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,1);
+\draw[cA,line width=1.3pt,line cap=round] (4,1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,1) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,-1) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,1) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+1 & $\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cA,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[cB,line width=1.3pt,line cap=round] (4,-2) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,2);
+\draw[cB,line width=1.3pt,line cap=round] (2,2) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,1) -- (5,2);
+\draw[cA,line width=1.3pt,line cap=round] (5,2) -- (6,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,1) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,2) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,1) circle (1.25pt);
+\fill (5,2) circle (1.25pt);
+\fill (6,1) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+2 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[cB,line width=1.3pt,line cap=round] (3,-1) -- (4,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,2) -- (3,3);
+\draw[cB,line width=1.3pt,line cap=round] (3,3) -- (4,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,1) -- (5,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,2) -- (6,3);
+\draw[cA,line width=1.3pt,line cap=round] (6,3) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,2) circle (1.25pt);
+\fill (3,3) circle (1.25pt);
+\fill (4,1) circle (1.25pt);
+\fill (5,2) circle (1.25pt);
+\fill (6,3) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{green!50!black}{\checkmark}\\[2pt]
+3 & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,-2);
+\draw[cB,line width=1.3pt,line cap=round] (2,-2) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-1) -- (5,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,-2) -- (6,-3);
+\draw[cA,line width=1.3pt,line cap=round] (6,-3) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,-2) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,-1) circle (1.25pt);
+\fill (5,-2) circle (1.25pt);
+\fill (6,-3) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,2);
+\draw[cB,line width=1.3pt,line cap=round] (4,2) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,1) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,2) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,1) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+4 & $\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cB,line width=1.3pt,line cap=round] (1,-1) -- (2,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,1) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-1) -- (5,-2);
+\draw[cA,line width=1.3pt,line cap=round] (5,-2) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,1) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,-1) circle (1.25pt);
+\fill (5,-2) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[cA,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,2) -- (5,3);
+\draw[cB,line width=1.3pt,line cap=round] (5,3) -- (6,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,1) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,2) circle (1.25pt);
+\fill (5,3) circle (1.25pt);
+\fill (6,1) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+5 & $\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[cB,line width=1.3pt,line cap=round] (0,0) -- (1,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,2) -- (2,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,1) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,-1);
+\draw[cA,line width=1.3pt,line cap=round] (4,-1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,2) circle (1.25pt);
+\fill (2,1) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,-1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,2);
+\draw[cA,line width=1.3pt,line cap=round] (2,2) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,2) -- (5,3);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,3) -- (6,4);
+\draw[cB,line width=1.3pt,line cap=round] (6,4) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,2) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,2) circle (1.25pt);
+\fill (5,3) circle (1.25pt);
+\fill (6,4) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{green!50!black}{\checkmark}\\[2pt]
+6 & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,-2) -- (3,-3);
+\draw[cA,line width=1.3pt,line cap=round] (3,-3) -- (4,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-2) -- (5,-3);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,-3) -- (6,-4);
+\draw[cB,line width=1.3pt,line cap=round] (6,-4) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,-2) circle (1.25pt);
+\fill (3,-3) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-3) circle (1.25pt);
+\fill (6,-4) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\end{tikzpicture} & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[cB,line width=1.3pt,line cap=round] (0,0) -- (1,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-2) -- (2,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,-1) -- (3,0);
+\draw[cA,line width=1.3pt,line cap=round] (3,0) -- (4,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,1) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-2) circle (1.25pt);
+\fill (2,-1) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,-1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,1) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]\bottomrule\end{tabular}}
+
+\newcommand{\RanAlpha}{%
+\begin{tikzpicture}[x=0.38cm,y=0.38cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\fill[yellow!25] (0,-2.4) rectangle (1,2.4);
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[cB,line width=1.3pt,line cap=round] (0,0) -- (1,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,2) -- (2,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,1) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,-1);
+\draw[cA,line width=1.3pt,line cap=round] (4,-1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,2) circle (1.25pt);
+\fill (2,1) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,-1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\fill[magenta!80!black] (4,-1) circle (2.6pt);
+\node[font=\tiny,cB] at (0.5,-2.9) {3};
+\node[font=\tiny,gray!70!black] at (1.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (2.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (3.5,-2.9) {0};
+\node[font=\tiny,cA] at (4.5,-2.9) {2};
+\node[font=\tiny,gray!70!black] at (5.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (6.5,-2.9) {0};
+\end{tikzpicture}\qquad\begin{tabular}{l}$\sigma_1=\sigma g_{5}=\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]$\alpha_1=\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0},\quad \alpha_2=\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\[3pt]$\sigma_2=\alpha_2\alpha_1=\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}=\sigma g_{2}$\end{tabular}}
+
+\newcommand{\RanTwoViews}{%
+\begin{tabular}{c}\begin{tikzpicture}[x=0.38cm,y=0.38cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[cB,line width=1.3pt,line cap=round] (0,0) -- (1,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,2) -- (2,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,1) -- (3,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,0) -- (4,-1);
+\draw[cA,line width=1.3pt,line cap=round] (4,-1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,2) circle (1.25pt);
+\fill (2,1) circle (1.25pt);
+\fill (3,0) circle (1.25pt);
+\fill (4,-1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\node[font=\tiny,cB] at (0.5,-2.9) {3};
+\node[font=\tiny,gray!70!black] at (1.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (2.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (3.5,-2.9) {0};
+\node[font=\tiny,cA] at (4.5,-2.9) {2};
+\node[font=\tiny,gray!70!black] at (5.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (6.5,-2.9) {0};
+\end{tikzpicture}\\[2pt]{\small Raney：秩路徑（由左往右讀 $\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$）}\end{tabular}\quad\begin{tabular}{c}\begin{tikzpicture}[x=0.38cm,y=0.38cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,2);
+\draw[cA,line width=1.3pt,line cap=round] (2,2) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,2) -- (5,3);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,3) -- (6,4);
+\draw[cB,line width=1.3pt,line cap=round] (6,4) -- (7,2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,2) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,2) circle (1.25pt);
+\fill (5,3) circle (1.25pt);
+\fill (6,4) circle (1.25pt);
+\fill (7,2) circle (1.25pt);
+\node[font=\tiny,gray!70!black] at (0.5,-0.9) {0};
+\node[font=\tiny,gray!70!black] at (1.5,-0.9) {0};
+\node[font=\tiny,cA] at (2.5,-0.9) {2};
+\node[font=\tiny,gray!70!black] at (3.5,-0.9) {0};
+\node[font=\tiny,gray!70!black] at (4.5,-0.9) {0};
+\node[font=\tiny,gray!70!black] at (5.5,-0.9) {0};
+\node[font=\tiny,cB] at (6.5,-0.9) {3};
+\end{tikzpicture}\\[2pt]{\small Chu 講義：好路徑（由右往左讀，每步 $1-j$）}\end{tabular}\quad\begin{tabular}{c}\begin{tikzpicture}[x=0.45cm,y=0.6cm,baseline=(n0.base)]
+\node[regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,line width=0.8pt,inner sep=2.0pt] (n0) at (1.000,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (1.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (2.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\draw[gray!70,line width=0.6pt] (n0) -- (n3);
+\end{tikzpicture}\hspace{0.90cm}\begin{tikzpicture}[x=0.45cm,y=0.6cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (0.500,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (1.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\\[2pt]{\small 對應的森林（2 棵樹）}\end{tabular}}
+
+\newcommand{\RanThmTwoThree}{%
+$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\ =\ \underbrace{\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}}_{\text{1 字列}}\ \underbrace{\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}}_{\text{1 字列}}$\qquad\begin{tikzpicture}[x=0.38cm,y=0.38cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (7,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (7,-2);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[cB,line width=1.3pt,line cap=round] (3,-1) -- (4,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,1) -- (5,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,0) -- (6,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (6,-1) -- (7,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,1) circle (1.25pt);
+\fill (5,0) circle (1.25pt);
+\fill (6,-1) circle (1.25pt);
+\fill (7,-2) circle (1.25pt);
+\fill[magenta!80!black] (3,-1) circle (2.6pt);
+\node[font=\tiny,cA] at (0.5,-2.9) {2};
+\node[font=\tiny,gray!70!black] at (1.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (2.5,-2.9) {0};
+\node[font=\tiny,cB] at (3.5,-2.9) {3};
+\node[font=\tiny,gray!70!black] at (4.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (5.5,-2.9) {0};
+\node[font=\tiny,gray!70!black] at (6.5,-2.9) {0};
+\end{tikzpicture}}
+
+\newcommand{\RanMotzkin}{%
+\begin{tabular}{cccc}\begin{tabular}{c}\begin{tikzpicture}[x=0.45cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n0) at (0.000,0) {};
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n1) at (0.000,-1) {};
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n2) at (0.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (0.000,-3) {};
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\end{tikzpicture}\\[2pt]$\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.45cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n0) at (0.500,0) {};
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n1) at (0.500,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (0.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n1) -- (n3);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\end{tikzpicture}\\[2pt]$\textcolor{cU}{1}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.45cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (0.500,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n2) at (1.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-2) {};
+\draw[gray!70,line width=0.6pt] (n2) -- (n3);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\\[2pt]$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\end{tabular} & \begin{tabular}{c}\begin{tikzpicture}[x=0.45cm,y=0.5cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (0.500,0) {};
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n1) at (0.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (0.000,-2) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n3) at (1.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n1) -- (n2);
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n3);
+\end{tikzpicture}\\[2pt]$\textcolor{cA}{2}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\end{tabular}\end{tabular}}
+
+\newcommand{\RanGesselCodes}{%
+\begin{tikzpicture}[x=0.5cm,y=0.7cm,baseline=(n0.base)]
+\node[circle,draw=cA,fill=cA!22,line width=0.8pt,inner sep=2.8pt] (n0) at (0.500,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n2) at (1.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\draw[gray!70,line width=0.6pt] (n0) -- (n2);
+\end{tikzpicture}\hspace{0.90cm}\begin{tikzpicture}[x=0.5cm,y=0.7cm,baseline=(n0.base)]
+\node[circle,draw=cU,fill=cU!22,line width=0.8pt,inner sep=2.4pt] (n0) at (0.000,0) {};
+\node[rectangle,draw=gray!70,fill=gray!15,inner sep=1.8pt] (n1) at (0.000,-1) {};
+\draw[gray!70,line width=0.6pt] (n0) -- (n1);
+\end{tikzpicture}\qquad\begin{tabular}{@{}ll@{}}
+Raney 的前序碼（2 字列） & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\\
+Gessel 的 suffix code $c(T_1)c(T_2)$ & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cU}{1}$\\
+reduced code（每項減 1） & $-1\ -1\ 1\ -1\ 0$\\
+reduced code 的部分和 & $-1,\ -2,\ -1,\ -2,\ -2$（全部 $<0$，總和 $-2$）\\
+Chu 講義的路徑高度（取負號） & $1,\ 2,\ 1,\ 2,\ 2$\\
+\end{tabular}}
+
+\newcommand{\RanHexagon}{%
+\begin{tikzpicture}[scale=0.55,baseline=-0.5ex]\foreach \i in {0,...,5}{\coordinate (h\i) at ({90-60*\i}:1);}\draw[cC,line width=1pt,fill=cC!12] (h0)--(h1)--(h2)--(h3)--(h4)--(h5)--cycle;\draw[cC,line width=1.2pt] (h0)--(h3);\foreach \i in {0,...,5}{\fill (h\i) circle (1.4pt);}\end{tikzpicture}\quad\begin{tikzpicture}[scale=0.55,baseline=-0.5ex]\foreach \i in {0,...,5}{\coordinate (h\i) at ({90-60*\i}:1);}\draw[cC,line width=1pt,fill=cC!12] (h0)--(h1)--(h2)--(h3)--(h4)--(h5)--cycle;\draw[cC,line width=1.2pt] (h1)--(h4);\foreach \i in {0,...,5}{\fill (h\i) circle (1.4pt);}\end{tikzpicture}\quad\begin{tikzpicture}[scale=0.55,baseline=-0.5ex]\foreach \i in {0,...,5}{\coordinate (h\i) at ({90-60*\i}:1);}\draw[cC,line width=1pt,fill=cC!12] (h0)--(h1)--(h2)--(h3)--(h4)--(h5)--cycle;\draw[cC,line width=1.2pt] (h2)--(h5);\foreach \i in {0,...,5}{\fill (h\i) circle (1.4pt);}\end{tikzpicture}}
+
+\newcommand{\RanLTable}{%
+\setlength{\tabcolsep}{3.6pt}\begin{tabular}{@{}lccccccl@{}}\toprule
+組成 $(n;a_1,a_2,\ldots)$ & $a_0$ & $m$ & $M(a_0,a_1,\ldots)$ & $\frac{n}{m}M$ & 暴力 & Chu：$t$、$\vn$、$\vv$ & 白話\\\midrule
+$(1;\,0,3)$ & 4 & 7 & 35 & 5 & 5 & $1$、$(3)$、$(2)$ & Cayley：4 個因子的乘積\\
+$(1;\,0,0,3)$ & 7 & 10 & 120 & 12 & 12 & $1$、$(3)$、$(3)$ & 3 個三元運算\\
+$(1;\,1,1)$ & 2 & 4 & 12 & 3 & 3 & $1$、$(1,1)$、$(1,2)$ & 一元＋二元各 1\\
+$(1;\,0,1,1)$ & 4 & 6 & 30 & 5 & 5 & $1$、$(1,1)$、$(2,3)$ & Chu 原文 Fig.~1\\
+$(2;\,0,1,1)$ & 5 & 7 & 42 & 12 & 12 & $2$、$(1,1)$、$(2,3)$ & 同上，2 字列\\
+$(1;\,0,2,1)$ & 5 & 8 & 168 & 21 & 21 & $1$、$(2,1)$、$(2,3)$ & 2 弦 1 三角形\\
+$(1;\,0,1,2)$ & 6 & 9 & 252 & 28 & 28 & $1$、$(1,2)$、$(2,3)$ & 1 弦 2 三角形\\
+$(1;\,0,2,2)$ & 7 & 11 & 1980 & 180 & 180 & $1$、$(2,2)$、$(2,3)$ & 2 弦 2 三角形\\
+$(1;\,0,1,1,1)$ & 7 & 10 & 720 & 72 & 72 & $1$、$(1,1,1)$、$(2,3,4)$ & 弦、三角形、四邊形各 1\\
+$(1;\,2,2)$ & 3 & 7 & 210 & 30 & 30 & $1$、$(2,2)$、$(1,2)$ & 2 個單點、2 條弦\\
+$(3;\,0,2)$ & 5 & 7 & 21 & 9 & 9 & $3$、$(2)$、$(2)$ & 3 棵二元樹，共 2 個內部節點\\
+\bottomrule\end{tabular}}
+
+\newcommand{\RanThmTwoThreeTable}{%
+\begin{tabular}{cccc}\toprule $b=(b_1,b_2,b_3)$ & $L(1;b)$ & $L(1;a-b)$ & 乘積\\\midrule
+$(0,0,0)$ & 1 & 5 & 5\\
+$(0,1,0)$ & 1 & 1 & 1\\
+$(0,0,1)$ & 1 & 1 & 1\\
+$(0,1,1)$ & 5 & 1 & 5\\
+\midrule\multicolumn{3}{r}{合計} & $12=L(2;0,1,1)$\\\bottomrule\end{tabular}}
+
+\newcommand{\RanLstarTable}{%
+\begin{tabular}{@{}clccc@{}}\toprule 權重 $\sum ip_i$ & 單項式 $E^*_{\bar p}$ & $L(1;\bar p)$ & $L(2;\bar p)$ & 例：$n=1$ 的字\\\midrule
+0 & $E_0^*$ & 1 & 1 & $\textcolor{gray!70!black}{0}$\\
+1 & $E_1^*$ & 1 & 2 & $\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\\
+2 & $(E_1^*)^2$ & 1 & 3 & $\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\\
+2 & $E_2^*$ & 1 & 2 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\
+3 & $(E_1^*)^3$ & 1 & 4 & $\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\\
+3 & $E_1^*\,E_2^*$ & 3 & 8 & $\textcolor{cU}{1}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$、…（共 3 個）\\
+3 & $E_3^*$ & 1 & 2 & $\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\
+4 & $(E_1^*)^4$ & 1 & 5 & $\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{gray!70!black}{0}$\\
+4 & $(E_1^*)^2\,E_2^*$ & 6 & 20 & $\textcolor{cU}{1}\,\textcolor{cU}{1}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$、…（共 6 個）\\
+4 & $E_1^*\,E_3^*$ & 4 & 10 & $\textcolor{cU}{1}\,\textcolor{cB}{3}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$、…（共 4 個）\\
+4 & $(E_2^*)^2$ & 2 & 5 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$、…（共 2 個）\\
+4 & $E_4^*$ & 1 & 2 & $\textcolor{cC}{4}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$\\
+\bottomrule\end{tabular}}
+
+\newcommand{\RanTrinomialTable}{%
+\begin{tabular}{@{}c|rrrrrrr@{}}$n\backslash k$ & 0 & 1 & 2 & 3 & 4 & 5 & 6\\\hline
+2 & 1 & 1 & 2 & 5 & 14 & 42 & 132\\
+3 & 1 & 1 & 3 & 12 & 55 & 273 & 1428\\
+4 & 1 & 1 & 4 & 22 & 140 & 969 & 7084\\
+\end{tabular}}
+
+\newcommand{\RanKellyTable}{%
+\begin{tabular}{@{}c|rrrrrrrrrr@{}}$r\backslash n$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\\hline
+1 & 1 & 1 & 2 & 5 & 14 & 42 & 132 & 429 & 1430 & 4862\\
+2 & 1 & 0 & 1 & 0 & 3 & 0 & 12 & 0 & 55 & 0\\
+3 & 1 & 0 & 0 & 1 & 0 & 0 & 4 & 0 & 0 & 22\\
+\end{tabular}}
+
+\newcommand{\RanLagrangeTable}{%
+\setlength{\tabcolsep}{3.5pt}\begin{tabular}{@{}lllccccccl@{}}\toprule $\bar z=\sum a_n\bar x^n$ & 方程 (5.3) & & $n=1$ & $n=2$ & $n=3$ & $n=4$ & $n=5$ & $n=6$ & 名稱\\\midrule
+$\dfrac{1}{1-x}$ & $w=\dfrac{x}{1-w}$ & 逐次代入 & $1$ & $1$ & $2$ & $5$ & $14$ & $42$ & $C_{n-1}$（卡塔蘭）\\
+ & & 式 (5.5) & $1$ & $1$ & $2$ & $5$ & $14$ & $42$ & \\[2pt]
+$(1+x)^2$ & $w=x(1+w)^2$ & 逐次代入 & $1$ & $2$ & $5$ & $14$ & $42$ & $132$ & $C_n$\\
+ & & 式 (5.5) & $1$ & $2$ & $5$ & $14$ & $42$ & $132$ & \\[2pt]
+$1+x+x^2$ & $w=x(1+w+w^2)$ & 逐次代入 & $1$ & $1$ & $2$ & $4$ & $9$ & $21$ & Motzkin 數 $M_{n-1}$\\
+ & & 式 (5.5) & $1$ & $1$ & $2$ & $4$ & $9$ & $21$ & \\[2pt]
+$e^x$ & $w=xe^{w}$ & 逐次代入 & $1$ & $1$ & $\tfrac{3}{2}$ & $\tfrac{8}{3}$ & $\tfrac{125}{24}$ & $\tfrac{54}{5}$ & $n^{n-1}/n!$（樹函數）\\
+ & & 式 (5.5) & $1$ & $1$ & $\tfrac{3}{2}$ & $\tfrac{8}{3}$ & $\tfrac{125}{24}$ & $\tfrac{54}{5}$ & \\[2pt]
+$2+3x+x^3$ & $w=x(2+3w+w^3)$ & 逐次代入 & $2$ & $6$ & $18$ & $62$ & $258$ & $1206$ & $a_0\ne1$ 的例子\\
+ & & 式 (5.5) & $2$ & $6$ & $18$ & $62$ & $258$ & $1206$ & \\[2pt]
+\bottomrule\end{tabular}}
+
+\newcommand{\RanBallotTable}{%
+\begin{tabular}{@{}c|rrrrrr@{}}$m\backslash n$ & 0 & 1 & 2 & 3 & 4 & 5\\\hline
+1 & 1 & 1 & 2 & 5 & 14 & 42\\
+2 & 1 & 2 & 5 & 14 & 42 & 132\\
+3 & 1 & 3 & 9 & 28 & 90 & 297\\
+\end{tabular}}
+
+\newcommand{\RanNotWord}{%
+\begin{tikzpicture}[x=0.36cm,y=0.36cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (3,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cA,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\node[font=\tiny,gray!70!black] at (0.5,-1.9) {0};
+\node[font=\tiny,cA] at (1.5,-1.9) {2};
+\node[font=\tiny,gray!70!black] at (2.5,-1.9) {0};
+\end{tikzpicture}}
+
+\newcommand{\RanWalkPlusOne}{%
+\begin{tikzpicture}[x=0.3cm,y=0.3cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[cA,line width=1.3pt,line cap=round] (1,1) -- (2,2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,2) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,2) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\node[font=\tiny,cA] at (0.5,-1.9) {2};
+\node[font=\tiny,cA] at (1.5,-1.9) {2};
+\node[font=\tiny,gray!70!black] at (2.5,-1.9) {0};
+\node[font=\tiny,gray!70!black] at (3.5,-1.9) {0};
+\node[font=\tiny,gray!70!black] at (4.5,-1.9) {0};
+\end{tikzpicture}}
+
+\newcommand{\RanWalkPlusTwo}{%
+\begin{tikzpicture}[x=0.3cm,y=0.3cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (5,0);
+\draw[magenta!70!black,dashed] (0,-1) -- (5,-1);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[cA,line width=1.3pt,line cap=round] (2,0) -- (3,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\node[font=\tiny,cA] at (0.5,-1.9) {2};
+\node[font=\tiny,gray!70!black] at (1.5,-1.9) {0};
+\node[font=\tiny,cA] at (2.5,-1.9) {2};
+\node[font=\tiny,gray!70!black] at (3.5,-1.9) {0};
+\node[font=\tiny,gray!70!black] at (4.5,-1.9) {0};
+\end{tikzpicture}}
+
+\newcommand{\RanCycThree}{%
+\begin{tabular}{c c c c}\toprule $k$ & $\sigma g_k$ & 秩路徑 & $n$ 字列？\\\midrule
+0 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (6,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (6,-2);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[cA,line width=1.3pt,line cap=round] (3,-1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,-1) -- (6,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\fill (6,-2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{green!50!black}{\checkmark}\\[2pt]
+1 & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (6,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (6,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,-2);
+\draw[cA,line width=1.3pt,line cap=round] (2,-2) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-2) -- (5,-3);
+\draw[cA,line width=1.3pt,line cap=round] (5,-3) -- (6,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,-2) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-3) circle (1.25pt);
+\fill (6,-2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+2 & $\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (6,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (6,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cA,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[cA,line width=1.3pt,line cap=round] (4,-2) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,-1) -- (6,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\fill (6,-2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+3 & $\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (6,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (6,-2);
+\draw[cA,line width=1.3pt,line cap=round] (0,0) -- (1,1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[cA,line width=1.3pt,line cap=round] (3,-1) -- (4,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,0) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,-1) -- (6,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,0) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\fill (6,-2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{green!50!black}{\checkmark}\\[2pt]
+4 & $\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (6,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (6,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (1,-1) -- (2,-2);
+\draw[cA,line width=1.3pt,line cap=round] (2,-2) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (4,-2) -- (5,-3);
+\draw[cA,line width=1.3pt,line cap=round] (5,-3) -- (6,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,-2) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-3) circle (1.25pt);
+\fill (6,-2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]
+5 & $\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}$ & \begin{tikzpicture}[x=0.2cm,y=0.2cm,baseline={([yshift=-0.5ex]current bounding box.center)}]
+\draw[gray!55,dashed] (0,0) -- (6,0);
+\draw[magenta!70!black,dashed] (0,-2) -- (6,-2);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (0,0) -- (1,-1);
+\draw[cA,line width=1.3pt,line cap=round] (1,-1) -- (2,0);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (2,0) -- (3,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (3,-1) -- (4,-2);
+\draw[cA,line width=1.3pt,line cap=round] (4,-2) -- (5,-1);
+\draw[gray!70!black,line width=1.3pt,line cap=round] (5,-1) -- (6,-2);
+\fill (0,0) circle (1.25pt);
+\fill (1,-1) circle (1.25pt);
+\fill (2,0) circle (1.25pt);
+\fill (3,-1) circle (1.25pt);
+\fill (4,-2) circle (1.25pt);
+\fill (5,-1) circle (1.25pt);
+\fill (6,-2) circle (1.25pt);
+\end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]\bottomrule\end{tabular}}

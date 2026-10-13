@@ -1,0 +1,151 @@
+% !TEX program = xelatex
+% 編譯方式（在 notes\ 裡）：
+%   python raney/make_figs.py        （先檢查數字，再產生 raney/figs.tex）
+%   xelatex raney1960_導讀.tex        （跑兩次以產生目錄與交互參照）
+% 記號與 chu1987_導讀.tex 相容：導言區的顏色、盒子、\vn、\vv、\ip、\Cv、\PaperCfgRoot 都照抄那份講義。
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xeCJK}
+\setCJKmainfont[BoldFont={Microsoft JhengHei Bold},ItalicFont={DFKai-SB}]{Microsoft JhengHei}
+\setCJKsansfont[BoldFont={Microsoft JhengHei Bold}]{Microsoft JhengHei}
+\setCJKmonofont{Microsoft JhengHei}
+\linespread{1.28}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,labelsep=quad}
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\renewcommand{\contentsname}{目錄}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+
+% ---------- 顏色（與 chu1987_導讀.tex、manim 動畫一致） ----------
+\colorlet{cA}{blue!75!black}        % 符號 2：二元運算 = 2 點群組（弦）
+\colorlet{cB}{orange!90!black}      % 符號 3：三元運算 = 3 點群組（三角形）
+\colorlet{cC}{green!50!black}       % 符號 4 = 4 點群組
+\colorlet{cD}{violet!80!black}      % 符號 5 = 5 點群組
+\colorlet{cU}{brown!75!black}       % 符號 1：一元運算 = 1 點群組（本講義新增）
+\colorlet{cRoot}{magenta!80!black}  % 固定點
+\colorlet{cBad}{red!85!black}       % 不合格
+\colorlet{cTop}{orange!90!black}
+\colorlet{cLeft}{teal!80!black}
+\colorlet{cRight}{purple!80!black}
+
+% ---------- 盒子（同 Chu 講義） ----------
+\newtcolorbox{keybox}[1][]{enhanced,breakable,colback=blue!4,colframe=blue!45!black,
+  boxrule=0.7pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{thmbox}[1][]{enhanced,breakable,colback=orange!7,colframe=orange!75!black,
+  boxrule=0.8pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{notebox}[1][]{enhanced,breakable,colback=gray!7,colframe=gray!60,
+  boxrule=0.5pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{exbox}[1][]{enhanced,breakable,colback=green!4,colframe=green!45!black,
+  boxrule=0.6pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+
+% ---------- 數學記號（前六個與 Chu 講義相同） ----------
+\newcommand{\vn}{\vec n}
+\newcommand{\vv}{\vec v}
+\newcommand{\vr}{\vec r}
+\newcommand{\ve}{\vec e}
+\newcommand{\vX}{\vec X}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\Cv}{C_{\vv}}
+\newcommand{\Lst}{L^{*}}                         % Raney 的 L*
+\newcommand{\RL}[2]{L(#1;\,#2)}                  % Raney 的 L(n; a_1, a_2, ...)
+\newcommand{\bp}{\bar p}
+\newcommand{\bd}{\bar d}
+\newcommand{\xb}{\bar x}
+\newcommand{\zb}{\bar z}
+\newcommand{\wb}{\bar w}
+\newcommand{\coef}[1]{[#1]\,}
+% 出處標記
+\newcommand{\paper}[1]{{\small\color{gray!70!black}〔原文 #1〕}}       % Raney (1960)
+\newcommand{\churef}[1]{{\small\color{gray!70!black}〔Chu 講義 #1〕}}  % chu1987_導讀.pdf
+\newcommand{\gref}[1]{{\small\color{gray!70!black}〔Gessel #1〕}}      % Gessel (2016)
+\newcommand{\kref}[1]{{\small\color{gray!70!black}〔Klamkin #1〕}}     % Problem 4983
+\newcommand{\extra}{\textcolor{teal!70!black}{\small【補充】}}           % 不在 Raney 原文
+
+% ---------- TikZ：圓周上的點（同 Chu 講義） ----------
+\tikzset{
+  chord/.style={cA,line width=1.25pt,line cap=round},
+  tri/.style={draw=cB,fill=cB!22,line width=1.1pt,line join=round},
+}
+\newcommand{\CirclePts}[2]{%
+  \draw[gray!65,line width=0.6pt] (0,0) circle (#2);
+  \foreach \i in {1,...,#1}{\coordinate (p\i) at ({90-360/#1*(\i-1)}:#2);}
+}
+\newcommand{\CircleDots}[1]{\foreach \i in {1,...,#1}{\fill[black] (p\i) circle (1.6pt);}}
+\newcommand{\PaperCfgRoot}[5]{%
+  \begin{tikzpicture}[scale=0.62,baseline=-0.5ex]
+    \CirclePts{5}{1}
+    \draw[tri] (p#3)--(p#4)--(p#5)--cycle;
+    \draw[chord] (p#1)--(p#2);
+    \CircleDots{5}
+    \fill[cRoot] (p1) circle (2.6pt);
+    \foreach \i in {1,...,5}{\node[font=\tiny] at ({90-72*(\i-1)}:1.32) {\i};}
+  \end{tikzpicture}}
+
+% ---------- 由 raney/make_figs.py 產生的圖與表 ----------
+\input{raney/figs}
+
+\title{\textbf{函數合成圖案與冪級數反演}\\[0.3em]\large G.~N.~Raney (1960) 論文導讀}
+\author{\normalsize 原文：George N. Raney, \emph{Functional composition patterns and power series reversion},\\\normalsize
+\emph{Transactions of the American Mathematical Society} \textbf{94} (1960) 441--451.\\[0.25em]\normalsize
+補充：I.~M.~Gessel, \emph{Lagrange inversion}, J.~Combin.\ Theory Ser.~A \textbf{144} (2016) 212--249；\\\normalsize
+M.~S.~Klamkin、L.~A.~Shepp, Problem 4983, Amer.\ Math.\ Monthly \textbf{68} (1961) 807，\\\normalsize
+解答 \textbf{69} (1962) 930--931.\\[0.25em]\normalsize
+記號與《W.~Chu (1987) 論文導讀》（\texttt{chu1987\_導讀.pdf}）相容。}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+
+\begin{keybox}[一頁看懂]
+\textbf{問題。}用「前序記法」寫運算式（運算子寫在前面、不用括號），再把每個符號換成它要幾個引數：
+$F(G(x,H(y,z),t),K(u))$ 變成 $230200010$。Raney 把這樣的數字串叫做\textbf{字}（word）。
+規定每種元數各用幾次，有幾個字？更一般地，$n$ 個字接成的\textbf{字列}有幾個？
+
+\textbf{答案（定理 2.2）。}
+\[
+\RL{n}{a_1,a_2,\ldots}=\frac{n}{m}\,M(a_0,a_1,a_2,\ldots),\qquad
+\text{用 Chu 講義的記號：}\quad A_t(\vn)=\frac{t}{N+t}\binom{N+t}{\vn}.
+\]
+\textbf{為什麼（定理 2.1，循環引理）。}秩為 $-n$ 的字串，$m$ 種循環讀法中\textbf{恰有 $n$ 種}是 $n$ 字列；
+所有排法 $M$ 種，所以 $mL=nM$。
+
+\textbf{後果。}字列可以唯一地切開（定理 2.3）$\Rightarrow$ $(\Lst)^n$ 數的是 $n$ 字列；
+看第一個符號（定理 2.4）$\Rightarrow$ $\Lst=\sum_i E_i^*(\Lst)^i$（「樹的萬用方程」）。
+把 $E_i^*$ 換成具體的東西（同態 $H$），就得到 Lagrange 反演（第 5 節）、三項式方程與 Problem 4983（第 6 節）、
+Chu 的 $D=1+\sum_ix_iD^{v_i}$、以及 Abel 與 Hagen--Rothe 卷積（第 7 節）。
+
+\textbf{一句話。}Chu 講義第 6--7 節的「Raney 公式」$A_{s+t}=\sum A_sA_t$，就是這篇論文的定理 2.3 加上定理 2.2。
+\end{keybox}
+
+\setcounter{tocdepth}{1}
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\input{raney/part1}
+\input{raney/part2}
+\input{raney/part3}
+\input{raney/part4}
+\input{raney/part5}
+\input{raney/part6}
+
+\end{document}

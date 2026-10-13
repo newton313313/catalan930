@@ -6,7 +6,7 @@
 開發機上是 `C:\mypython\manim\projects\catalan930`（例如 `notes/mit_plan.md` 就是 `C:\mypython\manim\projects\catalan930\notes\mit_plan.md`），
 可攜版則是解壓縮後的資料夾。`C:\mypython\manim` 是 ManimGL 本身的資料夾，底下**沒有** `notes/`。
 
-最後更新：2026-10-13（可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.4.0）
+最後更新：2026-10-13（Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.4.0）
 
 ---
 
@@ -41,6 +41,7 @@
 | 成品 | 位置 | 狀態 |
 |---|---|---|
 | 中文講義（40 頁） | `notes/chu1987_導讀.pdf`（原始檔 `.tex`） | 完成。第 1 節是卡塔蘭基礎模組（13 個小節，依序對應 00a–00m），第 7 節是 Raney 公式的完整證明，附錄 A 是 MIT 補充（A.1–A.14，依序對應 M01–M14） |
+| Raney (1960) 導讀（33 頁） | `notes/raney1960_導讀.pdf`（原始檔 `.tex`，內文 `notes/raney/part1..6.tex`） | 完成（2026-10-13）。G. N. Raney, *Functional composition patterns and power series reversion*（1960）的逐節導讀，記號與 Chu 講義相容；附記號對照表、大量例子、Gessel (2016) 與 Problem 4983 的補充、練習與答案。數學在 `codes/utils/raney.py`，圖與數字檢查在 `notes/raney/make_figs.py` |
 | Young 表講義（25 頁） | `notes/young_tableaux_導讀.pdf`（原始檔 `.tex`，內文 `notes/fulton/part1..6.tex`） | 完成（2026-10-11，從 Chu 講義的附錄 B 獨立出來並補上第 5–6 章；2026-10-12 補上第 7 章；2026-10-13 補上第 8 章）。第 1 節回顧 Fulton 第 1 章（F01–F08），第 2–8 節依序是第 2–8 章（F09–F45） |
 | 卡塔蘭基礎模組 13 個場景 | `codes/scenes/scene00a…00m` | 完成（2026-10-03），都可單獨執行 |
 | Chu 的部分 9 個場景 | `codes/scenes/scene01…09` | 完成，都可單獨執行 |
@@ -126,11 +127,12 @@
 | 一次輸出全部影片 | `python render_all.py --intro-demo --full --complete --mit-demo --mit-complete --fulton-demo --fulton2-demo --fulton3-demo --fulton4-demo --fulton5-demo` |
 | 只輸出一部分 | `python render_all.py --intro`（00a–00m）、`--chu`（01–09、08r）、`--mit`（M01–M14）、`--fulton`（F01–F08）、`--fulton2`（F09–F19）、`--fulton3`（F20–F27）、`--fulton4`（F28–F41）、`--fulton5`（F42–F45）、`00c 05 M03 F04`（指定場景） |
 | 只輸出連續播放的影片 | `python render_all.py --complete --demos-only` |
-| 數學驗證 | `python utils/counting.py`；Fulton 部分：`python utils/tableaux.py` |
+| 數學驗證 | `python utils/counting.py`；Fulton 部分：`python utils/tableaux.py`；Raney 導讀：`python utils/raney.py` |
 | 環境檢查 | `python check_env.py --render` |
 | 重新編譯講義 | 在 `notes\` 裡執行兩次 `xelatex chu1987_導讀.tex` |
 | 重新產生講義第 1 節的圖 | 在 `notes\` 裡執行 `python make_catalan_figs.py`，再編譯講義 |
 | 重新產生講義附錄 A 的圖 | 在 `notes\` 裡執行 `python make_mit_figs.py`（依序跑 `mit\make_figs_part1..4.py`），再編譯講義 |
+| 重新產生 Raney 導讀 | 在 `notes\` 裡執行 `python raney\make_figs.py`（先檢查數字），再執行兩次 `xelatex raney1960_導讀.tex` |
 | 重新產生 Young 表講義的圖 | 在 `notes\` 裡執行 `python fulton\make_figs.py`，再執行兩次 `xelatex young_tableaux_導讀.tex` |
 
 預覽視窗操作：滾輪縮放；按住 `f` 拖曳平移；`r` 回到原位；`Ctrl+Q` 或視窗的 ✕ 關閉。
@@ -194,6 +196,8 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 │   ├── chu1987_導讀.tex                       LaTeX 原始檔（xelatex + xeCJK + TikZ）
 │   ├── chu1987_導讀.pdf                       編譯好的講義，40 頁
 │   ├── young_tableaux_導讀.tex / .pdf        Young 表講義（Fulton 第 1–8 章，25 頁；xelatex，內文在 fulton/）
+│   ├── raney1960_導讀.tex / .pdf             Raney (1960) 論文導讀（33 頁；xelatex，內文在 raney/）
+│   ├── raney/                                Raney 導讀的內文 part1..6.tex、make_figs.py（含數字檢查）與產生的 figs.tex（不要手改）
 │   ├── make_catalan_figs.py                  產生第 1 節的 12 張 TikZ 圖（由 counting.py 的樹產生）
 │   ├── catalan_figs.tex                      上面程式的輸出，講義用 \input 讀入（不要手改）
 │   ├── make_mit_figs.py                      依序執行 mit/make_figs_part1..4.py，重新產生附錄 A 的圖
@@ -398,6 +402,7 @@ M14 也分段（`part1_walk` … `part5_conclusion`），但寫成模組層級�
 | `rep_data.py` | **純 Python**：第 7 章的固定算例（`load(key)` 讀 `codes/data/fulton7_math.json`）與置換、tabloid、polytabloid、表示矩陣、群環；`python -m utils.rep_data` 交叉核對 |
 | `rep_draw.py` | 第 7 章的圖形：`TabloidMob`、`ColumnTabloidMob`、`signed_sum`、`MatrixMob`、`perm_tex` |
 | `fulton_draw.py` | Fulton 第 2–4 章的圖形：`WordMob`（字母方塊，`.apply_move` 播放一步 Knuth 變換）、`SkewMob`（斜表、有洞的表）、`tableau_mob`、`TwoRowArray`、`BallMatrixMob`、版面檢查 `assert_in_frame`／`assert_apart` |
+| `raney.py` | **純 Python**：Raney (1960) 的字串、秩、字列（Rosenbloom 判別法與遞迴定義互相核對）、循環引理與 Raney 證明的每一步、$L(n;a)$ 公式與暴力、定理 2.3/2.4、和 Chu 講義路徑互換（`to_chu_path`）、不交叉分法 ↔ 字（`partition_to_word`）、$L^*$、Lagrange 反演、三項式與 Problem 4983、卷積與 Gould 公式；`python utils/raney.py` 自我檢查。Raney 導讀的數字都出自這裡 |
 | `tableaux.py` | **純 Python**：Fulton 第 1–4 章的 Young 表運算（第 7 節：字、Knuth 等價、L(w,k)、R-S-K、矩陣球；API 摘要在 `notes/fulton_plan_ch2-4.md` 第 2 節；第 8 節：LR 規則與對稱多項式，API 在 `notes/fulton_plan_ch5-6.md` 第 2 節）。第 1 章部分（格子 0 起算；列插入與路徑、反向擠出、表的字、乘積、jeu de taquin、rectification、Schur 多項式、Kostka 數）與暴力驗證；API 摘要在 `notes/fulton_plan.md` 第 3.5 節 |
 | `formulas.py` | 常用公式的 Tex 物件（卡塔蘭數、廣義公式、生成函數方程、遞迴式） |
 | `counting.py` | **純 Python、不需 manim**：公式、暴力列舉、遞迴、路徑與 Raney 證明的每一步檢查；第 5 節是卡塔蘭模組的物件（樹、三角剖分、括號、格子／Dyck 路徑、投票、配對）與彼此的一一對應；第 6 節是 MIT 補充（平面樹、對偶樹、弧圖、堆疊／佇列排序、模式、整數分割、SYT、鉤長、鉤上漫步的精確機率、醉漢走路）。動畫與講義的數字都出自這裡 |
@@ -567,6 +572,7 @@ $$
 - **開發流程建議**：一次做一個場景；先 `-w -l` 低畫質輸出，用 ffmpeg 抽幾格檢查排版，最後才 `--hd`。
 - **MIT 補充**：規格與決定都在 `notes/mit_plan.md`；新場景照 `mit_plan.md` 第 6 節的實作規則寫。原始的 `MIT18212_1_4.txt`、`note103how.txt` 很長，需要時才看。
 - **改講義附錄 A**：內文在 `notes/mit/partK.tex`，圖改 `notes/mit/make_figs_partK.py`（每支都有 `check_numbers()`），執行 `python make_mit_figs.py` 後再編譯。
+- **改 Raney 導讀**：主檔 `notes/raney1960_導讀.tex`（導言區照抄 Chu 講義的顏色、盒子與記號），內文 `notes/raney/part1..6.tex`，圖與表改 `notes/raney/make_figs.py`（`check_numbers()`、`check_numbers_text()` 檢查正文寫到的每一個數字），執行後再編譯兩次。原始資料在 `C:\mypython\manim\projects\ref\raney\`：三個 PDF 由 `convert_to_md.py` 機械轉成 `md\`，Raney 原文另有依頁面影像逐字校對、公式改成 LaTeX 的 `md\raney1960_text.md`（讀原文用這份）。
 - **改 Young 表講義**：主檔 `notes/young_tableaux_導讀.tex`，內文在 `notes/fulton/part1..6.tex`，圖改 `notes/fulton/make_figs.py`（有 `check_numbers()`、`check_numbers_ch56()`、`check_numbers_ch7()`、`check_numbers_ch8()`），執行後再編譯；
   行內的小 Young 表用該講義導言區的 `\yts{122,34}`（ytableau 的 `\ytableaushort`；兩位數要加大括號，如 `48{10}`）。
   Chu 講義的目錄放在第 1 頁靠的是導言區把目錄的節距縮成 0.45em（`\patchcmd{\l@section}`）；再加一節可能會擠到第 2 頁。
@@ -577,6 +583,7 @@ $$
 ## 9. 來源與授權
 
 - 論文 PDF（`ref/`）：Chu 的論文著作權屬 Elsevier；Selimi 與 Saračević 的論文著作權屬作者與期刊；
+  Raney (1960) 的論文著作權屬 American Mathematical Society（JSTOR 下載），Gessel (2016) 屬 Elsevier；`C:\mypython\manim\projects\ref\raney\md\` 的轉檔與謄寫同樣只供個人研讀。
   Fulton《Young Tableaux》著作權屬 Cambridge University Press（`ref/fulton_ch1_text.md` 是它的謄寫，`C:\mypython\manim\projects\ref\fulton\` 的各章 PDF 與 Markdown 也一樣，同樣受著作權保護）。僅供個人研讀，不要公開散布。
 - ManimGL（`third_party/manim`）為 MIT 授權，作者 3Blue1Brown（Grant Sanderson）與貢獻者，來源 https://github.com/3b1b/manim 。
 - `ref/` 的 ChatGPT 筆記與 overview、`notes/note1012.txt`、`notes/MIT18212_1_4.txt`、`notes/note103how.txt` 是使用者提供的需求與參考資料；

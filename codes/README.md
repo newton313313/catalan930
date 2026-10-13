@@ -25,7 +25,7 @@
 8. **Fulton《Young Tableaux》第 8 章（場景 F42–F45，獨立的一組）**：Schur 模 $E^\lambda$、權重與特徵標 $s_\lambda$、Schur–Weyl 對偶、
    Plücker 二次關係。計畫表 `../notes/fulton_plan_ch8.md`。
 
-共 81 個可以單獨執行的場景，外加十種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（25 頁，第 1–8 節對應 F01–F45）。
+共 81 個可以單獨執行的場景，外加十種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（25 頁，第 1–8 節對應 F01–F45）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（33 頁，Raney (1960) 論文導讀，沒有對應的動畫）。
 
 ## 注意：這是 ManimGL，不是 Manim Community
 
@@ -410,12 +410,14 @@ catalan930/
 │   │   ├── rep_draw.py         Fulton 第 7 章的圖形：tabloid、帶方向的行 tabloid、帶號線性組合、矩陣
 │   │   ├── formulas.py         常用公式的 Tex 物件
 │   │   ├── counting.py         純 Python 的計數與驗證（公式、暴力列舉、遞迴、Raney、卡塔蘭物件、MIT 補充）
+│   │   ├── raney.py            純 Python：Raney (1960) 的字、循環引理、L(n;a)、L*、Lagrange 反演、卷積（Raney 導讀用，暫無場景）
 │   │   └── tableaux.py         純 Python 的 Young 表運算與驗證（插入、乘積、jeu de taquin、Schur 多項式、Knuth、R-S-K、LR、對稱函數、半標準表與權重）
 │   ├── latex_cache/          LaTeX 編譯的中間檔（ManimGL 自動產生，可以刪）
 │   └── renders/              輸出的 1080p 影片（92 支；不要刪除或覆寫）
 ├── notes/                    講義與計畫表（xelatex，在 notes/ 裡編譯兩次）
 │   ├── chu1987_導讀.tex/.pdf      Chu 1987＋卡塔蘭模組＋附錄 A（MIT 補充），40 頁；圖：make_catalan_figs.py、make_mit_figs.py（→ mit/）
 │   ├── young_tableaux_導讀.tex/.pdf Fulton 第 1–8 章的講義；內文 fulton/part1..6.tex，圖與數字檢查 fulton/make_figs.py（→ fulton/figs.tex）
+│   ├── raney1960_導讀.tex/.pdf    Raney (1960) 論文導讀；內文 raney/part1..6.tex，圖與數字檢查 raney/make_figs.py（→ raney/figs.tex）
 │   ├── fulton_plan*.md            各章的計畫表（ch2-4、ch5-6、ch7、ch8；ch7-8 已被取代）
 │   └── mit_plan.md、note1012.txt…  其他計畫與原始筆記
 └── ref/                      參考文獻 PDF 與抄錄（僅供個人研讀，不可散布）
@@ -437,7 +439,7 @@ python utils/counting.py
 - 第 6 節：MIT 補充用到的每一種計數都用兩種方法算（平面樹、弧圖、堆疊／佇列排序 ⇔ 模式迴避、整數分割、標準 Young 表 ⇔ 鉤長公式、角落遞迴、鉤上漫步的精確機率、醉漢走路、循環引理），並檢查貫穿例子的每個值。
 
 最後應印出「全部一致」、「Raney 公式證明的每一步都通過」、「卡塔蘭基礎模組：所有物件的數目與一一對應都通過」、「MIT 補充模組：所有計數與一一對應都通過」。
-另外 `python utils/tableaux.py` 應印出「Fulton 第 1 章：插入、乘積、jeu de taquin 全部驗證通過」，接著是「Fulton 第 2–4 章：Knuth 等價、L(w,k)、R-S-K、矩陣球全部驗證通過」，最後一行是「Fulton 第 5–6 章：Littlewood–Richardson 規則、對稱函數全部驗證通過」（`check_env.py` 兩者都檢查）。
+另外 `python utils/tableaux.py` 應印出「Fulton 第 1 章：插入、乘積、jeu de taquin 全部驗證通過」，接著是「Fulton 第 2–4 章：Knuth 等價、L(w,k)、R-S-K、矩陣球全部驗證通過」，最後一行是「Fulton 第 5–6 章：Littlewood–Richardson 規則、對稱函數全部驗證通過」（`check_env.py` 兩者都檢查）。`python utils/raney.py` 應印出「Raney (1960)：字、循環引理、L(n;a)、L*、Lagrange 反演、第 6–7 節全部驗證通過」。
 第 7 章另有 `python -m utils.rep_data`（應印出「rep_data：固定算例與 tableaux.py 的獨立重算全部一致」）；第 8 章的數字在各場景的 `check_math()` 裡由 `tableaux.py` 現算。
 講義的數字由 `python ../notes/fulton/make_figs.py`（在 `notes/` 裡執行 `python fulton/make_figs.py`）在產生圖之前全部檢查。
 每個場景開頭也有 `assert`，數字不對時渲染會直接失敗。
