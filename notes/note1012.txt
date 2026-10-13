@@ -1,0 +1,1525 @@
+可以。我建議不要只是把現有 `Scene01ClassicalCatalan` 加長，而是在 Chu 論文正式開始以前，新增一個完整的 **「Catalan number 基礎模組」**。這樣影片的敘事會變成：
+
+\[
+\boxed{
+\text{什麼是 Catalan number}
+\rightarrow
+\text{同一個 }C_n\text{ 為什麼反覆出現}
+\rightarrow
+\text{noncrossing chords}
+\rightarrow
+\text{Chu generalized Catalan}
+}
+\]
+
+你上傳的 *Catalan Numbers and Applications* 很適合作為這一段的內容來源。它明確介紹了 polygon triangulation、balanced parentheses / multiplication ordering、binary trees、lattice paths、Dyck paths 和 Bertrand ballot problem，並把這些 correspondence 串在一起。aybeyan-pdf aybeyan-pdf aybeyan-pdf aybeyan-pdf aybeyan-pdf
+
+我把你說的「正名」同時處理成兩件事：
+
+1. **名詞與 indexing 正確統一**，避免 \(n\)-gon、\(C_n\)、\(C_{n-2}\) 混在一起。
+2. **文中重要的證明／推導也動畫化**，而不是只列結果。
+
+下面這整段可以直接交給你的 AI coding assistant。
+
+---
+
+# 給 AI 助理的總指令
+
+> ## Task: Add a complete Catalan-number fundamentals module before the Chu (1987) material
+>
+> We are extending an existing **3Blue1Brown ManimGL** project explaining Wenchang Chu's generalized Catalan-number paper.
+>
+> This project uses **ManimGL**, NOT Manim Community Edition.
+>
+> Project root:
+>
+> ```text
+> C:\mypython\manim\projects\catalan_portable_101
+> ```
+>
+> Code directory:
+>
+> ```text
+> C:\mypython\manim\projects\catalan_portable_101\codes
+> ```
+>
+> All `manimgl` commands must be run from `codes\`.
+>
+> Use:
+>
+> ```python
+> from manimlib import *
+> ```
+>
+> and ManimGL animations such as:
+>
+> ```python
+> ShowCreation
+> FadeIn
+> FadeOut
+> Write
+> Transform
+> ReplacementTransform
+> TransformFromCopy
+> Indicate
+> Flash
+> GrowFromCenter
+> ```
+>
+> Do **not** use Manim Community syntax such as:
+>
+> ```text
+> from manim import *
+> Create(...)
+> manim -pql ...
+> ```
+>
+> Before using an unfamiliar API, verify that it exists in the pinned local ManimGL version.
+>
+> Do not upgrade or reinstall ManimGL.
+
+---
+
+# 1. Purpose of the new module
+
+The existing project moves relatively quickly from classical Catalan numbers to Chu's generalized Catalan numbers.
+
+Add a new introductory module whose goal is:
+
+> Before the viewer sees Chu's generalization, make them genuinely understand why the ordinary Catalan number appears in many apparently different combinatorial problems.
+
+The mathematical source for this module is the supplied paper:
+
+> Aybeyan Selimi and Muzafer Saračević,  
+> *Catalan Numbers and Applications*.
+
+The source defines
+
+\[
+C_n
+=
+\frac{1}{n+1}\binom{2n}{n},
+\qquad n\ge0,
+\]
+
+and lists
+
+\[
+1,1,2,5,14,42,132,429,1430,4862,16796.
+\]
+
+aybeyan-pdf
+
+The module must cover **all of the main classical Catalan examples treated in Section 2 of that article**:
+
+1. convex polygon triangulations;
+2. multiplication ordering / parenthesization;
+3. binary trees;
+4. lattice paths;
+5. Dyck paths;
+6. Bertrand's ballot problem.
+
+It should then bridge naturally into the existing noncrossing-chord interpretation used for Chu (1987).
+
+---
+
+# 2. Very important mathematical naming/indexing rules
+
+Be stricter than the source paper when presenting indexing.
+
+Use this convention consistently:
+
+\[
+\boxed{
+C_n=\frac1{n+1}\binom{2n}{n}.
+}
+\]
+
+Then explicitly state the standard correspondences as follows.
+
+### Polygon triangulation
+
+Number of triangulations of a convex polygon with \(m\) vertices:
+
+\[
+\boxed{C_{m-2}}.
+\]
+
+Equivalently, a convex \((n+2)\)-gon has
+
+\[
+\boxed{C_n}
+\]
+
+triangulations.
+
+The source explicitly states \(C_n=T_{n+2}\). aybeyan-pdf
+
+Prefer saying:
+
+> “A convex \((n+2)\)-gon has \(C_n\) triangulations.”
+
+because this aligns every later animation directly with \(C_n\).
+
+---
+
+### Fully parenthesized products
+
+For \(n+1\) ordered factors
+
+\[
+a_0a_1\cdots a_n,
+\]
+
+the number of full binary parenthesizations is
+
+\[
+\boxed{C_n}.
+\]
+
+The source gives the concrete cases of 2, 3 and 4 factors, with the 4-factor case having five possible multiplication orders. aybeyan-pdf
+
+---
+
+### Full binary trees
+
+Use the precise statement:
+
+> The number of **full plane binary trees with \(n\) internal vertices** is \(C_n\).
+
+If the existing project uses another binary-tree convention, explicitly say what is being counted.
+
+Do not casually say only “binary trees with \(n\) vertices = \(C_n\)” because different conventions shift the indexing.
+
+The source discusses binary and planted trivalent binary trees and their bijection with triangulations. aybeyan-pdf
+
+---
+
+### Lattice paths
+
+Number of monotone paths from
+
+\[
+(0,0)\rightarrow(n,n)
+\]
+
+using
+
+\[
+R=(1,0),\qquad U=(0,1)
+\]
+
+that never go above
+
+\[
+y=x
+\]
+
+is
+
+\[
+\boxed{C_n}.
+\]
+
+The source first counts all paths as
+
+\[
+\binom{2n}{n}
+\]
+
+and gives the valid count as
+
+\[
+\binom{2n}{n}
+-
+\binom{2n}{n-1}
+=
+C_n.
+\]
+
+aybeyan-pdf
+
+---
+
+### Dyck paths
+
+Use the standard convention:
+
+A Dyck path of semilength \(n\) consists of \(n\) up-steps and \(n\) down-steps and never falls below its starting height.
+
+Number:
+
+\[
+\boxed{C_n}.
+\]
+
+The supplied article explicitly gives:
+
+\[
+n=0:1,\qquad
+n=1:1,\qquad
+n=2:2,\qquad
+n=3:5.
+\]
+
+It also connects up/down steps with opening/closing parentheses. aybeyan-pdf
+
+---
+
+### Noncrossing perfect matchings
+
+For the bridge to Chu:
+
+> Number of noncrossing perfect matchings of \(2n\) labeled cyclically ordered points is
+
+\[
+\boxed{C_n}.
+\]
+
+This is the classical Motzkin interpretation used in the Chu paper.
+
+---
+
+# 3. Do not make six disconnected examples
+
+The new module should demonstrate that these are **different realizations of the same recursive structure**.
+
+The main conceptual equation should eventually become
+
+\[
+\boxed{
+C_n
+=
+\sum_{k=0}^{n-1}
+C_kC_{n-1-k},
+\qquad C_0=1.
+}
+\]
+
+The source obtains this recurrence through polygon triangulation. aybeyan-pdf aybeyan-pdf
+
+The animation should repeatedly show the pattern
+
+\[
+\boxed{
+\text{choose a distinguished first/root object}
+\rightarrow
+\text{split into two independent Catalan subproblems}.
+}
+\]
+
+This is especially important because Chu's proof later generalizes
+
+\[
+2\text{ independent regions}
+\]
+
+to
+
+\[
+v_i\text{ independent regions}.
+\]
+
+---
+
+# 4. Add a new sequence of scenes
+
+Do not destroy the existing scenes.
+
+Create a new directory or clearly named new files, for example:
+
+```text
+scenes/
+    scene00a_catalan_intro.py
+    scene00b_triangulation.py
+    scene00c_parentheses.py
+    scene00d_binary_trees.py
+    scene00e_lattice_dyck.py
+    scene00f_ballot.py
+    scene00g_catalan_correspondence.py
+    scene00h_bridge_to_chu.py
+```
+
+Names may be improved, but preserve the ordering.
+
+The old `Scene01ClassicalCatalan` can either:
+
+1. become the final “noncrossing matching” scene of this module, or
+2. remain untouched and be called immediately after the new scenes.
+
+Prefer minimal modification of working code.
+
+---
+
+# 5. Scene A — What is a Catalan number?
+
+Suggested class:
+
+```python
+class Scene00CatalanDefinition(ChuScene):
+```
+
+## Visual sequence
+
+Start with the sequence:
+
+\[
+1,\;1,\;2,\;5,\;14,\;42,\;132,\ldots
+\]
+
+Do **not** show the formula immediately.
+
+Animate the numbers appearing one at a time.
+
+Then ask visually:
+
+```text
+Why does the same sequence appear everywhere?
+```
+
+Then reveal:
+
+\[
+C_n
+=
+\frac{1}{n+1}\binom{2n}{n}.
+\]
+
+Show:
+
+\[
+C_0=1
+\]
+
+\[
+C_1=1
+\]
+
+\[
+C_2=2
+\]
+
+\[
+C_3=5
+\]
+
+\[
+C_4=14.
+\]
+
+The source gives the first values explicitly. aybeyan-pdf
+
+### Historical naming
+
+Briefly mention visually, without turning this into a history lecture:
+
+```text
+Euler / Segner → polygon triangulation
+Catalan → parenthesis-related identities
+```
+
+The article attributes early polygon-triangulation work to Euler and Segner and says the sequence was later named after Eugène Charles Catalan. aybeyan-pdf
+
+Keep this to about 10–15 seconds.
+
+---
+
+# 6. Scene B — Polygon triangulation
+
+This should be the first substantial Catalan animation.
+
+Use exactly the source's small examples.
+
+### Triangle
+
+Show a triangle:
+
+\[
+3\text{-gon}
+\]
+
+No diagonal is needed.
+
+Display:
+
+\[
+T_3=1=C_1.
+\]
+
+### Square
+
+Transform into a square.
+
+Show its first diagonal.
+
+Then transform to the other diagonal.
+
+Put the two triangulations side by side:
+
+\[
+T_4=2=C_2.
+\]
+
+### Pentagon
+
+Transform to a pentagon.
+
+Animate all five triangulations.
+
+Arrange the five small pentagons in a row or arc.
+
+Display:
+
+\[
+T_5=5=C_3.
+\]
+
+### Hexagon
+
+Show the 14 triangulations in a compact gallery.
+
+Do not animate every diagonal slowly.
+
+Use a `LaggedStart` or grouped reveal.
+
+Display:
+
+\[
+T_6=14=C_4.
+\]
+
+These are exactly the examples illustrated in Figure 2.1 of the supplied source. aybeyan-pdf
+
+---
+
+# 7. Scene C — Derive the Catalan recurrence geometrically
+
+This is essential.
+
+Take a convex \((n+2)\)-gon.
+
+Highlight one fixed base edge.
+
+Display:
+
+```text
+Fix one edge.
+```
+
+Every triangulation contains exactly one triangle incident to that edge.
+
+Let its third vertex move through all possibilities.
+
+For one chosen third vertex, visually split the polygon into:
+
+\[
+\text{left polygon}
+\qquad+\qquad
+\text{right polygon}.
+\]
+
+Label their counts:
+
+\[
+C_k
+\]
+
+and
+
+\[
+C_{n-1-k}.
+\]
+
+Then:
+
+\[
+C_kC_{n-1-k}.
+\]
+
+Move the third vertex through all allowed positions and accumulate:
+
+\[
+\boxed{
+C_n
+=
+\sum_{k=0}^{n-1}
+C_kC_{n-1-k}.
+}
+\]
+
+This should visually establish:
+
+\[
+\text{independent choices}
+\Rightarrow
+\text{multiplication},
+\]
+
+and
+
+\[
+\text{different possible split positions}
+\Rightarrow
+\text{addition}.
+\]
+
+The source uses precisely this independent-subpolygon argument. aybeyan-pdf
+
+This animation should later be reusable as a conceptual comparison with Chu's root decomposition.
+
+---
+
+# 8. Scene D — Multiplication ordering / full parenthesization
+
+Use the examples from the article.
+
+### Two factors
+
+\[
+ab
+\]
+
+one way.
+
+### Three factors
+
+\[
+(ab)c
+\]
+
+and
+
+\[
+a(bc).
+\]
+
+Show:
+
+\[
+C_2=2.
+\]
+
+### Four factors
+
+Show all five explicitly:
+
+\[
+((ab)c)d
+\]
+
+\[
+(ab)(cd)
+\]
+
+\[
+(a(bc))d
+\]
+
+\[
+a((bc)d)
+\]
+
+\[
+a(b(cd)).
+\]
+
+The source lists these five arrangements for four factors. aybeyan-pdf
+
+Do not just write five formulas.
+
+Animate the parentheses forming around the symbols.
+
+Then display:
+
+\[
+\boxed{
+n+1\text{ ordered factors}
+\longleftrightarrow
+C_n\text{ full parenthesizations}.
+}
+\]
+
+---
+
+# 9. Scene E — Parentheses transform into binary trees
+
+This should be a true bijection animation.
+
+Take:
+
+\[
+(ab)(cd).
+\]
+
+Transform each multiplication into an internal node.
+
+Transform each variable into a leaf.
+
+Result:
+
+```text
+        ×
+      /   \
+     ×     ×
+    / \   / \
+   a   b c   d
+```
+
+Then repeat quickly for another parenthesization.
+
+For example:
+
+\[
+a(b(cd)).
+\]
+
+Show its different tree shape.
+
+Then put all five parenthesizations for four factors next to their five tree shapes.
+
+Display:
+
+\[
+\boxed{
+\text{full parenthesizations}
+\longleftrightarrow
+\text{full plane binary trees}.
+}
+\]
+
+Do not merely claim they have equal counts.
+
+The animation should make the correspondence visually obvious.
+
+The supplied source discusses the correspondence between binary trees, parenthesization and polygon triangulations. aybeyan-pdf
+
+---
+
+# 10. Scene F — Lattice paths
+
+Draw an \(n\times n\) square lattice.
+
+Initially use
+
+\[
+n=3.
+\]
+
+Start at
+
+\[
+(0,0)
+\]
+
+and end at
+
+\[
+(3,3).
+\]
+
+One step is:
+
+\[
+R=(1,0)
+\]
+
+or
+
+\[
+U=(0,1).
+\]
+
+Animate one arbitrary path.
+
+Beside it transform the path into a word such as
+
+\[
+RURRUU.
+\]
+
+Then explain:
+
+Every path has exactly
+
+\[
+3R+3U
+\]
+
+so there are
+
+\[
+\binom63=20
+\]
+
+unrestricted paths.
+
+Generalize:
+
+\[
+\binom{2n}{n}.
+\]
+
+Then draw the diagonal
+
+\[
+y=x.
+\]
+
+Make paths that cross above it red.
+
+Keep valid paths in the normal Catalan color.
+
+For \(n=3\), enumerate/show the five valid paths:
+
+\[
+C_3=5.
+\]
+
+Then present:
+
+\[
+\boxed{
+\binom{2n}{n}
+-
+\binom{2n}{n-1}
+=
+\frac1{n+1}\binom{2n}{n}
+=
+C_n.
+}
+\]
+
+This binomial-difference presentation is explicitly given in the source. aybeyan-pdf
+
+---
+
+# 11. Optional but strongly recommended: animate the reflection idea
+
+The source states the binomial subtraction but does not develop a full reflection-principle proof.
+
+Label this as an **additional explanation**, not as something explicitly proved in the supplied paper.
+
+Take a bad path.
+
+Highlight its first step across the forbidden diagonal.
+
+Reflect the initial offending portion appropriately.
+
+Transform it into a path counted by
+
+\[
+\binom{2n}{n-1}.
+\]
+
+Then visually conclude:
+
+\[
+\text{all paths}
+-
+\text{bad paths}
+=
+\text{Catalan paths}.
+\]
+
+Do not spend too long on formal details unless necessary.
+
+---
+
+# 12. Scene G — Dyck paths
+
+Reuse the lattice path rather than constructing a completely unrelated diagram.
+
+Rotate/shear/transform the lattice path representation into a mountain representation.
+
+Map:
+
+\[
+U_{\rm lattice}
+\longrightarrow
+\nearrow
+\]
+
+and
+
+\[
+R_{\rm lattice}
+\longrightarrow
+\searrow.
+\]
+
+Then a valid lattice path becomes a Dyck path.
+
+Show:
+
+\[
+n=0:\quad1
+\]
+
+\[
+n=1:\quad1
+\]
+
+\[
+n=2:\quad2
+\]
+
+\[
+n=3:\quad5.
+\]
+
+This reproduces the sequence explicitly shown in Figure 2.4 of the source. aybeyan-pdf
+
+---
+
+# 13. Scene H — Dyck path ↔ balanced parentheses
+
+Take one Dyck path.
+
+For every up-step, write:
+
+\[
+(
+\]
+
+For every down-step:
+
+\[
+).
+\]
+
+For example:
+
+\[
+\uparrow\uparrow\downarrow\uparrow\downarrow\downarrow
+\]
+
+becomes
+
+\[
+(()()).
+\]
+
+Animate step by step.
+
+Show why the “never below zero” rule means:
+
+> at every prefix, the number of closing parentheses never exceeds the number of opening parentheses.
+
+End with:
+
+\[
+\boxed{
+\text{Dyck paths}
+\longleftrightarrow
+\text{balanced parenthesis strings}.
+}
+\]
+
+The source explicitly states this correspondence. aybeyan-pdf
+
+---
+
+# 14. Scene I — Bertrand's ballot problem
+
+Keep this scene mathematically clean.
+
+The supplied article introduces two candidates \(A\) and \(B\), interprets a voting history as a word of \(A\)'s and \(B\)'s, and asks when \(A\) remains ahead. aybeyan-pdf
+
+For the Catalan special case, use equal final totals and the nonnegative-prefix condition.
+
+For example:
+
+```text
+A A B A B B
+```
+
+Create a running score:
+
+\[
+A\mapsto +1,
+\qquad
+B\mapsto -1.
+\]
+
+Animate:
+
+\[
+0\to1\to2\to1\to2\to1\to0.
+\]
+
+Plot these heights.
+
+Then morph this graph into a Dyck path.
+
+Therefore:
+
+\[
+\boxed{
+\text{legal ballot histories}
+\longleftrightarrow
+\text{Dyck paths}.
+}
+\]
+
+Be careful:
+
+The general Bertrand ballot theorem is broader than the Catalan special case.
+
+Do not imply that every ballot-problem formula is simply \(C_n\).
+
+Clearly distinguish:
+
+```text
+General Bertrand ballot problem
+```
+
+from:
+
+```text
+Catalan equal-total / nonnegative-prefix case
+```
+
+---
+
+# 15. Scene J — One number, many objects
+
+This is one of the most important scenes.
+
+Use
+
+\[
+C_3=5.
+\]
+
+Place a large
+
+\[
+\boxed{5}
+\]
+
+in the center.
+
+Around it morph or arrange:
+
+### Pentagon triangulations
+
+Five triangulations of a pentagon.
+
+### Parenthesizations
+
+Five ways to fully parenthesize four factors.
+
+### Binary trees
+
+Five full plane binary trees with three internal nodes.
+
+### Valid lattice paths
+
+Five valid \(3\times3\) Catalan paths.
+
+### Dyck paths
+
+Five Dyck paths of semilength 3.
+
+### Noncrossing pairings
+
+Five noncrossing perfect matchings of six circular points.
+
+Then display:
+
+\[
+\boxed{
+C_3=5
+}
+\]
+
+and below:
+
+```text
+Different objects.
+The same recursive structure.
+```
+
+This should replace the somewhat static correspondence chart in Figure 2.5 of the source with an actual animated mathematical correspondence. The source itself summarizes triangulations, balanced parentheses, binary trees, lattice paths, Dyck paths and ballot problems as Catalan correspondences. aybeyan-pdf
+
+---
+
+# 16. Scene K — Bridge directly into Chu (1987)
+
+This is where the new material joins the current project.
+
+Start with the six-point noncrossing matching example:
+
+\[
+C_3=5.
+\]
+
+Focus on one matched pair.
+
+Label:
+
+\[
+\text{block size}=2.
+\]
+
+Then highlight all three pairs:
+
+\[
+3\text{ blocks, each of size }2.
+\]
+
+Write:
+
+\[
+n_1=3,
+\qquad
+v_1=2.
+\]
+
+Then ask:
+
+```text
+What if a block is allowed to contain 3 points?
+```
+
+Transform one chord into a triangle.
+
+Then:
+
+```text
+What if different block sizes are allowed simultaneously?
+```
+
+Show:
+
+- a chord;
+- a triangle;
+- perhaps another polygon.
+
+Then introduce:
+
+\[
+\vec n=(n_1,\ldots,n_k),
+\qquad
+\vec v=(v_1,\ldots,v_k).
+\]
+
+And finally:
+
+\[
+N=\sum_i n_iv_i.
+\]
+
+Now transition into the existing Chu scene.
+
+This is the conceptual bridge:
+
+\[
+\boxed{
+\text{Catalan}
+=
+\text{noncrossing 2-point blocks}
+}
+\]
+
+becomes
+
+\[
+\boxed{
+\text{Chu generalized Catalan}
+=
+\text{noncrossing blocks of prescribed sizes}.
+}
+\]
+
+---
+
+# 17. Add generating function only after the recurrence is understood
+
+At the end of the basic Catalan section, optionally derive:
+
+\[
+C(x)=\sum_{n\ge0}C_nx^n.
+\]
+
+From
+
+\[
+C_n
+=
+\sum_{k=0}^{n-1}
+C_kC_{n-1-k},
+\]
+
+animate:
+
+\[
+C(x)
+=
+1+xC(x)^2.
+\]
+
+Do this by reusing the visual language:
+
+```text
+root object      → x
+left subproblem  → C
+right subproblem → C
+```
+
+so
+
+\[
+xC^2.
+\]
+
+Then:
+
+\[
+\boxed{C=1+xC^2}.
+\]
+
+This is particularly valuable because later Chu gives:
+
+\[
+\boxed{
+D
+=
+1+x_1D^{v_1}+\cdots+x_kD^{v_k}.
+}
+\]
+
+The animation should eventually show these side by side:
+
+\[
+\underbrace{C=1+xC^2}_{\text{ordinary Catalan}}
+\]
+
+\[
+\Downarrow
+\]
+
+\[
+\underbrace{
+D=1+\sum_i x_iD^{v_i}
+}_{\text{Chu generalization}}.
+\]
+
+This visual comparison is one of the main pedagogical goals of the new module.
+
+---
+
+# 18. Important terminology corrections
+
+Use these labels consistently in subtitles and formulas.
+
+Use:
+
+```text
+Catalan number
+Catalan numbers
+convex polygon triangulation
+full parenthesization
+full plane binary tree
+monotone lattice path
+Dyck path
+balanced-parenthesis word
+noncrossing perfect matching
+noncrossing partition
+```
+
+Avoid ambiguous phrases such as:
+
+```text
+binary tree with n vertices
+```
+
+unless the vertex convention has been explicitly defined.
+
+Avoid calling every diagonal arrangement a “polygon partition”; use:
+
+```text
+triangulation
+```
+
+when the polygon is specifically divided into triangles.
+
+For Chu later, use:
+
+```text
+block
+```
+
+or:
+
+```text
+v_i-point group
+```
+
+rather than confusing it with triangulation.
+
+---
+
+# 19. Required visual consistency
+
+Use the same color semantics throughout.
+
+For example:
+
+- distinguished/root object: existing root highlight color;
+- valid Catalan object: existing blue/normal color;
+- forbidden crossing/invalid path: red;
+- left Catalan subproblem: one fixed color;
+- right Catalan subproblem: another fixed color;
+- \(C_k\) text should use the same color as the corresponding geometric region;
+- later \(x_i\) must share the color of block type \(i\).
+
+Do not invent a completely separate visual style for this module.
+
+Inspect:
+
+```text
+utils/styles.py
+utils/scene_base.py
+utils/circle_points.py
+utils/polygon_groups.py
+utils/formulas.py
+```
+
+before implementing.
+
+Reuse existing helpers whenever possible.
+
+---
+
+# 20. Mathematical validation requirements
+
+Do not manually hard-code counts without checking them.
+
+Extend `utils/counting.py` where appropriate to verify:
+
+\[
+C_0=1,
+C_1=1,
+C_2=2,
+C_3=5,
+C_4=14.
+\]
+
+Verify:
+
+```text
+pentagon triangulations = 5
+hexagon triangulations  = 14
+4-factor parenthesizations = 5
+Dyck paths n=3 = 5
+valid lattice paths n=3 = 5
+noncrossing matchings of 6 points = 5
+```
+
+If explicit configurations are animated, store them deterministically.
+
+No random generation.
+
+---
+
+# 21. Do not attempt to code the whole module at once
+
+Development order must be:
+
+### Step 1
+
+Read:
+
+```text
+交接說明_HANDOFF.md
+codes/README.md
+codes/utils/*
+codes/scenes/scene01_classical_catalan.py
+```
+
+and summarize the existing architecture.
+
+Do not change anything yet.
+
+### Step 2
+
+Propose exactly which new files and existing files will change.
+
+### Step 3
+
+Implement only the definition / Catalan sequence scene.
+
+Render:
+
+```powershell
+manimgl main.py <SceneName> -w -l
+```
+
+Verify.
+
+### Step 4
+
+Implement polygon triangulation.
+
+Verify.
+
+### Step 5
+
+Implement recurrence.
+
+Verify.
+
+Then continue one scene at a time.
+
+Never generate 8–10 untested scene files in one shot.
+
+---
+
+# 22. Desired narrative order in the eventual video
+
+The final structure should approximately be:
+
+\[
+\boxed{\text{Catalan sequence}}
+\]
+
+↓
+
+\[
+\boxed{\text{polygon triangulation}}
+\]
+
+↓
+
+\[
+\boxed{\text{Catalan recurrence}}
+\]
+
+↓
+
+\[
+\boxed{\text{parenthesization}}
+\]
+
+↓
+
+\[
+\boxed{\text{binary trees}}
+\]
+
+↓
+
+\[
+\boxed{\text{lattice paths}}
+\]
+
+↓
+
+\[
+\boxed{\text{Dyck paths}}
+\]
+
+↓
+
+\[
+\boxed{\text{balanced parentheses}}
+\]
+
+↓
+
+\[
+\boxed{\text{ballot interpretation}}
+\]
+
+↓
+
+\[
+\boxed{\text{noncrossing pairings}}
+\]
+
+↓
+
+\[
+\boxed{
+C=1+xC^2
+}
+\]
+
+↓
+
+\[
+\boxed{
+\text{What if blocks do not all have size 2?}
+}
+\]
+
+↓
+
+\[
+\boxed{
+\text{Chu generalized Catalan numbers}
+}
+\]
+
+Do not present the examples as a list of trivia.
+
+The viewer should leave this section understanding:
+
+\[
+\boxed{
+\text{Catalan numbers count recursively decomposable noncrossing/binary structures.}
+}
+\]
+
+And immediately before Chu, the viewer should understand why
+
+\[
+C=1+xC^2
+\]
+
+naturally generalizes to
+
+\[
+D
+=
+1+\sum_i x_iD^{v_i}.
+\]
+
+---
+
+我自己會特別要求 AI 把 **\(C_3=5\)** 當成這整段的視覺主線。因為你可以真的把同一個「5」依序變成：
+
+\[
+\begin{aligned}
+&5\text{ 個五邊形 triangulations}\\
+\leftrightarrow\;&5\text{ 個四因子括號法}\\
+\leftrightarrow\;&5\text{ 棵 binary trees}\\
+\leftrightarrow\;&5\text{ 條 lattice paths}\\
+\leftrightarrow\;&5\text{ 條 Dyck paths}\\
+\leftrightarrow\;&5\text{ 個六點 noncrossing matchings}.
+\end{aligned}
+\]
+
+這樣觀眾不是被告知「Catalan 有很多 interpretations」，而是**親眼看到六個看似完全不同的東西逐一變成彼此**。
+
+而且這個設計最後接 Chu 特別漂亮：
+
+\[
+\boxed{C_3=5:\ 3\text{ 個 size-2 blocks}}
+\]
+
+↓
+
+「為什麼 block 一定要有兩個點？」
+
+↓
+
+\[
+\boxed{
+(n_1,\ldots,n_k),\quad
+(v_1,\ldots,v_k)
+}
+\]
+
+這就是從普通 Catalan 到 Chu 1987 最自然的故事線。

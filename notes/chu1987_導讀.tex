@@ -1,0 +1,1421 @@
+% !TEX program = xelatex
+% 編譯方式： xelatex chu1987_導讀.tex   （跑兩次以產生目錄與交互參照）
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xeCJK}
+\setCJKmainfont[BoldFont={Microsoft JhengHei Bold},ItalicFont={DFKai-SB}]{Microsoft JhengHei}
+\setCJKsansfont[BoldFont={Microsoft JhengHei Bold}]{Microsoft JhengHei}
+\setCJKmonofont{Microsoft JhengHei}
+\linespread{1.28}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,labelsep=quad}
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\renewcommand{\contentsname}{目錄}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{etoolbox}
+% 目錄裡各節之間的空白縮小一點（原本 1em），讓目錄和「一頁看懂」放在同一頁
+\makeatletter
+\patchcmd{\l@section}{1.0em}{0.45em}{}{\PackageWarning{notes}{TOC spacing patch failed}}
+\makeatother
+
+% ---------- 顏色（與 manim 動畫的配色規則一致：同一型群組同一顏色） ----------
+\colorlet{cA}{blue!75!black}        % 第 1 型：2 點群組（弦）
+\colorlet{cB}{orange!90!black}      % 第 2 型：3 點群組（三角形）
+\colorlet{cC}{green!50!black}       % 4 點群組
+\colorlet{cD}{violet!80!black}      % 5 點群組
+\colorlet{cRoot}{magenta!80!black}  % 固定點
+\colorlet{cBad}{red!85!black}       % 交叉
+% 第 1 節的卡塔蘭物件：根／左／右（左、右與第 4 節的區域 R_1、R_2 同色）
+\colorlet{cTop}{orange!90!black}    % 根（固定的那一個）
+\colorlet{cLeft}{teal!80!black}     % 左邊的子問題
+\colorlet{cRight}{purple!80!black}  % 右邊的子問題
+
+% ---------- 盒子 ----------
+\newtcolorbox{keybox}[1][]{enhanced,breakable,colback=blue!4,colframe=blue!45!black,
+  boxrule=0.7pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{thmbox}[1][]{enhanced,breakable,colback=orange!7,colframe=orange!75!black,
+  boxrule=0.8pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{notebox}[1][]{enhanced,breakable,colback=gray!7,colframe=gray!60,
+  boxrule=0.5pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+
+% ---------- 數學記號 ----------
+\newcommand{\vn}{\vec n}
+\newcommand{\vv}{\vec v}
+\newcommand{\vr}{\vec r}
+\newcommand{\ve}{\vec e}
+\newcommand{\vX}{\vec X}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\Cv}{C_{\vv}}
+\newcommand{\paper}[1]{{\small\color{gray!70!black}〔原文 #1〕}}
+\newcommand{\src}[1]{{\small\color{gray!70!black}〔來源 #1〕}}  % Selimi & Saračević (2019)，只在第 1 節用
+\newcommand{\mitref}[1]{{\small\color{gray!70!black}〔MIT #1〕}}  % MIT 18.212 的講次，只在附錄 A 用
+
+% ---------- TikZ：圓周上的點 ----------
+\tikzset{
+  chord/.style={cA,line width=1.25pt,line cap=round},
+  tri/.style={draw=cB,fill=cB!22,line width=1.1pt,line join=round},
+  quad/.style={draw=cC,fill=cC!20,line width=1.1pt,line join=round},
+  pent/.style={draw=cD,fill=cD!18,line width=1.1pt,line join=round},
+  bad/.style={cBad,line width=1.25pt,line cap=round},
+}
+% \CirclePts{N}{R}：畫圓，並定義座標 p1..pN（從正上方開始順時針）
+\newcommand{\CirclePts}[2]{%
+  \draw[gray!65,line width=0.6pt] (0,0) circle (#2);
+  \foreach \i in {1,...,#1}{\coordinate (p\i) at ({90-360/#1*(\i-1)}:#2);}
+}
+\newcommand{\CircleDots}[1]{\foreach \i in {1,...,#1}{\fill[black] (p\i) circle (1.6pt);}}
+\newcommand{\CircleLabels}[2]{\foreach \i in {1,...,#1}{\node[font=\scriptsize] at ({90-360/#1*(\i-1)}:#2) {\i};}}
+% 6 點、3 條弦的小圖： \MatchFig[樣式]{a/b,c/d,e/f}
+\newcommand{\MatchFig}[2][chord]{%
+  \begin{tikzpicture}[scale=0.62,baseline=-0.5ex]
+    \CirclePts{6}{1}
+    \foreach \a/\b in {#2}{\draw[#1] (p\a)--(p\b);}
+    \CircleDots{6}
+  \end{tikzpicture}}
+% 論文 Fig.1 的小圖： \PaperCfg{弦a}{弦b}{三角c}{三角d}{三角e}
+\newcommand{\PaperCfg}[5]{%
+  \begin{tikzpicture}[scale=0.82,baseline=-0.5ex]
+    \CirclePts{5}{1}
+    \draw[tri] (p#3)--(p#4)--(p#5)--cycle;
+    \draw[chord] (p#1)--(p#2);
+    \CircleDots{5}
+  \end{tikzpicture}}
+% 同上，但把點 1（固定點）塗成桃紅色
+\newcommand{\PaperCfgRoot}[5]{%
+  \begin{tikzpicture}[scale=0.82,baseline=-0.5ex]
+    \CirclePts{5}{1}
+    \draw[tri] (p#3)--(p#4)--(p#5)--cycle;
+    \draw[chord] (p#1)--(p#2);
+    \CircleDots{5}
+    \fill[cRoot] (p1) circle (2.6pt);
+  \end{tikzpicture}}
+
+% ---------- TikZ：Raney 證明用的路徑 ----------
+% \LPath{x0}{y0}{u,u,T,c,...}：從 (x0,y0) 出發畫路徑
+%   u = ↑ 步（+1，灰）  c = 弦型步（−1，藍）  T = 三角形型步（−2，橘）
+\newcounter{lph}
+\newcommand{\LStep}[3]{% #1 = x0, #2 = 第 j 步, #3 = 步的種類
+  \edef\lpyA{\arabic{lph}}%
+  \if#3u\addtocounter{lph}{1}\def\lpcol{gray!75!black}\fi
+  \if#3c\addtocounter{lph}{-1}\def\lpcol{cA}\fi
+  \if#3T\addtocounter{lph}{-2}\def\lpcol{cB}\fi
+  \edef\lpyB{\arabic{lph}}%
+  \draw[color=\lpcol,line width=1.3pt,line cap=round] ({#1+#2},\lpyA) -- ({#1+#2+1},\lpyB);
+  \fill ({#1+#2},\lpyA) circle (1.3pt);
+  \fill ({#1+#2+1},\lpyB) circle (1.3pt);
+}
+\newcommand{\LPath}[3]{%
+  \setcounter{lph}{#2}%
+  \foreach \lps [count=\lpj from 0] in {#3}{\LStep{#1}{\lpj}{\lps}}%
+}
+% 單一路徑小圖：\PathBox[比例]{步數}{u,...}，含高度 0 的虛線
+\newcommand{\PathBox}[3][0.3]{%
+  \begin{tikzpicture}[x=#1cm,y=#1cm,baseline=0pt]
+    \draw[gray!60,dashed] (0,0) -- (#2,0);
+    \LPath{0}{0}{#3}
+  \end{tikzpicture}}
+
+% ---------- TikZ：第 1 節的卡塔蘭物件（由 make_catalan_figs.py 產生） ----------
+\input{catalan_figs}
+
+\title{\textbf{廣義卡塔蘭數的新組合詮釋}\\[0.3em]\large W.~Chu (1987) 論文導讀}
+\author{\normalsize 原文：Wenchang Chu, \emph{A new combinatorial interpretation for generalized Catalan number},\\\normalsize
+\emph{Discrete Mathematics} \textbf{65} (1987) 91--94.\\[0.2em]\normalsize
+第 1 節另參考：A.~Selimi, M.~Saračević, \emph{Catalan Numbers and Applications},\\\normalsize
+\emph{Vision International Scientific Journal} \textbf{4}(1) (2019) 99--114.}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+
+\begin{keybox}[一頁看懂]
+\textbf{問題。}在圓周上放一些點，把它們分成若干「群組」，並規定各種大小的群組各要幾個。
+把同一群組的點連成一個凸多邊形（2 個點就是一條弦）。
+要求\textbf{不同群組的多邊形在圓內不可以相交}。請問有幾種分法？
+
+\textbf{答案。}恰好是「廣義卡塔蘭數」$\Cv(\vn)$，有一條乾淨的公式：
+\[
+\Cv(\vn)=\frac{N!}{n_1!\,n_2!\cdots n_k!\;(N+1-b)!},\qquad
+N=\text{總點數},\quad b=\text{群組總數}.
+\]
+
+\textbf{證明的三步。}
+\begin{enumerate}[leftmargin=1.6em]
+  \item \textbf{固定一個點}，看它所在的群組。這個群組（$v_i$ 個點）把其餘的點切成 $v_i$ 段，各段互不干擾。
+  \item 「互不干擾」翻譯成代數就是\textbf{相乘}，於是得到生成函數的方程
+        $D=1+x_1D^{v_1}+\cdots+x_kD^{v_k}$。
+  \item 用 Raney 公式檢查：由廣義卡塔蘭數組成的生成函數 $C$ 也滿足同一條方程。
+        這條方程的解只有一個，所以 $D=C$，證畢。
+\end{enumerate}
+\end{keybox}
+
+\setcounter{tocdepth}{1}
+\begingroup
+\setlength{\parskip}{0pt}  % 目錄排緊一點，才能和「一頁看懂」放在同一頁
+\tableofcontents
+\endgroup
+\newpage
+
+% =====================================================================
+\section{熱身：經典卡塔蘭數——同一個數，許多種物件}\label{sec:catalan}
+% =====================================================================
+
+這一節先把經典卡塔蘭數講清楚：它數的是哪些東西，以及為什麼這些東西的數目都一樣。
+重點不在多背幾個例子，而是看出它們共同的結構——
+\textbf{固定一個「根」，剩下的部分切成左、右兩個獨立的小問題}。
+Chu 的論文就是把「切成兩塊」推廣成「切成 $v_i$ 塊」。
+
+本節對應 manim 演示的卡塔蘭基礎模組（場景 00a--00m），第 1.$k$ 小節對應其中第 $k$ 個場景。
+內容主要參考 Selimi 與 Saračević 的介紹文（書目在標題下方），以〔來源 第 $p$ 頁〕標示它的頁碼；
+〔原文 第 $p$ 頁〕仍然指 Chu 的論文。
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{\qquad\qquad}lll@{}}
+\toprule
+小節 & 內容 & 動畫 & 小節 & 內容 & 動畫\\
+\midrule
+1.1 & 數列與公式 & 00a & 1.8 & 平衡括號 & 00h\\
+1.2 & 凸多邊形的三角剖分 & 00b & 1.9 & 投票問題 & 00i\\
+1.3 & 固定底邊：卡塔蘭遞迴 & 00c & 1.10 & 圓上的不交叉配對 & 00j\\
+1.4 & 完全括號化 & 00d & 1.11 & 同一個 $C_n$：一一對應 & 00k\\
+1.5 & 滿二元樹 & 00e & 1.12 & 生成函數 $C=1+xC^2$ & 00l\\
+1.6 & 格子路徑與反射原理 & 00f & 1.13 & 接到 Chu 的推廣 & 00m\\
+1.7 & Dyck 路徑 & 00g & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ---------------------------------------------------------------------
+\subsection{數列與公式}
+
+卡塔蘭數（Catalan number）的定義是 \src{第 100 頁，式 (1.1)}
+\[
+C_n=\frac{(2n)!}{(n+1)!\,n!}=\frac{1}{n+1}\binom{2n}{n},\qquad n\ge 0 .
+\]
+\begin{center}
+\begin{tabular}{c|ccccccccccc}
+$n$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\hline
+$C_n$ & 1 & 1 & 2 & 5 & 14 & 42 & 132 & 429 & 1430 & 4862 & 16796
+\end{tabular}
+\end{center}
+另一個常用的寫法是兩個二項式係數相減 \src{第 101 頁，式 (1.2)}：
+\[
+C_n=\binom{2n}{n}-\binom{2n}{n-1}\qquad(n\ge1).
+\]
+為什麼要減掉 $\binom{2n}{n-1}$，第 1.6 節用格子路徑解釋。
+
+它在組合數學裡到處出現。原文第一段就提到它有大約五十種不同的詮釋：
+括號的加法（非結合代數）、凸多邊形的切割、投票問題、格子路徑、隨機漫步、平面樹等等 \paper{第 91 頁}。
+
+\textbf{一點歷史} \src{第 100--101 頁}。
+\begin{itemize}
+  \item Euler 與 Segner（18 世紀）研究凸多邊形的三角剖分；Segner 給出遞迴式（第 1.3 節）。
+  \item 明安圖（1692--1763，清代的蒙古族數學家）約在 1730 年獨立用到這串數。
+        他把 $\sin 2x$、$\sin 4x$ 展開成 $\sin x$ 的冪級數，例如
+        \[
+        \sin 2x=2\sin x-\sum_{k\ge1}\frac{C_{k-1}}{4^{k-1}}\,\sin^{2k+1}x
+        =2\sin x-\sin^3x-\tfrac14\sin^5x-\tfrac18\sin^7x-\cdots .
+        \]
+        他的著作以中文寫成，西方很久之後才知道。
+  \item Catalan（1814--1894）在 1838 年研究括號問題；這串數後來以他命名。
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection{凸多邊形的三角剖分}
+
+用互不相交的對角線把凸多邊形切成三角形，稱為一種\textbf{三角剖分}。
+凸 $m$ 邊形的三角剖分數記為 $T_m$ \src{第 101--102 頁}：
+三角形本身已經切好，$T_3=1$；四邊形有兩條對角線，任選一條，$T_4=2$；
+五邊形有 5 種，六邊形有 14 種（圖~\ref{fig:hexgroups}）。
+
+\begin{figure}[H]
+\centering
+\FigTriSmall
+\caption{三角形、凸四邊形、凸五邊形的所有三角剖分。}
+\label{fig:trismall}
+\end{figure}
+
+凸 $m$ 邊形的每一種三角剖分都恰好用 $m-3$ 條對角線，切出 $m-2$ 個三角形。
+數字 $1,2,5,14$ 正是卡塔蘭數：
+
+\begin{thmbox}[三角剖分]
+凸 $(n+2)$ 邊形的三角剖分恰有 $C_n$ 種，也就是 $T_{n+2}=C_n$。
+\end{thmbox}
+
+注意指標：凸 $m$ 邊形對應的是 $C_{m-2}$（$n$ 是三角形的個數）。證明在下一小節。
+
+% ---------------------------------------------------------------------
+\subsection{固定底邊：卡塔蘭遞迴}
+
+把凸 $(n+2)$ 邊形的頂點依序編號為 $0,1,\ldots,n+1$，選定邊 $\{0,n+1\}$ 當作\textbf{底邊}
+\src{第 102--103 頁}。
+\begin{itemize}
+  \item 每一種三角剖分裡，底邊恰好屬於一個三角形；設它的第三個頂點是 $k$（$1\le k\le n$）。
+        把這個三角形叫做\textbf{根}。
+  \item 根把多邊形切成兩塊：左邊是頂點 $0,\ldots,k$ 構成的凸 $(k+1)$ 邊形，
+        右邊是頂點 $k,\ldots,n+1$ 構成的凸 $(n-k+2)$ 邊形。
+        （$k=1$ 或 $k=n$ 時，其中一塊只是一條邊，約定它有 $C_0=1$ 種剖分。）
+  \item 兩塊互不干擾，各自剖分：左邊 $C_{k-1}$ 種、右邊 $C_{n-k}$ 種，\textbf{相乘}；
+        不同的 $k$ 是不同的情況，\textbf{相加}。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\FigTriSplit
+\caption{凸六邊形（$n=4$）、第三個頂點 $k=2$ 的情形：\textcolor{cTop}{根三角形} $\{0,2,5\}$
+把六邊形切成\textcolor{cLeft}{左邊的三角形}（$C_1=1$ 種）與\textcolor{cRight}{右邊的四邊形}（$C_2=2$ 種）。}
+\label{fig:trisplit}
+\end{figure}
+
+於是得到 Segner 的遞迴式：
+\begin{equation}\label{eq:segner}
+\boxed{\;C_n=\sum_{k=1}^{n}C_{k-1}\,C_{n-k}=\sum_{j=0}^{n-1}C_j\,C_{n-1-j}\quad(n\ge1),\qquad C_0=1\;}
+\end{equation}
+例如六邊形（$n=4$）：
+\[
+C_4=C_0C_3+C_1C_2+C_2C_1+C_3C_0=1\cdot5+1\cdot2+2\cdot1+5\cdot1=14 .
+\]
+圖~\ref{fig:hexgroups} 把六邊形的 14 種三角剖分依 $k$ 分組，正好是 $5+2+2+5$。
+
+\begin{figure}[H]
+\centering
+\FigTriGroups
+\caption{凸六邊形的 14 種三角剖分，依底邊三角形的第三個頂點 $k$ 分組。
+顏色：\textcolor{cTop}{根三角形}、\textcolor{cLeft}{左邊}、\textcolor{cRight}{右邊}。}
+\label{fig:hexgroups}
+\end{figure}
+
+\begin{keybox}[整節最重要的結構]
+固定一個根，剩下的部分切成左、右兩個\textbf{獨立}的小問題：
+左右各自選 $\to$ 相乘；根的位置不同 $\to$ 相加。後面每一種物件都會再看到這個結構。
+\end{keybox}
+
+遞迴式只用到加法與乘法。它的解為什麼就是公式 $\frac{1}{n+1}\binom{2n}{n}$，
+第 1.6--1.7 節（格子路徑）與第 1.12 節（生成函數）各給一個理由。
+
+% ---------------------------------------------------------------------
+\subsection{乘法的順序：完全括號化}
+
+乘法一次只能乘兩個數。把 $n+1$ 個數依序相乘（不改變順序）要做 $n$ 次乘法，
+但先乘哪兩個可以有不同的選法。用括號把順序完全寫出來，稱為\textbf{完全括號化}
+\src{第 104 頁}：2 個因子只有 $a\cdot b$；3 個因子有 $(a\cdot b)\cdot c$、$a\cdot(b\cdot c)$ 兩種；
+4 個因子有 5 種。
+
+\textbf{看最後一次乘法。}最後做的那一次乘法就是\textbf{根}：
+它把因子切成左、右兩段，兩段各自完全括號化。4 個因子依「最後一次乘法在哪裡」分組：
+\[
+\underbrace{a\cdot(b\cdot(c\cdot d)),\ \ a\cdot((b\cdot c)\cdot d)}_{\textcolor{cLeft}{C_0}\textcolor{cRight}{C_2}=2}
+\qquad
+\underbrace{(a\cdot b)\cdot(c\cdot d)}_{\textcolor{cLeft}{C_1}\textcolor{cRight}{C_1}=1}
+\qquad
+\underbrace{(a\cdot(b\cdot c))\cdot d,\ \ ((a\cdot b)\cdot c)\cdot d}_{\textcolor{cLeft}{C_2}\textcolor{cRight}{C_0}=2}
+\]
+一般地，左段有 $k+1$ 個因子（$C_k$ 種）、右段有 $n-k$ 個因子（$C_{n-1-k}$ 種），
+又得到遞迴式 \eqref{eq:segner}。所以
+
+\begin{thmbox}[完全括號化]
+$n+1$ 個因子（$n$ 次乘法）的完全括號化恰有 $C_n$ 種。
+\end{thmbox}
+
+指標要小心：來源論文用 $M_n$ 表示「$n$ 個數」的括號法數，但照它寫的遞迴
+$M_n=M_1M_{n-1}+\cdots+M_{n-1}M_1$ 算出來是 $M_n=C_{n-1}$（例如 $M_4=5=C_3$），
+不是它所寫的 $M_n=C_n$ \src{第 104--105 頁}。本講義一律說「$n+1$ 個因子有 $C_n$ 種」。
+
+% ---------------------------------------------------------------------
+\subsection{括號與滿二元樹}
+
+\textbf{滿二元樹}（full binary tree）是每個內部節點都恰有左、右兩個小孩的有根樹；沒有小孩的節點叫葉子。
+有 $n$ 個內部節點的滿二元樹恰有 $n+1$ 片葉子。把完全括號化畫成樹：
+\begin{itemize}
+  \item 因子 $\leftrightarrow$ 葉子（由左到右）；
+  \item 每一次乘法 $\leftrightarrow$ 一個內部節點，它的左、右子樹就是這次乘法左、右兩邊的式子；
+  \item 最後一次乘法 $\leftrightarrow$ 樹根。
+\end{itemize}
+反過來，從樹也能讀回括號（每個內部節點把左、右子樹的式子乘起來），所以這是一一對應。
+
+\begin{figure}[H]
+\centering
+\FigParenTrees
+\caption{4 個因子的五種完全括號化與對應的滿二元樹。\textcolor{cTop}{橘色}是最後一次乘法（樹根），
+\textcolor{cLeft}{青色}與\textcolor{cRight}{紫紅色}是它左、右兩邊的式子（左、右子樹）。}
+\label{fig:parentrees}
+\end{figure}
+
+\begin{thmbox}[滿二元樹]
+$n$ 個內部節點（$n+1$ 片葉子）的滿二元樹恰有 $C_n$ 棵。
+\end{thmbox}
+
+另一種常見的說法：把葉子全部拿掉，剩下 $n$ 個節點的二元樹，每個節點的左、右小孩可有可無。
+兩種說法一一對應，數目都是 $C_n$；來源論文說的「$n$ 個頂點的二元樹」\src{第 105、108 頁}就是後者。
+不論哪一種說法，樹根的左子樹有 $k$ 個（內部）節點、右子樹有 $n-1-k$ 個，又是遞迴式 \eqref{eq:segner}。
+
+% ---------------------------------------------------------------------
+\subsection{格子路徑與反射原理}
+
+在方格上從 $(0,0)$ 走到 $(n,n)$，每一步往右（R）或往上（U）走一格 \src{第 106--107 頁}。
+一條路徑就是 $n$ 個 R 與 $n$ 個 U 排成的字，所以共有 $\binom{2n}{n}$ 條。
+
+\begin{thmbox}[格子路徑]
+從 $(0,0)$ 到 $(n,n)$、\textbf{不走到對角線 $y=x$ 上方}（可以碰到）的路徑恰有 $C_n$ 條。
+\end{thmbox}
+
+\begin{figure}[H]
+\centering
+\FigLatticeAll
+\caption{$n=3$：$\binom{6}{3}=20$ 條路徑（依字典序，R 在 U 之前）。
+\textcolor{cA}{藍色打勾}的 5 條不越過 $y=x$；\textcolor{cBad}{紅色}的 15 條越過了。}
+\label{fig:latticeall}
+\end{figure}
+
+來源論文直接寫出 $\binom{2n}{n}-\binom{2n}{n-1}=C_n$，沒有解釋為什麼要減 $\binom{2n}{n-1}$。
+下面的\textbf{反射原理}是標準的證明（補充說明，不在來源論文裡）。
+
+\begin{notebox}[反射原理（補充）]
+不合法的路徑一定會碰到直線 $y=x+1$。把它\textbf{第一次碰到 $y=x+1$ 之後}的部分沿著這條線翻過去
+（之後的 R 與 U 互換），終點 $(n,n)$ 就變成 $(n-1,n+1)$。
+反過來，任何走到 $(n-1,n+1)$ 的路徑都必須穿過 $y=x+1$，在第一次碰到的地方翻回來，
+就得到一條走到 $(n,n)$ 的不合法路徑。所以不合法的路徑與「走到 $(n-1,n+1)$ 的路徑」一一對應，
+共 $\binom{2n}{n-1}$ 條，因此
+\[
+\text{合法的路徑數}=\binom{2n}{n}-\binom{2n}{n-1}=\frac{1}{n+1}\binom{2n}{n}=C_n .
+\]
+\end{notebox}
+
+\begin{figure}[H]
+\centering
+\FigReflection
+\caption{不合法的路徑 $\mathrm{RUU}|\mathrm{RRU}$ 在 $P=(1,2)$ 第一次碰到 $y=x+1$。
+把之後的 RRU 翻成 UUR，就得到走到 $(2,4)$ 的路徑 $\mathrm{RUU}|\mathrm{UUR}$（\textcolor{cTop}{橘色虛線}）。}
+\label{fig:reflection}
+\end{figure}
+
+驗算 $n=3$：$\binom{6}{3}-\binom{6}{2}=20-15=5$，與圖~\ref{fig:latticeall} 一致。
+
+% ---------------------------------------------------------------------
+\subsection{Dyck 路徑}
+
+\textbf{Dyck 路徑}（半長 $n$）由 $n$ 個上坡 $\nearrow$ 與 $n$ 個下坡 $\searrow$ 組成，
+從地面出發、回到地面，而且\textbf{不低於地面} \src{第 107 頁}。
+上坡記為 U、下坡記為 D。$n=0,1,2,3$ 分別有 1、1、2、5 條（圖~\ref{fig:dyck}）。
+
+\textbf{從格子路徑變過來。}把第 1.6 節的格子路徑順時針轉 $45^\circ$，再上下翻轉：
+對角線 $y=x$ 變成地面，「不走到對角線上方」變成「不低於地面」。逐步來看就是
+\[
+\text{格子路徑的 R}\ \mapsto\ \text{上坡}\nearrow,\qquad \text{格子路徑的 U}\ \mapsto\ \text{下坡}\searrow
+\]
+（注意格子路徑的 U 變成 Dyck 路徑的 D）。合法的格子路徑在每一刻都有「R 的個數 $\ge$ U 的個數」，
+所以對應的 Dyck 路徑在每一刻的高度（上坡數減下坡數）都 $\ge0$。
+這是一一對應，因此 Dyck 路徑也恰有 $C_n$ 條。
+
+\begin{figure}[H]
+\centering
+\FigLatticeToDyck
+\caption{格子路徑 RURRUU（左）對應 Dyck 路徑 UDUUDD（右）。}
+\label{fig:lattice2dyck}
+\end{figure}
+
+\begin{notebox}[注意方向]
+如果反過來令 U $\mapsto\nearrow$、R $\mapsto\searrow$，「不走到 $y=x$ 上方」的路徑會變成一直在地面\textbf{以下}的路徑。
+要用那種對應，格子路徑的條件就得改成「不走到 $y=x$ \textbf{下方}」。
+\end{notebox}
+
+\textbf{第一次回到地面。}非空的 Dyck 路徑第一步一定是上坡。找出它\textbf{第一次回到地面}的那個下坡，
+路徑就可以唯一地寫成
+\[
+\textcolor{cTop}{\mathrm{U}}\;\textcolor{cLeft}{A}\;\textcolor{cTop}{\mathrm{D}}\;\textcolor{cRight}{B},
+\]
+其中 $A$ 是半長 $k$ 的 Dyck 路徑（整段抬高一層，所以不會提早碰到地面），
+$B$ 是半長 $n-1-k$ 的 Dyck 路徑。第一個上坡與它對應的下坡就是\textbf{根}，
+$A$、$B$ 是左、右兩個獨立的小問題：又是遞迴式 \eqref{eq:segner}。
+
+\begin{figure}[H]
+\centering
+\FigDyckTable
+\caption{半長 $n=0,1,2,3$ 的所有 Dyck 路徑。顏色：\textcolor{cTop}{根}（第一個上坡與第一次回到地面的下坡）、
+\textcolor{cLeft}{$A$}、\textcolor{cRight}{$B$}。}
+\label{fig:dyck}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\subsection{Dyck 路徑與平衡括號}
+
+把上坡寫成「(」、下坡寫成「)」\src{第 107 頁}，Dyck 路徑就變成 $n$ 對括號的\textbf{平衡字串}，
+例如 UUDUDD $\mapsto$ (()())。
+\begin{itemize}
+  \item 路徑在某一點的高度 $=$ 到那裡為止還沒關上的「(」的個數；
+  \item 「不低於地面」$=$「任何時候『)』都不比『(』多」，這正是括號能正確配對的條件。
+\end{itemize}
+例如 ())(() 讀到第 3 個字元時「)」比「(」多，對應的路徑在第 3 步掉到地面以下，所以不算。
+因此 $n$ 對括號的平衡字串也恰有 $C_n$ 種。
+
+\begin{figure}[H]
+\centering
+\FigDyckWords
+\caption{半長 3 的五條 Dyck 路徑，以及對應的括號字串與開票順序（第 1.9 節）。逐字的顏色與圖~\ref{fig:dyck} 相同。}
+\label{fig:dyckwords}
+\end{figure}
+
+\begin{notebox}[兩種括號別搞混]
+第 1.4 節的括號表示\textbf{乘法的順序}，這裡的括號是\textbf{會配對的字串}，兩者是不同的東西，只是數目都是 $C_n$。
+它們之間也有一一對應（都經過二元樹，見第 1.11 節）。
+\end{notebox}
+
+% ---------------------------------------------------------------------
+\subsection{投票問題}
+
+\textbf{一般的 Bertrand 投票問題（1887）。}兩位候選人 A、B 分別得到 $a$、$b$ 票（$a>b$），
+選票以隨機的順序一張一張開出（每一種順序機會相同）。
+開票過程中 A 的票數\textbf{始終嚴格領先}的機率是
+\[
+\frac{a-b}{a+b},\qquad\text{也就是說，這樣的開票順序共有 }\frac{a-b}{a+b}\binom{a+b}{a}\text{ 種}.
+\]
+來源論文給的是推廣版：A 的票數始終\textbf{超過 B 的 $k$ 倍}的機率是 $\frac{a-kb}{a+b}$（$a>kb$），
+$k=1$ 就是上面的情形。來源論文把它說成「數目」，其實是機率 \src{第 108 頁}。
+
+\textbf{卡塔蘭特例。}兩人\textbf{各得 $n$ 票}，要求開票過程中 A 的票數始終 $\ge$ B 的票數
+（可以同票，但不能落後）\src{第 111 頁}。
+把 A 票看成上坡、B 票看成下坡，「A 領先的票數」就是路徑的高度：
+合法的開票順序正好對應 Dyck 路徑，所以有 $C_n$ 種（圖~\ref{fig:dyckwords} 的最後一列）。
+
+\begin{figure}[H]
+\centering
+\FigBallot
+\caption{開票順序 AABABB：每開一張後 A 領先的票數依序是 $0,1,2,1,2,1,0$，連起來就是一條 Dyck 路徑。}
+\label{fig:ballot}
+\end{figure}
+
+\textbf{兩者的關係}（補充）。在卡塔蘭特例的每一種順序前面多放一張 A 票，
+就得到「A 得 $n+1$ 票、B 得 $n$ 票，而且 A 始終嚴格領先」的順序；
+反過來，這樣的順序第一張一定是 A，拿掉它就回到特例。用 Bertrand 的公式驗算：
+\[
+\frac{(n+1)-n}{2n+1}\binom{2n+1}{n}=\frac{1}{2n+1}\cdot\frac{(2n+1)!}{n!\,(n+1)!}=\frac{(2n)!}{n!\,(n+1)!}=C_n .
+\]
+
+% ---------------------------------------------------------------------
+\subsection{圓上的不交叉配對：這篇論文的出發點}
+
+這篇論文的出發點是 Motzkin 的幾何詮釋 \paper{第 91 頁}：
+
+\begin{thmbox}[Motzkin 的詮釋]
+在圓周上放 $2n$ 個點，用 $n$ 條弦把它們兩兩配對，並要求\textbf{任兩條弦在圓內都不相交}。
+這樣的配對方式恰有 $C_n$ 種。
+\end{thmbox}
+
+\begin{figure}[H]
+\centering
+\MatchFig{1/2,3/4,5/6}\quad
+\MatchFig{1/2,3/6,4/5}\quad
+\MatchFig{1/4,2/3,5/6}\quad
+\MatchFig{1/6,2/3,4/5}\quad
+\MatchFig{1/6,2/5,3/4}\qquad\vrule\qquad
+\MatchFig[bad]{1/4,2/5,3/6}
+\caption{$n=3$：6 個點的不交叉配對共有 $C_3=5$ 種（左邊五個）。最右邊是一個\textcolor{cBad}{交叉}的配對，不算。}
+\label{fig:catalan3}
+\end{figure}
+
+\textbf{為什麼是 $C_n$？}把點依順時針編號為 $1,2,\ldots,2n$，看點 1 和誰配對。
+設點 1 與點 $q$ 配對。因為不可以交叉，其他的弦都不能跨過弦 $\{1,q\}$，
+所以弦的兩側（點 $2,\ldots,q-1$ 與點 $q+1,\ldots,2n$）各自配對、互不干擾。
+每一側的點數都必須是偶數；若一側有 $2k$ 個點，另一側就有 $2(n-1-k)$ 個點，
+配法分別有 $C_k$ 與 $C_{n-1-k}$ 種：又是遞迴式 \eqref{eq:segner}。含點 1 的弦就是\textbf{根}。
+
+\begin{figure}[H]
+\centering
+\FigMatchRegions
+\caption{$n=3$：點 1 只能和點 2、4、6 配對。\textcolor{cTop}{根弦}兩側各自配對，
+合計 $C_0C_2+C_1C_1+C_2C_0=2+1+2=5$。}
+\label{fig:matchregions}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\subsection{同一個 $C_n$：一一對應}
+
+到目前為止的每一種物件，都可以拆成「根＋左＋右」：
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lp{6.3cm}p{3.7cm}l@{}}
+\toprule
+物件 & \textcolor{cTop}{根} & \textcolor{cLeft}{左} & \textcolor{cRight}{右}\\
+\midrule
+三角剖分 & 含底邊的三角形 & 它左邊的多邊形 & 它右邊的多邊形\\
+完全括號化 & 最後一次乘法 & 左邊的因子 & 右邊的因子\\
+滿二元樹 & 樹根 & 左子樹 & 右子樹\\
+Dyck 路徑 & 第一個上坡，與第一次回到地面的下坡 & 兩者之間 & 之後\\
+格子路徑 & 第一個 R，與它所對應的 U（同 Dyck 路徑） & 兩者之間 & 之後\\
+平衡括號 & 第一個「(」，與和它配對的「)」 & 兩者之間 & 之後\\
+開票順序 & 第一張票（A），與第一次回到同票的那張 B & 兩者之間 & 之後\\
+圓上配對 & 含點 1 的弦 & 點 1 與它的配對點之間（順時針）的點 & 其餘的點\\
+\bottomrule
+\end{tabular}
+\caption{每一種卡塔蘭物件的「根＋左＋右」。}
+\label{tab:rootlr}
+\end{table}
+
+左、右兩部分本身又是同一種物件，可以再拆下去。所以每一種物件都對應到一棵滿二元樹：
+根對應樹根，左、右對應左、右子樹。經過這棵樹，\textbf{任兩種物件之間都有一一對應}，
+例如「三角剖分 $\to$ 樹 $\to$ 圓上配對」。圖~\ref{fig:onenumber} 把 $n=3$ 的五棵樹各畫成八種物件，
+\textbf{同一欄的八個物件彼此對應}。每一種物件的五個依同一順序排列，與動畫場景 00k 相同。
+
+\begin{figure}[tp]
+\centering
+\FigOneNumber
+\caption{同一個 $C_3=5$：每一欄是同一棵滿二元樹（欄首是左、右子樹的大小）畫成八種物件。
+顏色：\textcolor{cTop}{根}、\textcolor{cLeft}{左}、\textcolor{cRight}{右}。}
+\label{fig:onenumber}
+\end{figure}
+
+\begin{keybox}[為什麼同一個數到處出現]
+這些物件都滿足同一條遞迴 \eqref{eq:segner} 與同樣的起點 $C_0=1$。
+卡塔蘭數數的，正是「可以遞迴地拆成根＋左＋右」的結構。
+\end{keybox}
+
+% ---------------------------------------------------------------------
+\subsection{生成函數 $C=1+xC^2$}
+
+把所有卡塔蘭數收進一個冪級數：
+\[
+C(x)=\sum_{n\ge0}C_nx^n=1+x+2x^2+5x^3+14x^4+\cdots
+\]
+「根＋左＋右」翻譯成代數，就是
+\begin{equation}\label{eq:cgf}
+C=\underbrace{1}_{\text{空的物件}}+\underbrace{x}_{\textcolor{cTop}{\text{根}}}\cdot
+\underbrace{C}_{\textcolor{cLeft}{\text{左}}}\cdot\underbrace{C}_{\textcolor{cRight}{\text{右}}}=1+xC^2 .
+\end{equation}
+$x$ 的冪次記錄物件的大小 $n$（三角形的個數、乘法的次數、內部節點的個數……）：
+根用掉 1 個，所以乘 $x$；左、右各自是任意大小的卡塔蘭物件，而且互相獨立，所以是 $C\cdot C$。
+這正是第 5 節兩條翻譯規則（獨立 $\to$ 相乘、多用一個 $\to$ 乘 $x$）最簡單的情形。
+
+\textbf{驗算前幾項。}
+\[
+\begin{aligned}
+C^2&=(1+x+2x^2+5x^3+\cdots)^2=1+2x+5x^2+14x^3+\cdots,\\
+1+xC^2&=1+x+2x^2+5x^3+14x^4+\cdots=C .
+\end{aligned}
+\]
+比較兩邊 $x^n$ 的係數，正是遞迴式 \eqref{eq:segner}。
+
+\textbf{解出來。}式 \eqref{eq:cgf} 是 $C$ 的二次方程 $xC^2-C+1=0$，所以
+\[
+C(x)=\frac{1-\sqrt{1-4x}}{2x}
+\]
+（取減號，$C(0)=1$ 才會成立）。用二項級數展開 $\sqrt{1-4x}$，並利用
+$\binom{1/2}{m}(-4)^m=-\frac{2}{m}\binom{2m-2}{m-1}$：
+\[
+\sqrt{1-4x}=1-\sum_{m\ge1}\frac{2}{m}\binom{2m-2}{m-1}x^m=1-2x-2x^2-4x^3-10x^4-\cdots .
+\]
+代回去得到 $C(x)=\sum_{n\ge0}\frac{1}{n+1}\binom{2n}{n}x^n$，也就是第 1.1 節的公式。
+第 8 節提到的 Lagrange 反演，就是把這種「由方程讀出係數」的做法推廣到 Chu 的方程。
+
+% ---------------------------------------------------------------------
+\subsection{從卡塔蘭數到 Chu 的推廣}
+
+第 1.10 節的配對可以換個說法：圓周上的 $2n$ 個點分成 $n$ 個\textbf{「2 點群組」}，群組之間不交叉。
+Chu 問的是：如果群組可以有 3 個點、4 個點……呢？
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \begin{scope}
+    \CirclePts{6}{1}
+    \draw[chord] (p1)--(p6); \draw[chord] (p2)--(p3); \draw[chord] (p4)--(p5);
+    \CircleDots{6}\CircleLabels{6}{1.25}
+    \node[font=\small] at (0,-1.75) {3 個 2 點群組（$C_3$ 的一種）};
+  \end{scope}
+  \draw[-{Stealth[length=5pt]},line width=0.7pt,gray!60!black] (1.9,0) -- (3.3,0)
+    node[midway,above,font=\scriptsize] {加一個點};
+  \begin{scope}[xshift=5.2cm]
+    \CirclePts{7}{1}
+    \draw[tri] (p4)--(p5)--(p6)--cycle;
+    \draw[chord] (p1)--(p7); \draw[chord] (p2)--(p3);
+    \CircleDots{7}\CircleLabels{7}{1.25}
+    \node[font=\small] at (0,-1.75) {2 條弦＋1 個三角形};
+  \end{scope}
+\end{tikzpicture}
+\caption{在點 4、5 之間加一個點，弦 $\{4,5\}$ 就變成三角形（右圖重新編號後是 $\{4,5,6\}$）。
+右圖是 $\vn=(2,1)$、$\vv=(2,3)$ 的一種分法，共 $N=2\cdot2+1\cdot3=7$ 個點（第 2 節）。}
+\label{fig:bridge}
+\end{figure}
+
+固定一點的想法完全一樣，只是根從「一條弦」變成「一個 $v_i$ 點群組」：
+
+\begin{keybox}[從 $C$ 到 $D$]
+\begin{tabular}{@{}ll@{}}
+經典卡塔蘭數： & 根是一條弦，把其餘的點切成 \textbf{2} 塊 \quad$\Longrightarrow\quad C=1+xC^2$\\[4pt]
+Chu 的推廣： & 根是一個 $v_i$ 點群組，切成 $\boldsymbol{v_i}$ 塊 \quad$\Longrightarrow\quad D=1+x_1D^{v_1}+\cdots+x_kD^{v_k}$
+\end{tabular}
+\end{keybox}
+
+\textbf{這篇論文做的事，一句話：}把「每組 2 個點」推廣成「每組可以有任意指定的點數」，
+然後證明答案仍然有漂亮的公式。第 2 節起就是這件事的細節。
+
+% =====================================================================
+\section{從「兩點一組」到「$v$ 點一組」}
+% =====================================================================
+
+\subsection{群組與多邊形}
+
+一個含有 $v$ 個點的群組，把它的點沿著圓周依序用弦連起來，就得到一個凸 $v$ 邊形
+\paper{第 92 頁}：
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \begin{scope}[xshift=0cm]
+    \CirclePts{8}{1}\draw[chord] (p1)--(p4);\CircleDots{8}
+    \node at (0,-1.45) {$v=2$：弦};
+  \end{scope}
+  \begin{scope}[xshift=3.4cm]
+    \CirclePts{8}{1}\draw[tri] (p1)--(p4)--(p6)--cycle;\CircleDots{8}
+    \node at (0,-1.45) {$v=3$：三角形};
+  \end{scope}
+  \begin{scope}[xshift=6.8cm]
+    \CirclePts{8}{1}\draw[quad] (p1)--(p3)--(p5)--(p7)--cycle;\CircleDots{8}
+    \node at (0,-1.45) {$v=4$：四邊形};
+  \end{scope}
+  \begin{scope}[xshift=10.2cm]
+    \CirclePts{8}{1}\draw[pent] (p1)--(p2)--(p4)--(p6)--(p7)--cycle;\CircleDots{8}
+    \node at (0,-1.45) {$v=5$：五邊形};
+  \end{scope}
+\end{tikzpicture}
+\caption{一個 $v$ 點群組畫出來就是一個凸 $v$ 邊形。}
+\end{figure}
+
+\subsection{什麼叫「不交叉」}
+
+「不交叉」的意思是：不同群組的多邊形，它們的邊在圓內不相交。
+用點的編號來說（這是現代常用的等價說法，原文沒有寫出來）：
+
+\begin{notebox}[交叉的判斷法]
+兩個群組 $A$、$B$ \textbf{交叉}，是指沿著圓周走一圈，可以依序遇到四個點 $a,b,c,d$，
+其中 $a,c\in A$ 而 $b,d\in B$。也就是兩組的點在圓周上「交錯」出現。
+\end{notebox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.1]
+  \begin{scope}
+    \CirclePts{7}{1}
+    \draw[tri] (p3)--(p4)--(p7)--cycle;
+    \draw[chord] (p1)--(p2);
+    \draw[chord] (p5)--(p6);
+    \CircleDots{7}\CircleLabels{7}{1.25}
+    \node at (0,-1.75) {不交叉 \ \checkmark};
+  \end{scope}
+  \begin{scope}[xshift=5.5cm]
+    \CirclePts{7}{1}
+    \draw[tri] (p3)--(p5)--(p7)--cycle;
+    \draw[chord] (p1)--(p2);
+    \draw[bad] (p4)--(p6);
+    \CircleDots{7}\CircleLabels{7}{1.25}
+    \node[cBad] at (0,-1.75) {交叉 $\times$};
+  \end{scope}
+\end{tikzpicture}
+\caption{同樣是 7 個點分成「兩條弦與一個三角形」。左：互不相交。
+右：\textcolor{cBad}{紅色的弦} $\{4,6\}$ 穿過三角形 $\{3,5,7\}$ 的邊，
+因為 $4,5,6,7$ 沿圓周交錯出現（$4,6$ 屬於弦，$5,7$ 屬於三角形）。}
+\label{fig:crossing}
+\end{figure}
+
+\subsection{兩個向量 $\vn$ 與 $\vv$}
+
+我們用兩個向量來描述「要哪些群組」：
+\[
+\vv=(v_1,v_2,\ldots,v_k)\ \text{：有哪幾種群組大小},\qquad
+\vn=(n_1,n_2,\ldots,n_k)\ \text{：每種大小各要幾個}.
+\]
+也就是說，\textbf{要 $n_i$ 個「$v_i$ 點群組」}（$i=1,\ldots,k$）。
+我們把「$v_i$ 點群組」稱為\textbf{第 $i$ 型}群組。
+
+圓周上的總點數就是兩個向量的內積：
+\[
+N=\ip{\vn}{\vv}=\sum_{i=1}^k n_iv_i ,
+\qquad\text{群組總數}\ \ b=\sum_{i=1}^k n_i .
+\]
+
+\textbf{例。}$\vn=(2,1)$，$\vv=(2,3)$ 表示「2 條弦、1 個三角形」，
+總點數 $N=2\times 2+1\times 3=7$（圖~\ref{fig:crossing} 左邊就是這種分法之一）。
+
+\subsection{廣義卡塔蘭數的公式}
+
+原文式 (1)、(2) 定義了兩種推廣 \paper{第 91 頁}。
+
+\textbf{高階卡塔蘭數}（只有一種群組大小 $k$，又稱 Fuss--Catalan 數）：
+\[
+C_k(n)=\frac{1}{nk+1}\binom{nk+1}{n}.
+\]
+
+\textbf{廣義卡塔蘭數}（本文主角）：
+\begin{equation}\label{eq:gc}
+\Cv(\vn)=\frac{1}{N+1}\binom{N+1}{\,n_1,\,n_2,\,\ldots,\,n_k,\,L\,},
+\qquad L=1+\sum_{i=1}^k n_i(v_i-1).
+\end{equation}
+右邊是多項式係數：$\displaystyle\binom{M}{a_1,\ldots,a_r}=\frac{M!}{a_1!\cdots a_r!}$（其中 $a_1+\cdots+a_r=M$）。
+
+\begin{keybox}[好算的形式]
+注意 $L=1+N-b$，而且 $\frac{(N+1)!}{N+1}=N!$，所以式 \eqref{eq:gc} 可以化簡成
+\[
+\boxed{\;\Cv(\vn)=\frac{N!}{n_1!\,n_2!\cdots n_k!\,(N+1-b)!}\;}
+\]
+實際計算時用這個形式最方便。
+\end{keybox}
+
+\textbf{特例檢查。}
+\begin{itemize}
+  \item 只有弦：$\vv=(2)$、$\vn=(n)$，則 $N=2n$、$b=n$，
+        $\Cv(\vn)=\dfrac{(2n)!}{n!\,(n+1)!}=\dfrac{1}{n+1}\dbinom{2n}{n}=C_n$。回到經典卡塔蘭數。
+  \item 只有一種大小 $r$：$\vv=(r)$、$\vn=(n)$，則 $\Cv(\vn)=\dfrac{(rn)!}{n!\,((r-1)n+1)!}=\dfrac{1}{rn+1}\dbinom{rn+1}{n}$，就是高階卡塔蘭數。
+\end{itemize}
+所以三者的關係是：經典卡塔蘭數 $\subset$ 高階卡塔蘭數 $\subset$ 廣義卡塔蘭數。
+
+% =====================================================================
+\section{主定理與例子}
+% =====================================================================
+
+\begin{thmbox}[定理（Chu 1987）]
+把圓周上 $\ip{\vn}{\vv}$ 個點分成 $n_i$ 個 $v_i$ 點群組（$1\le i\le k$），且群組之間不交叉。
+這樣的分法數目等於 $\Cv(\vn)$。
+
+等價的幾何說法：在 $\ip{\vn}{\vv}$ 個圓周點上連弦，畫出 $n_i$ 個凸 $v_i$ 邊形（$1\le i\le k$），
+使得所有的弦在圓內都不相交，方法數是 $\Cv(\vn)$。
+\end{thmbox}
+
+\subsection{原文的例子：$\vn=(1,1)$，$\vv=(2,3)$}
+
+一條弦加一個三角形，總點數 $N=1\times2+1\times3=5$，群組數 $b=2$。公式給出
+\[
+\Cv(\vn)=\frac{1}{6}\binom{6}{1,1,4}=\frac{1}{6}\cdot\frac{6!}{1!\,1!\,4!}=\frac{30}{6}=5,
+\qquad\text{或直接算 }\frac{5!}{1!\,1!\,4!}=5 .
+\]
+
+\begin{figure}[H]
+\centering
+\PaperCfg{4}{5}{1}{2}{3}\quad
+\PaperCfg{5}{1}{2}{3}{4}\quad
+\PaperCfg{1}{2}{3}{4}{5}\quad
+\PaperCfg{2}{3}{4}{5}{1}\quad
+\PaperCfg{3}{4}{5}{1}{2}
+\caption{原文 Fig.~1：5 個點分成一條弦與一個三角形，不交叉的分法恰有 5 種。}
+\label{fig:paper}
+\end{figure}
+
+\textbf{為什麼是 5？}弦的兩個端點必須\textbf{相鄰}。
+如果弦的兩端不相鄰，它兩側都會有別的點，而三角形的三個點就被分在弦的兩側，一定會穿過弦。
+圓周上 5 個點有 5 對相鄰的點，所以是 5 種。這五種圖形其實就是同一個圖案旋轉五次。
+
+\subsection{再一個例子：$\vn=(2,1)$，$\vv=(2,3)$}
+
+兩條弦加一個三角形，$N=7$，$b=3$：
+\[
+\Cv(\vn)=\frac{7!}{2!\,1!\,(7+1-3)!}=\frac{5040}{2\cdot 120}=21 .
+\]
+
+\subsection{數值對照表}
+
+下表的「公式」欄是式 \eqref{eq:gc}，「電腦枚舉」欄是用程式把所有分法列出來、去掉交叉的之後數出來的結果
+（程式在 \texttt{codes/utils/counting.py}）。兩欄完全一致。
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llcccc}
+\toprule
+$\vn$ & $\vv$ & 白話 & 總點數 $N$ & 公式 & 電腦枚舉\\
+\midrule
+$(3)$ & $(2)$ & 3 條弦 & 6 & 5 & 5\\
+$(4)$ & $(2)$ & 4 條弦 & 8 & 14 & 14\\
+$(3)$ & $(3)$ & 3 個三角形 & 9 & 12 & 12\\
+$(1,1)$ & $(2,3)$ & 1 弦 1 三角形（原文 Fig.~1） & 5 & 5 & 5\\
+$(2,1)$ & $(2,3)$ & 2 弦 1 三角形 & 7 & 21 & 21\\
+$(1,2)$ & $(2,3)$ & 1 弦 2 三角形 & 8 & 28 & 28\\
+$(2,2)$ & $(2,3)$ & 2 弦 2 三角形 & 10 & 180 & 180\\
+$(3,2)$ & $(2,3)$ & 3 弦 2 三角形 & 12 & 990 & 990\\
+$(1,1,1)$ & $(2,3,4)$ & 弦、三角形、四邊形各 1 & 9 & 72 & 72\\
+\bottomrule
+\end{tabular}
+\caption{廣義卡塔蘭數的數值驗證。}
+\end{table}
+
+% =====================================================================
+\section{證明第一步：固定一個點，得到遞迴}
+% =====================================================================
+
+令 $d(\vn)$ 表示定理中「不交叉分法」的數目。目標是證明 $d(\vn)=\Cv(\vn)$。
+約定 $d(\vec 0)=1$（沒有點的時候，只有「什麼都不畫」這一種分法）。
+
+\subsection{關鍵觀察}
+
+\begin{keybox}[整篇論文最重要的一句話 \paper{第 92 頁}]
+在圓周上\textbf{固定一個點}。假設它所在的群組有 $v_i$ 個點。
+那麼這個群組把其餘 $N-v_i$ 個點切成\textbf{至多 $v_i$ 段}，而且\textbf{各段內部的分法互相獨立}。
+\end{keybox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=2.05]
+  \def\R{1}
+  \CirclePts{12}{\R}
+  % 三個區域（弓形）
+  \fill[teal!18]   (p1)  arc[start angle=90,  end angle=-30,  radius=\R] -- cycle;
+  \fill[purple!14] (p5)  arc[start angle=-30, end angle=-180, radius=\R] -- cycle;
+  \fill[green!16]  (p10) arc[start angle=-180,end angle=-270, radius=\R] -- cycle;
+  \draw[gray!65,line width=0.6pt] (0,0) circle (\R);
+  % 根群組
+  \draw[tri,line width=1.5pt] (p1)--(p5)--(p10)--cycle;
+  % 各區域內的子結構
+  \draw[tri]   (p2)--(p3)--(p4)--cycle;
+  \draw[chord] (p6)--(p7);
+  \draw[chord] (p8)--(p9);
+  \draw[chord] (p11)--(p12);
+  \CircleDots{12}
+  \fill[cRoot] (p1) circle (2.6pt);
+  \node[cRoot,font=\small] at (90:1.2) {固定點 $p_0$};
+  \node[teal!50!black]   at (30:1.27)   {$R_1$};
+  \node[purple!70!black] at (-105:1.25) {$R_2$};
+  \node[green!40!black]  at (135:1.27)  {$R_3$};
+  \node[cB,font=\small] at (0.02,-0.12) {根群組};
+  % 右側說明
+  \node[anchor=west,align=left,font=\small] at (1.75,0.2) {%
+    根群組是三角形（$v_i=3$），切出 3 個區域：\\[2pt]
+    \textcolor{teal!50!black}{$R_1$}：3 個點 $\to$ 放一個三角形\\
+    \textcolor{purple!70!black}{$R_2$}：4 個點 $\to$ 放兩條弦\\
+    \textcolor{green!40!black}{$R_3$}：2 個點 $\to$ 放一條弦\\[2pt]
+    每個區域裡怎麼分，完全不影響別的區域。};
+\end{tikzpicture}
+\caption{固定點 $p_0$ 所在的群組（粗線三角形）把其餘 9 個點分成三段。
+這張圖對應 $\vv=(2,3)$、$\vn=(3,2)$，共 12 個點。}
+\label{fig:root}
+\end{figure}
+
+\textbf{為什麼獨立？}因為不可以交叉，任何別的群組都不能跨過根群組的邊，
+所以每個群組的點必須整個落在同一段裡。各段裡面要怎麼分，是各自的小問題。
+
+\textbf{為什麼說「至多」？}根群組的相鄰兩個頂點之間可能一個點也沒有，那一段就是空的。
+空的段只有 1 種分法（$d(\vec 0)=1$），所以在公式裡我們一律當成 $v_i$ 段來算，不會出錯。
+
+\subsection{寫成遞迴式}
+
+假設固定點所在的群組是第 $i$ 型。拿掉這個群組後，剩下的群組清單是 $\vn-\ve_i$
+（$\ve_i$ 是第 $i$ 個分量為 1、其餘為 0 的單位向量）。
+這些群組要分配到 $v_i$ 段裡：第 $j$ 段分到的清單記為 $\vr_j$，於是
+\[
+\vr_1+\vr_2+\cdots+\vr_{v_i}=\vn-\ve_i .
+\]
+第 $j$ 段內部有 $d(\vr_j)$ 種分法，各段獨立所以\textbf{相乘}；
+不同的分配方式、不同的 $i$ 則是不同的情況，所以\textbf{相加}。這就是原文式 (5)：
+\begin{equation}\label{eq:rec}
+d(\vn)=\sum_{i=1}^{k}\ \sum_{\vr_1+\cdots+\vr_{v_i}=\vn-\ve_i} d(\vr_1)\,d(\vr_2)\cdots d(\vr_{v_i}).
+\end{equation}
+
+\textbf{對照圖~\ref{fig:root}：}$\vn=(3,2)$，根群組是三角形（第 2 型），
+$\vn-\ve_2=(3,1)$，而圖中 $\vr_1=(0,1)$、$\vr_2=(2,0)$、$\vr_3=(1,0)$，加起來正好是 $(3,1)$。
+
+\subsection{用原文的例子驗算遞迴}
+
+取 $\vv=(2,3)$，算 $d(1,1)$。先有 $d(0,0)=d(1,0)=d(0,1)=1$。
+\begin{itemize}
+  \item 固定點在\textbf{弦}上（$i=1$，$v_1=2$ 段）：$\vr_1+\vr_2=(0,1)$，三角形放在第 1 段或第 2 段，共 $2$ 種。
+  \item 固定點在\textbf{三角形}上（$i=2$，$v_2=3$ 段）：$\vr_1+\vr_2+\vr_3=(1,0)$，弦放在三段之一，共 $3$ 種。
+\end{itemize}
+所以 $d(1,1)=2+3=5$，與圖~\ref{fig:paper} 吻合：
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+  \node (a) at (0,0) {\PaperCfgRoot{5}{1}{2}{3}{4}\ \PaperCfgRoot{1}{2}{3}{4}{5}};
+  \node[below=1pt of a,font=\small] {固定點在弦上：2 種};
+  \node (b) at (7.6,0) {\PaperCfgRoot{4}{5}{1}{2}{3}\ \PaperCfgRoot{2}{3}{4}{5}{1}\ \PaperCfgRoot{3}{4}{5}{1}{2}};
+  \node[below=1pt of b,font=\small] {固定點在三角形上：3 種};
+  \node at (3.15,0) {\Large$+$};
+\end{tikzpicture}
+\caption{把 Fig.~1 的五種分法依「固定點（\textcolor{cRoot}{桃紅色}）屬於哪一型群組」分類：$2+3=5$。}
+\end{figure}
+
+% =====================================================================
+\section{證明第二步：把遞迴變成生成函數的方程}
+% =====================================================================
+
+\subsection{生成函數是什麼}
+
+生成函數是一個「記帳」工具。對每一型群組準備一個變數 $x_i$，定義 \paper{式 (3)}
+\[
+D(\vX)=\sum_{\vn} d(\vn)\,x_1^{n_1}x_2^{n_2}\cdots x_k^{n_k}.
+\]
+可以這樣讀：單項式 $x_1^{3}x_2^{2}$ 代表「用了 3 個第 1 型群組、2 個第 2 型群組」，
+它前面的係數 $d(3,2)$ 就是這種情況的分法數。
+
+\subsection{兩條翻譯規則}
+
+\begin{keybox}[組合 $\longleftrightarrow$ 代數]
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{獨立的選擇 $\to$ 相乘。}兩個冪級數相乘時，係數的算法是
+        \[[x^{\vn}]\,(A\cdot B)=\sum_{\vr_1+\vr_2=\vn}a(\vr_1)\,b(\vr_2),\]
+        正好就是「把群組清單分給兩段，兩段各自選」的算法。所以 $v_i$ 段獨立的區域對應 $D^{v_i}$。
+  \item \textbf{多用一個第 $i$ 型群組 $\to$ 乘上 $x_i$。}根群組本身用掉一個第 $i$ 型群組。
+\end{itemize}
+\end{keybox}
+
+於是「固定點在第 $i$ 型群組上」的所有情況，合起來貢獻 $x_i\,D^{v_i}$。
+把 $i=1,\ldots,k$ 加起來，再加上「沒有任何點」的空情況（貢獻常數 $1$），就得到原文式 (6)：
+\begin{equation}\label{eq:gf}
+\boxed{\;D(\vX)=1+x_1D^{v_1}(\vX)+x_2D^{v_2}(\vX)+\cdots+x_kD^{v_k}(\vX)\;}
+\end{equation}
+式 \eqref{eq:gf} 和遞迴式 \eqref{eq:rec} 說的是同一件事，只是換成代數語言。
+
+\textbf{檢查。}只有弦的時候（$k=1$、$v_1=2$），式 \eqref{eq:gf} 變成 $D=1+xD^2$，
+這正是經典卡塔蘭數生成函數滿足的方程（第 1.12 節），解出來 $D=1+x+2x^2+5x^3+14x^4+\cdots$。
+
+% =====================================================================
+\section{證明第三步：公式那一邊也滿足同一條方程}
+% =====================================================================
+
+現在看公式那一邊。令 \paper{式 (7)}
+\[
+C(\vX)=\sum_{\vn}\Cv(\vn)\,x_1^{n_1}\cdots x_k^{n_k}.
+\]
+\textbf{只要證明 $C$ 也滿足式 \eqref{eq:gf} 就夠了。}
+理由：式 \eqref{eq:gf} 加上常數項為 1，等於遞迴式 \eqref{eq:rec} 加上 $d(\vec0)=1$，
+每個係數都被前面的係數唯一決定，所以滿足這條方程的冪級數只有一個。
+
+\subsection{記號}
+對整數 $M$ 與向量 $\vn$，記 $|\vn|=n_1+\cdots+n_k$，並約定
+\[
+\binom{M}{\vn}=\frac{M!}{n_1!\cdots n_k!\,(M-|\vn|)!}.
+\]
+用這個記號，$\Cv(\vn)=\dfrac{1}{N+1}\dbinom{N+1}{\vn}$，其中 $N=\ip{\vn}{\vv}$。
+
+\subsection{Raney 公式與 $C^t$ 的係數}
+
+對正整數 $t$，定義
+\[
+A_t(\vn)=\frac{t}{N+t}\binom{N+t}{\vn}\qquad(N=\ip{\vn}{\vv}),
+\]
+注意 $A_1(\vn)=\Cv(\vn)$。Raney 公式 \paper{式 (9)} 用這個記號寫出來就是
+\[
+A_{s+t}(\vn)=\sum_{\vr}A_s(\vr)\,A_t(\vn-\vr).
+\]
+右邊正是兩個冪級數相乘時係數的算法。
+所以如果令 $F_t=\sum_{\vn}A_t(\vn)\,x^{\vn}$，Raney 公式就是在說 $F_{s+t}=F_s\cdot F_t$。
+而 $F_1=C$，反覆使用便得到 $F_t=C^t$，也就是
+\begin{equation}\label{eq:ct}
+\boxed{\;[x^{\vn}]\,C^t=\frac{t}{N+t}\binom{N+t}{\vn}\;}
+\end{equation}
+（$[x^{\vn}]$ 表示取 $x_1^{n_1}\cdots x_k^{n_k}$ 的係數。）這就是原文在式 (8)、(9) 之後得到的結論。
+原文直接引用 Raney 公式；它的完整證明放在第~\ref{sec:raney} 節。
+
+\subsection{收尾}
+
+要驗證 $C=1+\sum_i x_iC^{v_i}$，比較兩邊 $x^{\vn}$ 的係數（$\vn\neq\vec0$）。
+右邊第 $i$ 項的係數是 $[x^{\vn-\ve_i}]\,C^{v_i}$。在式 \eqref{eq:ct} 裡取 $t=v_i$，
+並注意 $\ip{\vn-\ve_i}{\vv}+v_i=N$：
+\[
+[x^{\vn-\ve_i}]\,C^{v_i}=\frac{v_i}{N}\binom{N}{\vn-\ve_i}
+=\frac{v_i}{N}\cdot\frac{N!\;n_i}{n_1!\cdots n_k!\,(N+1-b)!}.
+\]
+對 $i$ 求和，利用 $\sum_i n_iv_i=N$：
+\[
+\sum_{i=1}^{k}\frac{v_i}{N}\binom{N}{\vn-\ve_i}
+=\frac{\sum_i n_iv_i}{N}\cdot\frac{N!}{n_1!\cdots n_k!\,(N+1-b)!}
+=\frac{N!}{n_1!\cdots n_k!\,(N+1-b)!}=\Cv(\vn).
+\]
+這就是原文式 (10)。常數項兩邊都是 1。
+
+所以 $C$ 滿足式 \eqref{eq:gf}，因此 $D=C$，也就是 $d(\vn)=\Cv(\vn)$。\hfill$\blacksquare$
+
+% =====================================================================
+\section{Raney 公式的完整證明}\label{sec:raney}
+% =====================================================================
+
+原文第 93 頁的式 (9) 是 Raney 公式。用第 6 節的記號，它說：對任意正整數 $s,t$，
+\begin{equation}\label{eq:raney}
+A_{s+t}(\vn)=\sum_{\vr}A_s(\vr)\,A_t(\vn-\vr),
+\qquad A_t(\vn)=\frac{t}{N+t}\binom{N+t}{\vn},
+\end{equation}
+其中 $\vr$ 跑遍所有滿足 $\vec0\le\vr\le\vn$（逐分量）的向量。原文沒有證明，直接引用 Raney (1960)。
+這一節用「路徑」與「循環引理」給一個完整的證明。這是證明 Raney 公式的標準方法
+（循環引理來自 Dvoretzky 與 Motzkin），不是原文的內容。
+manim 演示的第 8 個場景就是照這一節的順序做的。
+
+\begin{keybox}[證明的骨架]
+\begin{enumerate}[leftmargin=1.6em]
+  \item 定義「路徑」與「好路徑」，記好路徑的數目為 $G_t(\vn)$。
+  \item 循環引理：每條路徑的 $N+t$ 種循環讀法中，恰有 $t$ 種是好路徑。
+  \item 雙重計數：$G_t(\vn)=A_t(\vn)$。
+  \item 好路徑可以唯一地切成兩段：$G_{s+t}(\vn)=\sum_{\vr}G_s(\vr)\,G_t(\vn-\vr)$。
+  \item 第 3、4 步合起來就是式 \eqref{eq:raney}。
+\end{enumerate}
+\end{keybox}
+
+\subsection{路徑與好路徑}
+
+一條\textbf{路徑}是一串「步」。每一步往右走一格，同時改變高度：
+\begin{itemize}
+  \item \textbf{↑ 步}：高度 $+1$（下圖灰色）；
+  \item \textbf{第 $i$ 型步}：高度 $1-v_i$。在 $\vv=(2,3)$ 的例子裡，
+        \textcolor{cA}{弦型步}是 $-1$，\textcolor{cB}{三角形型步}是 $-2$。
+\end{itemize}
+給定 $\vn$ 與正整數 $t$，用 $n_i$ 個第 $i$ 型步，再加上
+\[
+\ell=t+\sum_{i}n_i(v_i-1)
+\]
+個 ↑ 步。總步數是 $\sum_i n_i+\ell=N+t$，終點高度是 $\ell+\sum_i n_i(1-v_i)=t$。
+把這些步排成一列，排法共有 $\binom{N+t}{\vn}$ 種（選出各型步的位置，其餘是 ↑ 步）。
+
+\begin{notebox}[好路徑]
+從高度 $0$ 出發，\textbf{出發之後每一點的高度都 $>0$} 的路徑，稱為好路徑。
+記 $G_t(\vn)$ 為好路徑的數目。
+\end{notebox}
+
+\textbf{例。}$t=1$、$\vn=(1,1)$、$\vv=(2,3)$：1 個弦型步、1 個三角形型步、$\ell=1+1+2=4$ 個 ↑ 步，
+共 6 步，排法 $\frac{6!}{1!\,1!\,4!}=30$ 種。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=0.55cm,y=0.55cm]
+  \begin{scope}
+    \draw[gray!60,dashed] (-0.3,0) -- (6.3,0);
+    \node[left,font=\small] at (-0.3,0) {$0$};
+    \LPath{0}{0}{u,u,u,T,u,c}
+    \node[font=\small] at (3,-1.2) {好路徑 \textcolor{green!50!black}{\checkmark}};
+  \end{scope}
+  \begin{scope}[xshift=5.5cm]
+    \draw[gray!60,dashed] (-0.3,0) -- (6.3,0);
+    \node[left,font=\small] at (-0.3,0) {$0$};
+    \LPath{0}{0}{u,c,u,u,T,u}
+    \fill[cBad] (2,0) circle (3pt);
+    \node[font=\small] at (3,-1.2) {第 2 點回到高度 0：不是好路徑 \textcolor{cBad}{$\times$}};
+  \end{scope}
+\end{tikzpicture}
+\caption{兩種排法。灰色是 ↑ 步，\textcolor{cA}{藍色}是弦型步，\textcolor{cB}{橘色}是三角形型步。}
+\label{fig:goodbad}
+\end{figure}
+
+\subsection{循環引理}
+
+把一條路徑的步排成一圈，從第 $j$ 步開始讀一圈（$j=0,1,\ldots,N+t-1$），
+得到 $N+t$ 種\textbf{循環讀法}。
+
+\begin{thmbox}[循環引理]
+終點高度為 $t\ge1$ 的路徑，在它的 $N+t$ 種循環讀法中，恰有 $t$ 種是好路徑。
+\end{thmbox}
+
+\textbf{例。}$t=2$、$\vn=(1,1)$，路徑「↑、三角形、↑、↑、弦、↑、↑」的 7 種讀法如下，
+恰有 2 種是好路徑：
+
+\begin{figure}[H]
+\centering
+\newcommand{\RotCell}[2]{\begin{tabular}{c}\PathBox[0.2]{7}{#1}\\[2pt] #2\end{tabular}}
+\RotCell{u,T,u,u,c,u,u}{\textcolor{cBad}{$\times$}}
+\RotCell{T,u,u,c,u,u,u}{\textcolor{cBad}{$\times$}}
+\RotCell{u,u,c,u,u,u,T}{\textcolor{green!50!black}{\checkmark}}
+\RotCell{u,c,u,u,u,T,u}{\textcolor{cBad}{$\times$}}
+\RotCell{c,u,u,u,T,u,u}{\textcolor{cBad}{$\times$}}
+\RotCell{u,u,u,T,u,u,c}{\textcolor{green!50!black}{\checkmark}}
+\RotCell{u,u,T,u,u,c,u}{\textcolor{cBad}{$\times$}}
+\caption{同一串步驟的 7 種循環讀法（依序從第 0、1、…、6 步開始），恰有 $t=2$ 種是好路徑。}
+\label{fig:rotations}
+\end{figure}
+
+\textbf{證明。}設路徑的步依序是 $x_1,\ldots,x_M$（$M=N+t$），把它無限地往兩邊重複：$x_{j+M}=x_j$。
+令 $S_0=0$，$S_j$ 為前 $j$ 步之後的高度（$j$ 為負時往回推），則
+\[
+S_{j+M}=S_j+t\qquad\text{（每走一個週期，高度上升 $t$）}.
+\]
+\begin{enumerate}[leftmargin=1.6em]
+  \item \textbf{好讀法 = 「之後都比它高」的點。}從第 $i$ 點開始讀一圈是好路徑，
+        等於說 $S_k>S_i$ 對 $i<k\le i+M$ 都成立。因為每多一個週期高度再加 $t>0$，
+        這又等於 $S_k>S_i$ 對所有 $k>i$ 都成立。稱這樣的 $i$ 為\textbf{被照到的點}。
+  \item \textbf{每個高度恰好照到一點。}對每個整數 $h$，令 $i_h$ 為最後一個滿足 $S_i\le h$ 的位置
+        （路徑往右趨向 $+\infty$、往左趨向 $-\infty$，所以 $i_h$ 存在）。
+        下一步之後高度 $>h$，而每一步最多上升 1，所以 $S_{i_h}=h$。
+        於是 $i_h$ 之後的點都比它高，$i_h$ 被照到。反過來，被照到的點 $i$ 一定就是 $i_{S_i}$。
+        所以 $h\mapsto i_h$ 是「整數」到「被照到的點」的一一對應，而且隨 $h$ 遞增。
+  \item \textbf{每個週期恰有 $t$ 點。}由 $S_{j+M}=S_j+t$ 得 $i_{h+t}=i_h+M$。
+        所以被照到的點以 $M$ 為週期重複，而從 $i_h$ 到 $i_h+M$（不含）之間恰有
+        $i_h,i_{h+1},\ldots,i_{h+t-1}$ 這 $t$ 個。因此任何連續 $M$ 個位置中都恰有 $t$ 個被照到的點，
+        也就是恰有 $t$ 種好讀法。\hfill$\square$
+\end{enumerate}
+
+「被照到」的意思可以這樣想像：從右邊無限遠處照來水平的光，
+高度 $h$ 的光線會停在路徑最後一次到達高度 $h$ 的點。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=0.42cm,y=0.42cm]
+  \foreach \h in {-3,...,4}{
+    \draw[gray!25] (-7.4,\h) -- (15.4,\h);
+    \node[font=\tiny,gray] at (-8,\h) {$\h$};
+  }
+  \fill[yellow!12] (0,-3.6) rectangle (7,4.6);
+  \draw[orange!80!black,thick] (0,-3.6) rectangle (7,4.6);
+  \node[font=\scriptsize,orange!80!black] at (3.5,5.1) {一個週期（7 步）};
+  \begin{scope}[opacity=0.45]
+    \LPath{-7}{-2}{u,T,u,u,c,u,u}
+    \LPath{7}{2}{u,T,u,u,c,u,u}
+  \end{scope}
+  \LPath{0}{0}{u,T,u,u,c,u,u}
+  \foreach \i/\h in {-5/-3,-2/-2,2/-1,5/0,9/1,12/2}{
+    \draw[magenta!70!black,line width=0.8pt] (15.4,\h) -- (\i,\h);
+    \fill[magenta!80!black] (\i,\h) circle (3.2pt);
+  }
+\end{tikzpicture}
+\caption{把圖~\ref{fig:rotations} 的路徑無限重複（中間是原本的一個週期）。
+\textcolor{magenta!80!black}{桃紅色}的水平光線從右邊照來，停在被照到的點。
+週期 $[0,7)$ 裡恰有 2 個被照到的點（第 2、5 點），正是圖~\ref{fig:rotations} 打勾的兩種讀法。}
+\label{fig:light}
+\end{figure}
+
+\subsection{雙重計數：好路徑的數目是 $A_t(\vn)$}
+
+考慮所有的「路徑＋起點」組合 $(w,j)$，其中 $w$ 是 $\binom{N+t}{\vn}$ 種排法之一，$j\in\{0,\ldots,N+t-1\}$。
+數「從 $j$ 開始讀 $w$ 會得到好路徑」的組合：
+\begin{itemize}
+  \item 由循環引理，每條 $w$ 恰有 $t$ 個這樣的 $j$，所以共 $t\binom{N+t}{\vn}$ 個。
+  \item 另一方面，每條好路徑 $g$ 配上每個 $j$，恰有一條 $w$ 從 $j$ 讀起會得到 $g$（把 $g$ 反方向轉 $j$ 格），
+        所以共 $(N+t)\,G_t(\vn)$ 個。
+\end{itemize}
+兩者相等，得到
+\begin{equation}\label{eq:gta}
+\boxed{\;G_t(\vn)=\frac{t}{N+t}\binom{N+t}{\vn}=A_t(\vn)\;}
+\end{equation}
+
+\textbf{驗算。}$t=1$、$\vn=(1,1)$：$G_1=\frac16\cdot30=5$，五條好路徑是
+\[
+\PathBox[0.22]{6}{u,u,u,u,c,T}\quad
+\PathBox[0.22]{6}{u,u,u,u,T,c}\quad
+\PathBox[0.22]{6}{u,u,u,c,u,T}\quad
+\PathBox[0.22]{6}{u,u,u,T,u,c}\quad
+\PathBox[0.22]{6}{u,u,c,u,u,T}
+\]
+這和 $A_1(1,1)=C_{(2,3)}(1,1)=5$ 一致。$t=2$ 時，$G_2(1,1)=\frac27\cdot42=12$。
+
+\subsection{切成兩段：Raney 公式}
+
+取一條終點高度 $s+t$ 的好路徑，在高度 $s$ 畫一條線，找出\textbf{最後一個高度 $\le s$ 的點} $j$。
+\begin{itemize}
+  \item 之後的點都 $>s$，而下一步最多上升 1，所以 $S_j=s$。
+  \item 前段（第 $0$ 到 $j$ 點）：每點高度 $>0$，終點高度 $s$，是一條終點 $s$ 的好路徑。
+  \item 後段（第 $j$ 點之後）：往下平移 $s$ 後每點高度 $>0$，終點高度 $t$，是一條終點 $t$ 的好路徑。
+\end{itemize}
+反過來，把終點 $s$ 的好路徑與終點 $t$ 的好路徑接起來，一定是終點 $s+t$ 的好路徑，
+而且用同樣的規則切開，會切回原來的兩段。所以這是一一對應。
+若前段用掉的各型步是 $\vr$，後段就用掉 $\vn-\vr$，因此
+\[
+G_{s+t}(\vn)=\sum_{\vr}G_s(\vr)\,G_t(\vn-\vr).
+\]
+代入式 \eqref{eq:gta}，就是 Raney 公式 \eqref{eq:raney}。\hfill$\blacksquare$
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=0.55cm,y=0.55cm]
+  \begin{scope}
+    \draw[gray!60,dashed] (-0.3,0) -- (7.3,0);
+    \draw[magenta!70!black,dashed] (-0.3,1) -- (7.3,1);
+    \node[left,font=\small] at (-0.3,0) {$0$};
+    \node[left,font=\small,magenta!70!black] at (-0.3,1) {$s$};
+    \LPath{0}{0}{u,u,c,u,u,u,T}
+    \fill[magenta!80!black] (3,1) circle (3.5pt);
+    \node[font=\small] at (3.5,-1.1) {終點 $s+t=2$ 的好路徑};
+  \end{scope}
+  \draw[-{Stealth},thick] (8.3,1.5) -- (9.8,1.5);
+  \begin{scope}[xshift=6.0cm]
+    \draw[gray!60,dashed] (-0.3,0) -- (3.3,0);
+    \LPath{0}{0}{u,u,c}
+    \node[font=\small,align=center] at (1.5,-1.3) {前段：終點 $s$\\用掉 $\vr=(1,0)$};
+  \end{scope}
+  \begin{scope}[xshift=10.2cm]
+    \draw[gray!60,dashed] (-0.3,0) -- (4.3,0);
+    \LPath{0}{0}{u,u,u,T}
+    \node[font=\small,align=center] at (2,-1.3) {後段（下移 $s$）：終點 $t$\\用掉 $\vn-\vr=(0,1)$};
+  \end{scope}
+\end{tikzpicture}
+\caption{$s=t=1$、$\vn=(1,1)$ 的例子：在最後一次落在高度 $s$ 的點（桃紅點）切開。}
+\label{fig:cut}
+\end{figure}
+
+\textbf{驗算。}$s=t=1$、$\vn=(1,1)$。依前段用掉的 $\vr$ 分組：
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$\vr$ & $A_1(\vr)$ & $A_1(\vn-\vr)$ & 乘積\\
+\midrule
+$(0,0)$ & 1 & 5 & 5\\
+$(1,0)$ & 1 & 1 & 1\\
+$(0,1)$ & 1 & 1 & 1\\
+$(1,1)$ & 5 & 1 & 5\\
+\midrule
+\multicolumn{3}{r}{合計} & $12=A_2(1,1)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{notebox}[程式檢查]
+\texttt{codes/utils/counting.py} 用暴力列舉檢查本節的每一個主張：
+排法總數、循環引理、$G_t=A_t$、切開是一一對應、Raney 公式本身。
+執行 \texttt{python utils/counting.py} 會印出「Raney 公式證明的每一步都通過」。
+\end{notebox}
+
+% =====================================================================
+\section{補充觀點（不在原文裡，幫助理解）}
+% =====================================================================
+
+\subsection{這條方程其實是「樹」的方程}
+
+考慮一種有序的有根樹（平面樹）：每個內部節點有一個型別 $i$，第 $i$ 型節點恰有 $v_i$ 個小孩；葉子沒有小孩。
+一棵樹要嘛是一片葉子，要嘛是一個第 $i$ 型的根接上 $v_i$ 棵子樹，
+所以它的生成函數同樣滿足 $T=1+\sum_i x_iT^{v_i}$。
+
+對應方式：\textbf{群組 $\leftrightarrow$ 內部節點}，\textbf{群組切出的 $v_i$ 段 $\leftrightarrow$ 節點的 $v_i$ 個小孩}，
+\textbf{空的段 $\leftrightarrow$ 葉子}。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  level distance=11mm,
+  level 1/.style={sibling distance=30mm},
+  level 2/.style={sibling distance=10mm},
+  level 3/.style={sibling distance=9mm},
+  T/.style={regular polygon,regular polygon sides=3,draw=cB,fill=cB!22,inner sep=2.6pt,line width=0.9pt},
+  S/.style={circle,draw=cA,fill=cA!18,inner sep=3.6pt,line width=0.9pt},
+  lf/.style={rectangle,draw=gray!70,fill=gray!15,inner sep=3.2pt},
+  edge from parent/.style={draw=gray!70,line width=0.6pt}]
+  \node[T,line width=1.4pt] {}
+    child {node[T] {} child {node[lf] {}} child {node[lf] {}} child {node[lf] {}}}
+    child {node[S] {} child {node[lf] {}} child {node[S] {} child {node[lf] {}} child {node[lf] {}}}}
+    child {node[S] {} child {node[lf] {}} child {node[lf] {}}};
+\end{tikzpicture}
+\caption{圖~\ref{fig:root} 的分法對應的樹。三角形節點有 3 個小孩，圓形節點（弦）有 2 個小孩，
+灰色方塊是葉子。共有 $5$ 個內部節點與 $8$ 片葉子。}
+\label{fig:tree}
+\end{figure}
+
+\subsection{公式裡的 $L$ 是什麼}
+
+式 \eqref{eq:gc} 裡的 $L=1+\sum_i n_i(v_i-1)$ 正好是這棵樹的\textbf{葉子數}。
+理由：內部節點共 $b=\sum n_i$ 個，邊數是 $\sum n_iv_i=N$，而樹的「節點數 $=$ 邊數 $+1$」，
+所以 $b+L=N+1$，即 $L=N+1-b$。圖~\ref{fig:tree} 中 $N=12$、$b=5$、$L=8$，吻合。
+
+因此多項式係數 $\binom{N+1}{n_1,\ldots,n_k,L}$ 的意思是：
+把 $N+1$ 個節點分成「各型內部節點」與「葉子」。
+
+\subsection{Lagrange 反演}
+
+原文最後的 Remark 指出：定理也可以直接對式 \eqref{eq:gf} 使用 Good 的多變數 Lagrange 反演公式得到。
+Lagrange 反演的功能正是「由隱函數方程直接讀出係數」，所以可以跳過第三步的驗證，
+直接從 $D=1+\sum_i x_iD^{v_i}$ 算出 $[x^{\vn}]D=\Cv(\vn)$。
+
+\subsection{與不交叉分割（noncrossing partition）的關係}
+
+用現代的語言，定理說的是：$\Cv(\vn)$ 是「各種大小的區塊數目給定」的不交叉分割的個數。
+化簡後的公式 $\dfrac{N!}{\prod n_i!\,(N+1-b)!}$ 與 Kreweras (1972) 依區塊型別計數不交叉分割的結果一致。
+
+% =====================================================================
+\section{總結}
+% =====================================================================
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=blue!45!black,fill=blue!4,rounded corners=2pt,inner sep=5pt,align=center,font=\small,minimum width=7.2cm},
+  arr/.style={-{Stealth[length=5pt]},line width=0.7pt,gray!60!black},
+  node distance=4.2mm]
+  \node[box] (a) {圓周上的 $N=\ip{\vn}{\vv}$ 個點};
+  \node[box,below=of a] (b) {分成 $n_i$ 個 $v_i$ 點群組，互不交叉（凸多邊形）};
+  \node[box,below=of b] (c) {固定一個點，看它所在的群組};
+  \node[box,below=of c] (d) {其餘的點被切成 $v_i$ 段，各段獨立};
+  \node[box,below=of d] (e) {遞迴：$d(\vn)=\sum_i\sum d(\vr_1)\cdots d(\vr_{v_i})$};
+  \node[box,below=of e] (f) {生成函數：$D=1+\sum_i x_iD^{v_i}$};
+  \node[box,below=of f] (g) {Raney 公式／Lagrange 反演};
+  \node[box,below=of g,draw=orange!75!black,fill=orange!8] (h)
+     {$d(\vn)=\Cv(\vn)=\dfrac{1}{N+1}\dbinom{N+1}{n_1,\ldots,n_k,\,L}$};
+  \foreach \u/\w in {a/b,b/c,c/d,d/e,e/f,f/g,g/h}{\draw[arr] (\u)--(\w);}
+\end{tikzpicture}
+\caption{整篇論文的邏輯：幾何 $\to$ 遞迴分解 $\to$ 生成函數 $\to$ 閉式公式。}
+\end{figure}
+
+\subsection*{先備知識清單}
+\begin{enumerate}
+  \item 二項式係數與多項式係數。
+  \item 經典卡塔蘭數，以及它的遞迴 $C_n=\sum_{j=0}^{n-1}C_jC_{n-1-j}$（「分成左右兩邊」的想法，第 1 節）。
+  \item 不交叉的概念（圖~\ref{fig:catalan3}、圖~\ref{fig:crossing}）。
+  \item 生成函數，以及「冪級數相乘 $=$ 係數做卷積」。
+  \item 多變數生成函數只是多記幾個變數的帳，不需要多變數微積分。
+  \item Raney 公式與 Lagrange 反演只在第三步用到。第一次讀可以先接受式 \eqref{eq:ct}，
+        之後再讀第~\ref{sec:raney} 節的證明。
+\end{enumerate}
+讀懂到式 \eqref{eq:gf} 為止，就已經掌握這篇論文的核心想法。
+
+\subsection*{符號表}
+\begin{tabular}{@{}ll@{}}
+\toprule
+符號 & 意義\\
+\midrule
+$\vv=(v_1,\ldots,v_k)$ & 各型群組的點數\\
+$\vn=(n_1,\ldots,n_k)$ & 各型群組的個數\\
+$N=\ip{\vn}{\vv}$ & 圓周上的總點數 $\sum n_iv_i$\\
+$b=\sum n_i$ & 群組總數\\
+$L=1+\sum n_i(v_i-1)=N+1-b$ & 多項式係數的最後一格（樹的葉子數）\\
+$\Cv(\vn)$ & 廣義卡塔蘭數（公式）\\
+$d(\vn)$ & 不交叉分法的數目（要數的東西）\\
+$\ve_i$ & 第 $i$ 個單位向量\\
+$D(\vX)$、$C(\vX)$ & $d(\vn)$、$\Cv(\vn)$ 的生成函數\\
+$[x^{\vn}]F$ & 冪級數 $F$ 中 $x_1^{n_1}\cdots x_k^{n_k}$ 的係數\\
+\bottomrule
+\end{tabular}
+
+% =====================================================================
+\appendix
+\section{MIT 18.212 Lecture 1--4 補充（動畫 M01--M14）}\label{sec:mit}
+% =====================================================================
+
+這個附錄對應 manim 演示的 MIT 補充場景 M01--M14：小節 A.$k$ 對應場景 M$k$（兩位數編號）。
+內容依據 MIT 18.212 Algebraic Combinatorics 的 Lecture 1--4（使用者提供的整理，見 \texttt{notes/MIT18212\_L1-4\_精簡.md}），
+以〔MIT L1〕等標示講次。第 1 節已經講過的部分（Dyck 路徑、三角剖分與遞迴、反射原理、圓上配對、同一個 $C_n$）
+這裡不再重複，只補第 1 節沒有的內容；它們都是第 1 節「根＋左＋右」結構的延伸，最後也回到 Chu 的方程。
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{\qquad}lll@{}}
+\toprule
+小節 & 內容 & 動畫 & 小節 & 內容 & 動畫\\
+\midrule
+A.1 & Cauchy 乘積 & M01 & A.8 & DFS：樹 → Dyck → 配對 & M08\\
+A.2 & 生成函數的閉式 & M02 & A.9 & 堆疊與佇列排序 & M09\\
+A.3 & 醉漢走路 & M03 & A.10 & 模式迴避 & M10\\
+A.4 & 循環移位 & M04 & A.11 & 整數分割與 Young 表 & M11\\
+A.5 & 平面樹 & M05 & A.12 & 標準 Young 表與 Dyck 路徑 & M12\\
+A.6 & 弧圖：不交叉與不巢狀 & M06 & A.13 & 鉤長公式 & M13\\
+A.7 & 三角剖分的對偶樹 & M07 & A.14 & 鉤上漫步的證明 & M14\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{keybox}[貫穿的例子]
+與圖~\ref{fig:onenumber} 的第 4 欄相同：五邊形三角剖分（對角線 $\{1,4\},\{2,4\}$）$\to$ 二元樹 $((\bullet,(\bullet,\bullet)),\bullet)$
+$\to$ 平面樹（根 $\to$ A $\to$ 兩片葉子）$\to$ Dyck 路徑 UUDUDD $\to$ 配對 $(1,6),(2,3),(4,5)$
+$\to$ 標準 Young 表 $\begin{smallmatrix}1&2&4\\3&5&6\end{smallmatrix}$；開票順序 AABABB、括號 $(a\cdot(b\cdot c))\cdot d$。
+\end{keybox}
+
+\input{mit/part1}
+\input{mit/part2}
+\input{mit/part3}
+\input{mit/part4}
+
+\end{document}

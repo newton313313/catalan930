@@ -1,0 +1,162 @@
+% Young 表講義第 6 段：第 8 章 一般線性群的表示（動畫 F42–F45）
+% 內文的數字由 fulton/make_figs.py 的 check_numbers_ch8() 核對（utils/tableaux.py 現算；行列式恆等式用 sympy 展開）。
+
+\section{第 8 章：一般線性群的表示（動畫 F42--F45）}\label{sec:f-ch8}
+
+\begin{keybox}[這一章在做什麼]
+把第 7 章的「編號 $1,\ldots,n$」換成向量空間 $E=\mathbb C^m$ 裡的向量、把「行」換成楔積，同一條交換關係定義出 \textbf{Schur 模} $E^\lambda$。
+它是 $GL(E)$ 的不可約表示，基底是\textbf{半標準表}（$\dim E^\lambda=d_\lambda(m)$），特徵標就是 Schur 多項式 $s_\lambda(x_1,\ldots,x_m)$。
+$S_n$ 與 $GL(E)$ 在 $E^{\otimes n}$ 裡成對出現（Schur–Weyl），而那條交換關係同時是 Grassmannian 的 Plücker 方程。
+\end{keybox}
+
+主例仍是 $\lambda=(2,1)$：第 7 章 $\dim S^{(2,1)}=f^{(2,1)}=2$ 只看 $n=3$；本章 $\dim E^{(2,1)}=d_{(2,1)}(m)=m(m^2-1)/3$ 隨 $m$ 變（$m=1,2,3,4$ 時是 $0,2,8,20$）。
+
+% ------------------------------------------------------------------
+\subsection{把數字換成向量：Schur 模（F42）}\label{sec:f-schurmod}
+
+\textbf{線性代數的構造}（\S8.1，\fulref{p.104--107}）。$E^{\times\lambda}$ 表示「每一格放一個 $E$ 中的向量」的所有填法。
+要找的是 $E^{\times\lambda}\to F$ 的映射 $\varphi$，滿足 \fulref{p.105}：
+(1) 對每一格是線性的；(2) 同一行裡交換兩個向量就變號（行像楔積）；
+(3) \textbf{交換關係}：取定兩行與右邊那行的若干格，$\varphi(v)=\sum\varphi(w)$，$w$ 跑遍把這些格與左邊那行同樣多格交換（保持上下順序）的所有結果。
+滿足 (1)--(3) 的普遍對象就是 $E^\lambda$；具體地，它是各行外冪的張量積模掉 (3)：
+\[
+E^\lambda=\Bigl(\textstyle\bigwedge^{\mu_1}E\otimes\cdots\otimes\bigwedge^{\mu_\ell}E\Bigr)\big/Q,\qquad \mu=\tilde\lambda\ (\text{各行的長度}).
+\]
+兩個極端：一列 $\lambda=(n)$ 只有交換關係，得到 $E^{(n)}=\operatorname{Sym}^nE$；一行 $\lambda=(1^n)$ 只有交錯性，得到 $E^{(1^n)}=\bigwedge^nE$。
+
+$\lambda=(2,1)$：第一行兩格、第二行一格，$E^{(2,1)}=(\bigwedge^2E\otimes E)/Q$。把第二行的 $v_3$ 與第一行的每一格交換：
+\[
+(v_1\wedge v_2)\otimes v_3=(v_3\wedge v_2)\otimes v_1+(v_1\wedge v_3)\otimes v_2 ,
+\]
+與第 7 章 F39 的 $v(\yts{13,2})=v(\yts{31,2})+v(\yts{12,3})$ 一模一樣，只是數字換成了向量。$m=3$ 時 $\bigwedge^2E\otimes E$ 是 9 維，這條關係只砍掉 1 維，剩下 8 維。
+
+\begin{thmbox}[定理 1 \fulref{p.110}]
+$E$ 有基底 $e_1,\ldots,e_m$ 時，$E^\lambda$ 以 $e_T$ 為基底，$T$ 跑遍形狀 $\lambda$、數字在 $[m]$ 的\textbf{半標準表}（$e_T$ = 在 $T$ 的每一格放 $e_{T(\text{格})}$）。
+所以 $\dim E^\lambda=d_\lambda(m)=\prod_{\text{格}}\dfrac{m+c(\text{格})}{h(\text{格})}$（第 4 章的鉤–內容公式）。
+\end{thmbox}
+
+生成的證明與第 7 章的拉直（Lemma 6）相同；線性獨立則靠\textbf{行列式模型}（Lemma 3，\fulref{p.108--109}）：令 $Z=(z_{ij})$ 為 $m\times m$ 變數矩陣，
+$D_{i_1\ldots i_p}$ 為取第 $i_1,\ldots,i_p$ 列、前 $p$ 行的子式，$D_T=\prod_{\text{行}}D_{T(\text{該行})}$。$e_T\mapsto D_T$ 是單射（定理 1 的推論，\fulref{p.111}），
+上面那條關係變成恆等式（$z_i=z_{i1}$）
+\[
+D_{12}\,z_3=D_{32}\,z_1+D_{13}\,z_2 ,
+\]
+也就是 $3\times3$ 行列式 $\det(z_{\cdot1},z_{\cdot2},z_{\cdot1})=0$ 沿第三行展開。基底：$m=2$ 時是 $\yts{11,2}$、$\yts{12,2}$；$m=3$ 時是表~\ref{tab:f-weights} 的 8 個。
+
+% ------------------------------------------------------------------
+\subsection{權重與最高權重（F43）}\label{sec:f-weights}
+
+$GL(E)$ 太大，先只看對角矩陣 $x=\operatorname{diag}(x_1,\ldots,x_m)$（\S8.2，\fulref{p.112}）。$x\cdot e_i=x_ie_i$，所以
+\[
+x\cdot e_T=x^T e_T,\qquad x^T=\prod_i x_i^{(\,i\text{ 在 }T\text{ 中出現的次數})} ,
+\]
+每個 $e_T$ 都是\textbf{權重向量}，權重就是 $T$ 的 content。$\lambda=(2,1)$、$m=3$ 的 8 個基底分成 7 堆：
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+權重 & $(2,1,0)$ & $(2,0,1)$ & $(1,2,0)$ & $(1,1,1)$ & $(1,0,2)$ & $(0,2,1)$ & $(0,1,2)$\\
+\midrule
+半標準表 & \yts{11,2} & \yts{11,3} & \yts{12,2} & \yts{12,3}\ \yts{13,2} & \yts{13,3} & \yts{22,3} & \yts{23,3}\\[3pt]
+$x^T$ & $x_1^2x_2$ & $x_1^2x_3$ & $x_1x_2^2$ & $2\,x_1x_2x_3$ & $x_1x_3^2$ & $x_2^2x_3$ & $x_2x_3^2$\\
+\bottomrule
+\end{tabular}
+\caption{$E^{(2,1)}$（$m=3$）的權重空間（F43 把它們排成六角形，$x_1x_2x_3$ 那堆在中心）。全部加起來就是 $s_{(2,1)}(x_1,x_2,x_3)$；令 $x_i=1$ 得 $8=\dim E^{(2,1)}$。}
+\label{tab:f-weights}
+\end{table}
+
+\begin{thmbox}[Lemma 4、定理 2 \fulref{p.113--114}]
+$E^\lambda$ 中（差一個常數）唯一的\textbf{最高權重向量}是 $e_{U(\lambda)}$，$U(\lambda)$ = 第 $i$ 列全部填 $i$（這裡是 $\yts{11,2}$，權重 $(2,1,0)=\lambda$）。\\
+(1) $\lambda$ 至多 $m$ 列時，$E^\lambda$ 是 $GL_m\mathbb C$ 的不可約表示，最高權重 $\lambda$；它們就是全部的不可約\textbf{多項式}表示。\\
+(2) 對整數 $\alpha_1\ge\cdots\ge\alpha_m$，$E^\lambda\otimes D^{\otimes k}$（$D=\det$、$\lambda_i=\alpha_i-k$）給出全部的不可約有理表示。
+\end{thmbox}
+
+\textbf{特徵標}（(13)(14)，\fulref{p.120}）：$\operatorname{Char}V(x_1,\ldots,x_m)=\operatorname{Tr}(\operatorname{diag}(x)\text{ 在 }V\text{ 上})$，於是
+\[
+\operatorname{Char}(E^\lambda)=\sum_T x^T=s_\lambda(x_1,\ldots,x_m),
+\]
+\[
+\operatorname{Char}(V\oplus W)=\operatorname{Char}V+\operatorname{Char}W,\qquad \operatorname{Char}(V\otimes W)=\operatorname{Char}V\cdot\operatorname{Char}W .
+\]
+第 6 章的 Schur 多項式換了身分：權重就是 content，第 6 章的雙交錯式 (7)（\S\ref{sec:f-jt}）成了 Weyl 特徵標公式的特例。列數 $>m$ 的 $\lambda$ 沒有半標準表，$E^\lambda=0$（例：$m=2$ 時 $E^{(1,1,1)}=0$）。
+
+% ------------------------------------------------------------------
+\subsection{Schur–Weyl：兩個群共用一個空間（F44）}\label{sec:f-schurweyl}
+
+$GL(E)$ 從左邊同時作用在 $E^{\otimes n}$ 的每個因子上，$S_n$ 從右邊交換因子的位置（\S8.3，\fulref{p.116}）：
+\[
+g\cdot(u_1\otimes\cdots\otimes u_n)=gu_1\otimes\cdots\otimes gu_n,\qquad (u_1\otimes\cdots\otimes u_n)\cdot\sigma=u_{\sigma(1)}\otimes\cdots\otimes u_{\sigma(n)} .
+\]
+一個管「裡面」、一個管「位置」，兩者可交換：$g\cdot(x\cdot\sigma)=(g\cdot x)\cdot\sigma$。對 $S_n$ 的表示 $M$ 定義 $E(M)=E^{\otimes n}\otimes_{\mathbb C[S_n]}M$（(9)）。
+
+\begin{thmbox}[命題 1、推論 1 \fulref{p.118--119}]
+$E^\lambda\cong E(S^\lambda)=E^{\otimes n}\otimes_{\mathbb C[S_n]}S^\lambda$；因此 $E^{\otimes n}\cong\bigoplus_{\lambda\vdash n}(E^\lambda)^{\oplus f^\lambda}$，
+同時作為 $GL(E)\times S_n$ 的表示 $E^{\otimes n}\cong\bigoplus_\lambda E^\lambda\otimes S^\lambda$。
+\end{thmbox}
+
+取維數得 $m^n=\sum_{\lambda\vdash n}d_\lambda(m)\,f^\lambda$（第 4 章 R-S-K 的計數）；取特徵標得 $(x_1+\cdots+x_m)^n=\sum f^\lambda s_\lambda$。$n=3$：
+\begin{center}
+\begin{tabular}{@{}lccc@{\qquad}l@{}}
+\toprule
+$\lambda$ & $(3)$ & $(2,1)$ & $(1,1,1)$ & 合計\\
+\midrule
+$f^\lambda$ & 1 & 2 & 1 & \\
+$d_\lambda(2)$ & 4 & 2 & 0 & $2^3=8=4\cdot1+2\cdot2+0\cdot1$\\
+$d_\lambda(3)$ & 10 & 8 & 1 & $3^3=27=10\cdot1+8\cdot2+1\cdot1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+兩個極端最好驗證：$S^{(n)}$ 是平凡表示，$E(S^{(n)})=\operatorname{Sym}^nE$；$S^{(1^n)}$ 是符號表示，$E(S^{(1^n)})=\bigwedge^nE$。
+
+\textbf{同一個字典的另一半}（推論 2、3 與 (18)(19)，\fulref{p.121--122}）。特徵標是環同態，第 5、6 章的恆等式直接變成 $GL(E)$ 的分解：
+\begin{itemize}
+\item Pieri：$E^\lambda\otimes\operatorname{Sym}^pE\cong\bigoplus E^\mu$（$\mu$ 由 $\lambda$ 加 $p$ 格、任兩格不同行）；例 $\operatorname{Sym}^2E\otimes E\cong E^{(3)}\oplus E^{(2,1)}$，$m=3$ 時 $6\cdot3=10+8$。
+      $\bigwedge^pE$ 的版本是「任兩格不同列」。$\operatorname{Sym}^{\lambda_1}E\otimes\cdots\otimes\operatorname{Sym}^{\lambda_k}E\cong\bigoplus(E^\mu)^{\oplus K_{\mu\lambda}}$（Young 規則的對應）。
+\item $\operatorname{Sym}^p(E^{\oplus n})\cong\bigoplus_{\lambda\vdash p}(E^\lambda)^{\oplus d_\lambda(n)}$；例 $m=3$、$n=p=2$：$21=6\cdot3+3\cdot1$。
+\item Cauchy：$\operatorname{Sym}^p(E\otimes F)\cong\bigoplus_{\lambda\vdash p}E^\lambda\otimes F^\lambda$，$\bigwedge^p(E\otimes F)\cong\bigoplus_{\lambda\vdash p}E^\lambda\otimes F^{\tilde\lambda}$。
+\end{itemize}
+
+\textbf{四個環}（(21)(22)，\fulref{p.123}）：$\Lambda\to R\to\mathcal R(m)\to\Lambda(m)$，依序是 $s_\lambda\mapsto[S^\lambda]\mapsto[E^\lambda]\mapsto s_\lambda(x_1,\ldots,x_m)$；
+合成是把變數設成 $m$ 個。核由列數 $>m$ 的 $s_\lambda$ 生成，所以 $\mathcal R(m)\cong R/(\text{列數}>m\text{ 的 }[S^\lambda])$——第 7 章的表示環與本章的表示環只差這些項。
+
+% ------------------------------------------------------------------
+\subsection{同一條二次關係，三個身分（F45）}\label{sec:f-quadratic}
+
+第 7 章的 Specht 模（\S\ref{sec:f-straighten}）、本章的 Schur 模、以及矩陣的子式，用的是同一條交換關係：
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Specht 模（第 7 章） & Schur 模（第 8 章） & $2\times4$ 矩陣的子式（\S8.4）\\
+\midrule
+$v(\yts{13,2})$ & $(v_1\wedge v_2)\otimes v_3$ & $p_{12}p_{34}$\\
+$=v(\yts{31,2})$ & $=(v_3\wedge v_2)\otimes v_1$ & $=p_{32}p_{14}$\\
+$+\,v(\yts{12,3})$ & $+\,(v_1\wedge v_3)\otimes v_2$ & $+\,p_{13}p_{24}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+第三欄是 $(2,2)$ 形的表 $\yts{13,24}$ 做同樣的交換（右行的 3 與左行的 1、2 互換），再用 $p_{32}=-p_{23}$ 整理，就是 \textbf{Plücker 關係}
+\[
+p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0 ,
+\]
+$p_{ij}$ 是 $2\times4$ 矩陣第 $i,j$ 行的 $2\times2$ 子式。用 $A=\bigl(\begin{smallmatrix}1&2&0&1\\0&1&3&2\end{smallmatrix}\bigr)$ 驗算：
+$p_{12}=1$、$p_{13}=3$、$p_{14}=2$、$p_{23}=6$、$p_{24}=3$、$p_{34}=-3$，三項是 $1\cdot(-3)-3\cdot3+2\cdot6=-3-9+12=0$。
+
+\textbf{二次關係的理想}（\S8.4，\fulref{p.124--126}）。對 $m\ge d_1>\cdots>d_s>0$，把 $\bigwedge^{d_1}E\oplus\cdots\oplus\bigwedge^{d_s}E$ 的對稱代數模掉所有二次（交換）關係，得到
+$S^\bullet(E;d_1,\ldots,d_s)$；它分解成所有「各行長度都在 $\{d_1,\ldots,d_s\}$ 裡」的 $E^\lambda$ 之和，而且可嵌入多項式環 $\mathbb C[Z]$（行列式模型），所以
+\begin{thmbox}[命題 2 \fulref{p.126}]
+二次關係生成的理想是質理想。
+\end{thmbox}
+例：$m=4$、只取 $d=2$。$\operatorname{Sym}^\bullet(\bigwedge^2\mathbb C^4)=\mathbb C[p_{12},\ldots,p_{34}]$ 模掉 Plücker 關係，第 $k$ 次的部分是 $E^{(k,k)}$：
+$k=1$ 是 $6$ 維、$k=2$ 是 $21-1=20=d_{(2,2)}(4)$ 維。這是 $\mathbb C^4$ 裡所有 2 維子空間（Grassmannian $G(2,4)$）的座標環——第 9 章的主角，這裡只預告、不證明。
+
+\begin{keybox}[第 7、8 章對照]
+\begin{tabular}{@{}lll@{}}
+ & 第 7 章：$S_n$ & 第 8 章：$GL(E)$，$\dim E=m$\\ \midrule
+不可約表示 & $S^\lambda$，$\lambda\vdash n$ & $E^\lambda$，$\lambda$ 至多 $m$ 列\\
+基底 & 標準表，$\dim=f^\lambda$ & 半標準表，$\dim=d_\lambda(m)$\\
+特徵標 & $\chi^\lambda_\mu$（$p_\mu=\sum\chi^\lambda_\mu s_\lambda$） & $s_\lambda(x_1,\ldots,x_m)$\\
+關係 & 交換關係（拉直） & 同一條交換關係（Plücker）\\
+橋 & \multicolumn{2}{l}{$E^{\otimes n}\cong\bigoplus_\lambda E^\lambda\otimes S^\lambda$，$E^\lambda\cong E^{\otimes n}\otimes_{\mathbb C[S_n]}S^\lambda$}
+\end{tabular}
+\end{keybox}

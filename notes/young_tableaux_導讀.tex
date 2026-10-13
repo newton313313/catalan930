@@ -1,0 +1,107 @@
+% !TEX program = xelatex
+% 編譯方式： xelatex young_tableaux_導讀.tex   （在 notes/ 裡執行，跑兩次以產生目錄與交互參照）
+% 內文在 fulton/part1..6.tex；圖與表由 fulton/make_figs.py 產生（fulton/figs.tex，含數字檢查）。
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xeCJK}
+\setCJKmainfont[BoldFont={Microsoft JhengHei Bold},ItalicFont={DFKai-SB}]{Microsoft JhengHei}
+\setCJKsansfont[BoldFont={Microsoft JhengHei Bold}]{Microsoft JhengHei}
+\setCJKmonofont{Microsoft JhengHei}
+\linespread{1.28}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,labelsep=quad}
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\renewcommand{\contentsname}{目錄}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{ytableau}
+\ytableausetup{boxsize=1.25em,aligntableaux=center}
+
+% ---------- 顏色（與 manim 動畫 F01–F45 一致） ----------
+\colorlet{cA}{blue!75!black}
+\colorlet{cB}{orange!90!black}
+\colorlet{cC}{green!50!black}
+\colorlet{cBad}{red!85!black}
+\colorlet{cTop}{orange!90!black}
+\colorlet{cLeft}{teal!80!black}
+\colorlet{cRight}{purple!80!black}
+
+% ---------- 盒子 ----------
+\newtcolorbox{keybox}[1][]{enhanced,breakable,colback=blue!4,colframe=blue!45!black,
+  boxrule=0.7pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{thmbox}[1][]{enhanced,breakable,colback=orange!7,colframe=orange!75!black,
+  boxrule=0.8pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{notebox}[1][]{enhanced,breakable,colback=gray!7,colframe=gray!60,
+  boxrule=0.5pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+
+\newcommand{\fulref}[1]{{\small\color{gray!70!black}〔Fulton #1〕}}       % 書上的頁碼
+\newcommand{\yts}[1]{{\ytableausetup{smalltableaux}\ytableaushort{#1}}}  % 行內的小表：\yts{122,34}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Young 表導讀}\\[4pt]
+W.~Fulton《Young Tableaux》第 1--8 章（配合 manim 動畫 F01--F45）\\[8pt]
+{\small 原文：William Fulton, \emph{Young Tableaux: With Applications to Representation Theory and Geometry},\\
+London Mathematical Society Student Texts 35, Cambridge University Press, 1997.}
+\end{center}
+
+\begin{keybox}[一頁看懂]
+\textbf{主角}：Young 表（列弱遞增、行嚴格遞增），以及兩個操作——\textbf{列插入}（bumping）與\textbf{滑動}（jeu de taquin）。
+\begin{enumerate}[nosep]
+\item \textbf{表 = 字}（第 2 章）：把表攤平成字；列插入與滑動都只做「基本 Knuth 變換」，每個字恰與一個表等價（主定理）。
+      由此兩種乘積相同、有結合律，Rect 與滑法無關。
+\item \textbf{為什麼唯一}（第 3 章）：最長遞增子序列 $L(w,k)$ 在等價下不變，它讀出表的形狀。
+\item \textbf{R-S-K}（第 4 章）：插入時記下新格子，就得到矩陣 $\leftrightarrow$ 同形狀表對的對應；轉置 $\leftrightarrow$ 對調，計數恆等式一把抓。
+\item \textbf{LR 規則}（第 5 章）：$s_\lambda s_\mu=\sum c^\nu_{\lambda\mu}s_\nu$，$c^\nu_{\lambda\mu}$ = 表的「因數分解」數 = LR 斜表（字是反格字）的個數。
+\item \textbf{對稱函數}（第 6 章）：五組基底、Jacobi–Trudi、內積與 $\omega$；換基底的係數 $\chi^\lambda_\mu$ 就是第 7 章 $S_n$ 的特徵標。
+\item \textbf{對稱群的表示}（第 7 章）：tabloid 的行交錯和 $v_T$ 張成不可約的 Specht 模 $S^\lambda$，標準表是基底；$R\cong\Lambda$ 把 Young、LR、Pieri、$\omega$ 翻譯成表示論。
+\item \textbf{一般線性群}（第 8 章）：數字換成向量、行換成楔積，同一條交換關係給出 Schur 模 $E^\lambda$；基底是半標準表、特徵標是 $s_\lambda$，$E^{\otimes n}\cong\bigoplus E^\lambda\otimes S^\lambda$。
+\end{enumerate}
+\end{keybox}
+
+\setcounter{tocdepth}{1}
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{\qquad}lll@{}}
+\toprule
+節 & 內容 & 動畫 & 節 & 內容 & 動畫\\
+\midrule
+1 & 第 1 章回顧 & F01--F08 & 4 & R-S-K 對應 & F16--F19\\
+2 & 字與 plactic monoid & F09--F13 & 5 & Littlewood–Richardson 規則 & F20--F24\\
+3 & 遞增子序列、主定理的證明 & F14--F15 & 6 & 對稱多項式 & F25--F27\\
+ & & & 7 & 對稱群的表示 & F28--F41\\
+ & & & 8 & 一般線性群的表示 & F42--F45\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent 以〔Fulton p.18〕等標示書上的頁碼。所有例子都用書上的資料，內文寫到的每一個數字都由程式（\texttt{codes/utils/tableaux.py}）重算、
+圖由 \texttt{fulton/make\_figs.py} 產生並先做數字檢查。連續播放：\texttt{FultonDemo}（F01--F08）、\texttt{FultonDemo2}（F09--F19）、\texttt{FultonDemo3}（F20--F27）、\texttt{FultonDemo4}（F28--F41；第 7 章的數字另由 \texttt{codes/utils/rep\_data.py} 核對）、\texttt{FultonDemo5}（F42--F45）。
+
+\input{fulton/part1}
+\input{fulton/part2}
+\input{fulton/part3}
+\input{fulton/part4}
+\input{fulton/part5}
+\input{fulton/part6}
+
+\end{document}

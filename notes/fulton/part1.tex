@@ -1,0 +1,256 @@
+% Young 表講義第 1 段：第 1 章回顧與第 2 章（動畫 F01–F08、F09–F13）
+% 圖與表由 fulton/make_figs.py 產生（含數字檢查）；格子 (i,j) = 第 i 列第 j 行，1 起算。
+\input{fulton/figs}
+
+% ---------------------------------------------------------------------
+\section{第 1 章回顧：列插入、表的字與滑動（動畫 F01--F08）}\label{sec:f-recap}
+
+這一節只把後面各章要用的定義集中寫一次（動畫 F01--F08 有完整的示範）。
+
+\textbf{Young 圖與表。}分割 $\lambda=(\lambda_1\ge\lambda_2\ge\cdots)$ 畫成 Young 圖：第 $i$ 列有 $\lambda_i$ 格、靠左對齊、第一列在最上面。
+在格子裡填正整數，每一列由左到右\textbf{弱遞增}、每一行由上到下\textbf{嚴格遞增}，就是一個（半標準）\textbf{表}；
+$1,\ldots,n$ 各用一次的叫\textbf{標準表}。從 $\lambda$ 挖掉左上角的小圖 $\mu$ 得到斜形狀 $\lambda/\mu$，填法相同的叫\textbf{斜表}。
+
+\textbf{列插入 $T\leftarrow x$} \fulref{p.7}。把 $x$ 放進第一列：如果這一列沒有比 $x$ 大的數，$x$ 接在列尾；
+否則 $x$ 擠出「最左邊、比 $x$ 大」的那個數，被擠出的數再用同樣的規則插入下一列，直到某個數接在列尾（可能自成新的一列）。
+結果仍是表，形狀多出一個外角。知道新格子在哪裡，就能反向擠出，還原 $T$ 與 $x$。
+
+\textbf{表的字與乘積} \fulref{p.11}。表的\textbf{字} $w(T)$：從最下面一列讀到最上面一列，每列由左往右。
+乘積 $T\cdot U$：把 $w(U)$ 的字母依序列插入 $T$。
+
+\begin{figure}[H]
+\centering
+\FulRecap
+\caption{列插入 $T\leftarrow 2$：2 擠出 3、3 擠出 5、5 擠出 6、6 接在第 4 列尾（\colorbox{yellow!45}{黃色}是擠壓路徑，
+\colorbox{cC!35}{綠色}是新格子 $(4,3)$）。右邊是乘積 $T\cdot U$：把 $w(U)=2\,1\,3$ 依序插入 $T$。
+這裡 $w(T)=5\,6\,4\,4\,6\,2\,3\,5\,5\,1\,2\,2\,3$。}
+\label{fig:f-recap}
+\end{figure}
+
+\textbf{滑動與 rectification} \fulref{p.12--13}。在斜表裡挑一個\textbf{內角}（$\mu$ 的角）當洞，
+把洞右邊與下面兩個數中\textbf{較小}的滑進洞（相等時取下面的），洞跟著移動，直到洞成為外角、被拿掉。
+一直滑到沒有內角，得到一個表，叫做 $S$ 的 \textbf{rectification} $\mathrm{Rect}(S)$。
+把 $T$ 放在左下、$U$ 放在右上、中間補一塊空白矩形，得到斜表 $T*U$。
+
+\begin{keybox}[第 1 章留下的三個 Claim（第 2--3 章證明它們）]
+\begin{enumerate}[nosep]
+\item 乘積有結合律：$(T\cdot U)\cdot V=T\cdot(U\cdot V)$。
+\item $\mathrm{Rect}(S)$ 與內角的挑法無關。
+\item $\mathrm{Rect}(T*U)=T\cdot U$。
+\end{enumerate}
+三者都由第 2 章的主定理（\S\ref{sec:f-slides}）推出，主定理的唯一性在第 3 章（\S\ref{sec:f-unique}）證明。
+\end{keybox}
+
+% ---------------------------------------------------------------------
+\section{第 2 章：字與 plactic monoid（動畫 F09--F13）}\label{sec:f-ch2}
+
+\subsection{字與 Knuth 變換}\label{sec:f-knuth}
+
+\textbf{由字還原表} \fulref{p.17}。把字在每個「下一個字母比前一個小」的地方切開，切出的弱遞增片段由下往上疊起來，
+就是原來的表。例如 $5\,6\,4\,4\,6\,2\,3\,5\,5\,1\,2\,2\,3$ 切成 $56\mid 446\mid 2355\mid 1223$，正是圖~\ref{fig:f-recap} 中 $T$ 的四列。
+不是每個字都來自表：$3\,4\,1\,4$ 切成 $34\mid 14$，疊起來第 2 行是 4 在 4 上面，不是嚴格遞增。
+但\textbf{每個字都是某個斜表的字}：每段當一列，每一列放在下一列的整個右上方，各行至多一格，條件自動成立（圖~\ref{fig:f-runs}）。
+
+\begin{figure}[H]
+\centering
+\FulRuns
+\caption{字 $w=1\,3\,4\,2\,3\,4\,1\,2\,2\,3\,3\,2$ 切成 $134\mid 234\mid 12233\mid 2$，排成階梯形的斜表，它的字就是 $w$。}
+\label{fig:f-runs}
+\end{figure}
+
+\textbf{用字的語言寫列插入} \fulref{p.18}。把一列的字寫成 $u\,x'\,v$：$x'$ 是第一個比 $x$ 大的字母，
+所以 $u\le x<x'\le v$（意思是 $u$ 的每個字母 $\le x$、$v$ 的每個字母 $\ge x'$）。插入 $x$ 就是
+\[
+(u\,x'\,v)\cdot x\ \longmapsto\ x'\cdot(u\,x\,v),
+\]
+被擠出的 $x'$ 移到這一列的左邊，而在字裡，下一列恰好就在左邊。圖~\ref{fig:f-recap} 的插入寫成四行：
+\[
+\begin{aligned}
+(56)(446)(2355)(1223)\cdot 2&\mapsto(56)(446)(2355)\cdot 3\cdot(1222)\mapsto(56)(446)\cdot 5\cdot(2335)(1222)\\
+&\mapsto(56)\cdot 6\cdot(445)(2335)(1222)=(566)(445)(2335)(1222).
+\end{aligned}
+\]
+
+\textbf{Knuth 的拆解} \fulref{p.18--19}。每一行還可以再拆成更小的步：先讓 $x$ 一格一格往左移過 $v$ 的字母，
+再讓 $x'$ 一格一格往左移過 $u$ 的字母。每一步只動三個相鄰的字母、交換其中兩個，而且只有兩種：
+\begin{figure}[H]
+\centering
+\FulKnuthRules
+\caption{兩種基本變換與記法：$K'$ 是把 $x$ 插入一列 $[\,y\ z\,]$（$x$ 擠出 $y$），$K''$ 是把 $y$ 插入 $[\,x\ z\,]$（$y$ 擠出 $z$）。
+插入前後的字分別是左邊與右邊的三個字母。}
+\label{fig:f-knuth-rules}
+\end{figure}
+換句話說：一個字母 $y$ 同一側的兩個鄰居若一個比 $y$ 小、一個比 $y$ 大，就可以交換它們
+（有相等時，照「相等的字母左邊的算小」來判斷）。
+
+\begin{keybox}[Knuth 等價]
+對字裡三個相鄰的字母做一次 $K'$、$K''$ 或它們的反方向，叫做一次\textbf{基本 Knuth 變換}。
+兩個字若能用一串基本變換互相變到，就說它們 \textbf{Knuth 等價}，記作 $w\equiv w'$。
+\end{keybox}
+
+\begin{thmbox}[命題 1 \fulref{p.19}]
+對任何表 $T$ 與正整數 $x$，$w(T\leftarrow x)\equiv w(T)\cdot x$。所以 $w(T\cdot U)\equiv w(T)\cdot w(U)$。
+\end{thmbox}
+
+表~\ref{tab:f-chain} 是圖~\ref{fig:f-recap} 的插入拆成的 8 步。第 1 列 $1\,2\,2\,3$：$x=2$ 擠出 $x'=3$，$v$ 是空的，
+$3$ 往左移過 $u=1\,2\,2$，三步 $K''$；第 2 列：$3$ 擠出 $5$，先用一步 $K'$ 越過 $v=5$，再用兩步 $K''$ 越過 $u=2\,3$；
+第 3 列：$5$ 擠出 $6$，兩步 $K''$ 越過 $4\,4$；第 4 列：$6$ 接在 $5\,6$ 後面，字已經是 $w(T\leftarrow 2)$。
+
+\begin{table}[H]
+\centering
+\FulChain
+\caption{$w(T)\cdot 2\equiv w(T\leftarrow 2)$ 的 8 步基本變換（每一步動到的三個字母標成橘色）。}
+\label{tab:f-chain}
+\end{table}
+
+\begin{notebox}
+一個等價類有多少個字？若 $T$ 的形狀是 $\lambda$，與 $w(T)$ 等價的字恰有 $f^\lambda$ 個（$f^\lambda$ = 形狀 $\lambda$ 的標準表個數，
+書 p.57 練習 16，理由見 \S\ref{sec:f-rs}）。例如 $1\,3\,2\equiv 3\,1\,2$，而 $f^{(2,1)}=2$。
+\end{notebox}
+
+% ---------------------------------------------------------------------
+\subsection{滑動、主定理與 plactic monoid}\label{sec:f-slides}
+
+滑動的中途會出現「有洞」的表；它的字照常讀，跳過洞。\textbf{水平滑動}（洞右邊的數往左移）字完全不變；
+\textbf{垂直滑動}（洞下面的數往上移）字會變，但仍然 Knuth 等價。最簡單的情形 \fulref{p.20}：上列 $u\ \square\ y$、
+下列 $v\ x\ z$，$x$ 往上滑。用 $u,v,x,y,z=1,2,3,4,5$，字從 $v\,x\,z\,u\,y=2\,3\,5\,1\,4$ 變成 $v\,z\,u\,x\,y=2\,5\,1\,3\,4$，
+四步基本變換就能接起來（圖~\ref{fig:f-slide}）。一般情形把 $u,v,y,z$ 換成整段的遞增列，對列長用歸納法，每一步用一次命題 1 \fulref{p.21--22}。
+
+\begin{figure}[H]
+\centering
+\FulSlide
+\caption{垂直滑動前後的字 Knuth 等價：$23514\equiv 25134$（每一步動到的三個字母標成橘色）。}
+\label{fig:f-slide}
+\end{figure}
+
+\begin{thmbox}[命題 2 \fulref{p.22}]
+若一個斜表可以經由一串滑動變成另一個，它們的字 Knuth 等價。
+\end{thmbox}
+
+\begin{thmbox}[主定理 \fulref{p.22}]
+每個字都恰好與\textbf{一個}表的字 Knuth 等價。
+\end{thmbox}
+
+\textbf{存在}很容易：把 $w=x_1x_2\cdots x_r$ 的字母依序插入空表，
+\[
+P(w)=\bigl(\cdots\bigl((x_1\leftarrow x_2)\leftarrow x_3\bigr)\leftarrow\cdots\bigr)\leftarrow x_r ,
+\]
+由命題 1，每插入一個字母，等價類都不變，所以 $w\equiv w(P(w))$。例如 $w=1\,3\,4\,2\,3\,4\,1\,2\,2\,3\,3\,2$ 的
+$P(w)$ 是圖~\ref{fig:f-increasing} 右邊的表，它的字 $3\,4\,4\,2\,3\,3\,1\,1\,2\,2\,2\,3$ 和 $w$ 不同，卻彼此等價。
+\textbf{唯一}則需要新的想法，留到第 3 章（\S\ref{sec:f-unique}）。先承認它，就得到：
+
+\begin{thmbox}[推論 \fulref{p.23}]
+\begin{enumerate}[nosep]
+\item $\mathrm{Rect}(S)$ 是唯一與 $w(S)$ 等價的表；$\mathrm{Rect}(S)=\mathrm{Rect}(S')$ 若且唯若 $w(S)\equiv w(S')$。
+\item 乘積 $T\cdot U$ 的三種做法——把 $w(U)$ 插入 $T$、$\mathrm{Rect}(T*U)$、唯一與 $w(T)\,w(U)$ 等價的表——結果相同。
+\end{enumerate}
+\end{thmbox}
+
+第 1 點由命題 2 得到，所以 $\mathrm{Rect}(S)$ 與挑內角的順序無關（Claim 2）。例如 p.12 的斜表 $S$，
+$w(S)=5\,5\,2\,3\,6\,2\,4\,4\,6\,2$，把它插入空表與把 $S$ 滑成表，都得到 $\yts{22246,346,55}$。
+第 2 點：三種做法的字都與 $w(T)\,w(U)$ 等價，所以是同一個表（Claim 3）；而字的連接顯然有結合律，所以乘積也有（Claim 1）。
+圖~\ref{fig:f-recap} 的例子 $T\cdot U=\yts{11223,2235,345,466,5}$ 三種做法都得到。
+
+\textbf{Plactic monoid} \fulref{p.23--24}。把字依 Knuth 等價分類，等價類的乘法就是把字接起來（等價的字接起來仍等價），
+得到一個么半群 $\mathcal{M}$，Lascoux 與 Schützenberger 稱為 plactic monoid。主定理說：$\mathcal{M}$ 和「表＋乘積」是同一個東西。
+再取以表為基底的自由 $\mathbb{Z}$-模、以表的乘積為乘法，得到 \textbf{tableau ring} $R_{[m]}$（數字取自 $[m]=\{1,\ldots,m\}$；
+有結合律、不交換）。$T\mapsto x^T$（數字 $i$ 出現幾次，$x_i$ 就幾次方）是 $R_{[m]}\to\mathbb{Z}[x_1,\ldots,x_m]$ 的環同態。
+
+% ---------------------------------------------------------------------
+\subsection{Pieri 公式}\label{sec:f-pieri}
+
+在 tableau ring 裡，令 $S_\lambda=S_\lambda[m]$ 為所有形狀 $\lambda$、數字在 $[m]$ 的表的和；它的像就是 Schur 多項式 $s_\lambda(x_1,\ldots,x_m)$。
+
+\begin{thmbox}[Pieri 公式 \fulref{p.24}]
+\[
+\begin{aligned}
+S_\lambda\cdot S_{(p)}&=\sum_{\mu} S_\mu &&(\mu/\lambda\ \text{是 $p$ 格的\textbf{水平帶}：任兩格不同行}),\\
+S_\lambda\cdot S_{(1^p)}&=\sum_{\mu} S_\mu &&(\mu/\lambda\ \text{是 $p$ 格的\textbf{垂直帶}：任兩格不同列}).
+\end{aligned}
+\]
+\end{thmbox}
+
+理由是第 1 章 \S1.1 的命題（動畫 F05）：依序插入一列（弱遞增的數），新格子一格比一格靠右、而且不會往下，所以新長出的格子是水平帶；
+反過來，若 $U$ 的形狀 $\mu$ 比 $\lambda$ 多一條 $p$ 格的水平帶，從最右邊的新格子開始反向擠出 $p$ 次，
+就把 $U$ \textbf{唯一地}拆成 $T\cdot V$（$T$ 的形狀 $\lambda$、$V$ 是一列）。插入一行（嚴格遞增的數）的情形同理，得到垂直帶。
+
+\begin{figure}[H]
+\centering
+\FulPieri
+\caption{$\lambda=(2,1)$、$p=2$。加\textcolor{cLeft}{水平帶}得到 $(4,1)$、$(3,2)$、$(3,1,1)$、$(2,2,1)$；
+加\textcolor{cRight}{垂直帶}得到 $(3,2)$、$(3,1,1)$、$(2,2,1)$、$(2,1,1,1)$。}
+\label{fig:f-pieri}
+\end{figure}
+
+數一數 $m=3$ 的情形：形狀 $(2,1)$ 的表有 8 個、長 2 的列有 6 個，$8\cdot 6=48=24+15+6+3$，右邊正是四種 $\mu$ 的表數。
+把每個表換成 $x^T$，一列的表的和是完全對稱多項式 $h_p$、一行的表的和是基本對稱多項式 $e_p$，得到
+\[
+s_\lambda\,h_p=\sum s_\mu\ (\text{水平帶}),\qquad s_\lambda\,e_p=\sum s_\mu\ (\text{垂直帶}).
+\]
+用三個變數比較 $x_1^2x_2^2x_3$ 的係數：$s_{(2,1)}h_2$ 那邊是 $6=2+2+1+1$，$s_{(2,1)}e_2$ 那邊是 $4=2+1+1+0$
+（最後一項是 0：$s_{(2,1,1,1)}$ 要 4 個不同的數，三個變數不夠）。
+
+% ---------------------------------------------------------------------
+\subsection{Kostka 數與兩種序}\label{sec:f-kostka}
+
+表的\textbf{內容}是 $\mu=(\mu_1,\mu_2,\ldots)$：數字 $i$ 出現 $\mu_i$ 次。\textbf{Kostka 數} $K_{\lambda\mu}$ = 形狀 $\lambda$、內容 $\mu$ 的表的個數 \fulref{p.25}。
+等價的說法：把數字 $\le k$ 的格子取出來，得到形狀 $\lambda^{(k)}$，於是 $\varnothing\subset\lambda^{(1)}\subset\cdots\subset\lambda$，每一步多一條 $\mu_k$ 格的水平帶；
+$K_{\lambda\mu}$ 就是這種鏈的個數。
+
+\begin{figure}[H]
+\centering
+\FulKostkaTabs
+\caption{$\lambda=(3,2)$、$\mu=(2,2,1)$ 的兩個表（\textcolor{cLeft}{1}、\textcolor{cB}{2}、\textcolor{cRight}{3} 分色）與它們的水平帶鏈，所以 $K_{(3,2),(2,2,1)}=2$。}
+\label{fig:f-kostka-tabs}
+\end{figure}
+
+反覆使用 Pieri 公式 $s_\lambda h_p=\sum s_\mu$，從 1 開始依序乘上 $h_{\mu_1},h_{\mu_2},\ldots$，每乘一次就加一條水平帶：
+\[
+h_{\mu_1}h_{\mu_2}\cdots h_{\mu_\ell}=\sum_\lambda K_{\lambda\mu}\,s_\lambda ,\qquad\text{例如}\quad h_2h_1h_1=s_{(4)}+2s_{(3,1)}+s_{(2,2)}+s_{(2,1,1)} .
+\]
+同理 $e_{\mu_1}\cdots e_{\mu_\ell}=\sum_\lambda K_{\tilde\lambda\mu}\,s_\lambda$（$\tilde\lambda$ 是共軛分割；垂直帶轉置後就是水平帶）。
+
+\textbf{兩種序} \fulref{p.26}。\textbf{字典序}：從第一項比起，第一個不同的地方較大者為大，這是全序。
+\textbf{支配序} $\mu\trianglelefteq\lambda$：每個 $i$ 都有 $\mu_1+\cdots+\mu_i\le\lambda_1+\cdots+\lambda_i$。
+包含 $\Rightarrow$ 支配 $\Rightarrow$ 字典序，反過來都不對：$(2,2)\trianglelefteq(3,1)$ 但 $(2,2)\not\subset(3,1)$；
+$(4,1,1)$ 的字典序比 $(3,3)$ 大，卻不支配它（$4+1<3+3$）；$(2,2,2)$ 與 $(3,1,1,1)$ 在支配序下不可比。
+
+由定義，$K_{\lambda\lambda}=1$，而 $\mu$ 的字典序比 $\lambda$ 大時 $K_{\lambda\mu}=0$（第一列放不下那麼多 1，依此類推）。
+所以把分割依字典序由小到大排，Kostka 矩陣是對角線全為 1 的下三角矩陣（表~\ref{tab:f-kostka}）。
+更精確地（練習 2）：$K_{\lambda\mu}\ne 0$ 若且唯若 $\mu\trianglelefteq\lambda$；字典序較大還不夠，例如 $K_{(4,1,1),(3,3)}=0$。
+
+\begin{table}[H]
+\centering
+\FulKostkaMatrix
+\caption{$n=4$ 的 Kostka 矩陣 $K_{\lambda\mu}$（列 $\lambda$、行 $\mu$，字典序由小到大）：下三角、對角線為 1。}
+\label{tab:f-kostka}
+\end{table}
+
+下三角矩陣可以反解，所以 $s_\lambda$ 能寫成 $h_\mu$ 的整係數組合，而 $h_\mu$ 是對稱多項式——\textbf{Schur 多項式是對稱的}。
+這也推出 $K_{\lambda\mu}$ 與 $\mu$ 各項的順序無關（例如 $K_{(3,2),(2,2,1)}=K_{(3,2),(1,2,2)}=K_{(3,2),(2,1,2)}=2$），第 4 章會直接證明（\S\ref{sec:f-apps}）。
+
+% ---------------------------------------------------------------------
+\subsection{行字}\label{sec:f-colword}
+
+另一種把表攤平的方法 \fulref{p.27}：由左到右逐行，每一行\textbf{由下往上}讀，得到\textbf{行字} $w_{\mathrm{col}}(T)$。
+圖~\ref{fig:f-recap} 的 $T$：$w_{\mathrm{col}}(T)=5421\ 6432\ 652\ 53$，而 $w_{\mathrm{row}}(T)=56\ 446\ 2355\ 1223$。兩個字長得不一樣，但
+
+\begin{thmbox}[(10) \fulref{p.27}]
+$w_{\mathrm{col}}(T)\equiv w_{\mathrm{row}}(T)$。（把行字插入空表，長出來的正是 $T$。）
+\end{thmbox}
+
+這由一個更一般的事實得到。\textbf{Lemma 1}：斜表被一條水平或垂直的線切成 $T'$、$T''$，則 $w(T)\equiv w(T')\cdot w(T'')$。
+水平切是字的定義本身。垂直切：把左塊 $T'$ 往下移到右塊 $T''$ 的左下，得到斜表 $T'*T''$，它的字正是 $w(T')\,w(T'')$；
+再從 $T'$ 正上方的內角由右到左一格一格滑回去，就回到 $T$，由命題 2 得證（圖~\ref{fig:f-cut}）。
+一次切下最左邊的一行，對剩下的再切，得到 $w(T)\equiv w(C_1)\,w(C_2)\cdots$，而單獨一行的字就是由下往上讀，所以就是 (10)。
+
+\begin{figure}[H]
+\centering
+\FulCut
+\caption{在第 2 行之後垂直切開：$T'$（左兩行）與 $T''$；$T'*T''$ 的字是 $56442312\cdot 65523$，滑回去仍是 $T$。}
+\label{fig:f-cut}
+\end{figure}
+
+\begin{notebox}
+還有更強的 Lemma 2 \fulref{p.28}：$w_{\mathrm{col}}(T)$ 與 $w_{\mathrm{row}}(T)$ 只用 $K'$ 一種變換（及其反方向）就能互變。書到附錄 A 才用到。
+\end{notebox}

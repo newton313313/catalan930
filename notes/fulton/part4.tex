@@ -1,0 +1,90 @@
+% Young 表講義第 4 段：第 6 章 對稱多項式（動畫 F25–F27）
+% 圖與表在 fulton/figs.tex（由 fulton/make_figs.py 產生，part1.tex 已 \input）。
+
+\section{第 6 章：對稱多項式（動畫 F25--F27）}\label{sec:f-ch6}
+
+\subsection{五組基底}\label{sec:f-bases}
+
+固定 $m$ 個變數 $x_1,\ldots,x_m$。除了 Schur 多項式 $s_\lambda$，還有四種自然的對稱多項式 \fulref{p.72}：
+\textbf{單項式} $m_\lambda$（$x^\lambda$ 的所有不同排列之和）、\textbf{基本} $e_\lambda=e_{\lambda_1}e_{\lambda_2}\cdots$、\textbf{完全} $h_\lambda=h_{\lambda_1}h_{\lambda_2}\cdots$、
+\textbf{冪和} $p_\lambda=p_{\lambda_1}p_{\lambda_2}\cdots$（$p_r=x_1^r+\cdots+x_m^r$）。同一個多項式，五種「語言」寫法完全不同；例如三個變數的 $h_2h_1$：
+\[
+h_2h_1=m_{(3)}+2m_{(2,1)}+3m_{(1,1,1)}=s_{(3)}+s_{(2,1)}=e_{(1,1,1)}-e_{(2,1)}=h_{(2,1)}=\tfrac12p_{(1,1,1)}+\tfrac12p_{(2,1)} .
+\]
+
+\begin{thmbox}[命題 1 \fulref{p.73}]
+$n$ 次齊次對稱多項式（$m$ 個變數）的整係數基底：$\{m_\lambda\}$、$\{s_\lambda\}$（$\lambda\vdash n$、至多 $m$ 列），$\{e_\lambda\}$、$\{h_\lambda\}$（$\lambda\vdash n$、$\lambda_1\le m$）。
+$\{p_\lambda\}$ 只在有理係數下是基底。
+\end{thmbox}
+
+理由是「首項」：$s_\lambda$ 字典序最大的單項式是 $x^\lambda$、係數 1，所以 $s$ 對 $m$ 的轉換矩陣是對角線為 1 的三角矩陣；$e_\lambda$ 的首項是 $x^{\tilde\lambda}$，同理。
+$h$ 與 $e$ 生成同一個環，因為兩個生成函數 $E(t)=\prod(1+x_it)=\sum e_kt^k$、$H(t)=\prod(1-x_it)^{-1}=\sum h_kt^k$ 滿足 $E(-t)H(t)=1$，也就是
+\[
+\sum_{i=0}^{k}(-1)^i e_i\,h_{k-i}=0\qquad(k\ge1).
+\]
+（$k=3$ 時看 $x_1x_2x_3$ 的係數：$1-3+3-1=0$，正是二項式定理。）而 $p$ 不行：$p\to m$ 的轉換矩陣行列式是 6（$n=3$），得除以整數。
+
+\textbf{Newton 恆等式}（練習 1，\fulref{p.74}）：$k\,h_k=\sum_{i=1}^k p_i\,h_{k-i}$、$k\,e_k=\sum_{i=1}^k(-1)^{i-1}p_i\,e_{k-i}$。逐步解出
+\[
+h_2=\tfrac12p_1^2+\tfrac12p_2,\qquad h_3=\tfrac16p_1^3+\tfrac12p_1p_2+\tfrac13p_3 .
+\]
+分母 6、2、3 有意思：令 $z(\lambda)=\prod_r r^{m_r}\,m_r!$（$m_r$ = $r$ 在 $\lambda$ 中出現的次數），則 $h_n=\sum_{\lambda\vdash n}p_\lambda/z(\lambda)$（Lemma 1），
+而 $n!/z(\lambda)$ 恰是 $S_n$ 中循環型為 $\lambda$ 的排列個數：$S_3$ 裡循環型 $(1,1,1),(2,1),(3)$ 各有 $1,3,2$ 個（$z=6,2,3$）。
+
+\subsection{Jacobi–Trudi 與其他公式}\label{sec:f-jt}
+
+$s_\lambda$ 的定義是「數表」，卻還有三個長得完全不同的公式 \fulref{p.75}：
+\[
+\text{(5)}\ s_\lambda=\det\bigl(h_{\lambda_i+j-i}\bigr),\qquad
+\text{(6)}\ s_\lambda=\det\bigl(e_{\tilde\lambda_i+j-i}\bigr),\qquad
+\text{(7)}\ s_\lambda=\frac{\det\bigl(x_j^{\lambda_i+m-i}\bigr)}{\det\bigl(x_j^{m-i}\bigr)} .
+\]
+(5) 的矩陣對角線是 $h_{\lambda_1},h_{\lambda_2},\ldots$，往右一格下標加 1、往左一格減 1（$h_0=1$，負下標為 0）。例如
+\[
+s_{(2,1)}=\det\begin{pmatrix}h_2&h_3\\ h_0&h_1\end{pmatrix}=h_2h_1-h_3 ,\qquad
+s_{(3)}=\det\begin{pmatrix}e_1&e_2&e_3\\ 1&e_1&e_2\\ 0&1&e_1\end{pmatrix}=e_1^3-2e_1e_2+e_3=h_3 .
+\]
+(7) 是 Jacobi 原本的定義：分母是 Vandermonde 行列式。兩個變數、$\lambda=(2,1)$：
+$\dfrac{x_1^3x_2-x_1x_2^3}{x_1-x_2}=x_1^2x_2+x_1x_2^2=s_{(2,1)}(x_1,x_2)$。這三個公式都由程式對多個 $\lambda$ 逐項核對過。
+
+\textbf{代入 $1,q,q^2,\ldots$}（練習 5、6，\fulref{p.76}）。把 $x_i$ 換成 $q^{i-1}$，每個表貢獻 $q^{(\text{數字和})-|\lambda|}$：
+\[
+s_{(2,1)}(1,q,q^2)=q+2q^2+2q^3+2q^4+q^5=q\cdot\frac{q^2-1}{q-1}\cdot\frac{q^4-1}{q^2-1}\cdot\frac{q^2-1}{q-1},
+\]
+一般地 $s_\lambda(1,q,\ldots,q^{m-1})=q^{r}\prod_{i<j}\dfrac{q^{\lambda_i-\lambda_j+j-i}-1}{q^{j-i}-1}$，$r=\sum(i-1)\lambda_i$。
+再令 $q=1$，每個分式變成 $(\lambda_i-\lambda_j+j-i)/(j-i)$，乘起來就是表的個數：$\tfrac21\cdot\tfrac42\cdot\tfrac21=8$，正是 $(2,1)$ 形、數字在 $[3]$ 的 8 個表——
+第 4 章鉤–內容公式 $d_\lambda(m)$ 的證明（\S\ref{sec:f-apps}）。
+
+\subsection{對稱函數環 $\Lambda$、內積與 $\omega$}\label{sec:f-lambda}
+
+把變數設成 0，$s_\lambda$、$h_\lambda$、$e_\lambda$、$m_\lambda$、$p_\lambda$ 都變成少一個變數的同名多項式（列數比變數多的 $s_\lambda$ 變成 0）。
+把各個 $m$ 的層接起來，得到\textbf{對稱函數環} $\Lambda=\bigoplus_n\Lambda_n$，等於讓變數有無限多個 \fulref{p.77}；它是 $h_1,h_2,\ldots$（或 $e_1,e_2,\ldots$）的多項式環。
+
+\textbf{Cauchy 核的三種展開}（命題 2，\fulref{p.74--75}）：
+\[
+\prod_{i,j}\frac{1}{1-x_iy_j}=\sum_\lambda h_\lambda(x)\,m_\lambda(y)=\sum_\lambda\frac{p_\lambda(x)\,p_\lambda(y)}{z(\lambda)}=\sum_\lambda s_\lambda(x)\,s_\lambda(y) .
+\]
+規定 $s_\lambda$ 是\textbf{正交規範基底}，定出 $\Lambda_n$ 上的內積；三種展開相等，翻譯成（命題 3，\fulref{p.78}）
+\[
+\langle h_\lambda,m_\mu\rangle=\delta_{\lambda\mu},\qquad \langle p_\lambda,p_\mu\rangle=z(\lambda)\,\delta_{\lambda\mu} .
+\]
+
+\textbf{特徵值 $\chi^\lambda_\mu$}（(11)(12)，\fulref{p.78}）：$p_\mu=\sum_\lambda\chi^\lambda_\mu\,s_\lambda$，反過來 $s_\lambda=\sum_\mu\chi^\lambda_\mu\,p_\mu/z(\mu)$。
+$n=3$（順序 $(3),(2,1),(1,1,1)$）：$\chi^{(3)}=1,1,1$、$\chi^{(2,1)}=-1,0,2$、$\chi^{(1,1,1)}=1,-1,1$。$n=4$ 見表~\ref{tab:f-char4}；
+由 $\langle p_\lambda,p_\mu\rangle=z(\lambda)\delta$，每一行的平方和等於 $z(\mu)$、不同行互相正交。
+
+\begin{table}[H]
+\centering
+\FulCharFour
+\caption{$n=4$ 的 $\chi^\lambda_\mu$（$p_\mu=\sum_\lambda\chi^\lambda_\mu s_\lambda$），最後一列是 $z(\mu)$。$\mu=(1,1,1,1)$ 那一行是 $f^\lambda=1,3,2,3,1$。}
+\label{tab:f-char4}
+\end{table}
+
+\begin{keybox}[對合 $\omega$（推論 1，\fulref{p.78}）]
+$\omega:s_\lambda\mapsto s_{\tilde\lambda}$（Young 圖沿對角線翻轉）是保持內積的環同態，$\omega(h_\lambda)=e_\lambda$，$\omega(p_\mu)=(-1)^{|\mu|-\ell(\mu)}p_\mu$
+（例 $\omega(p_{(2,1)})=-p_{(2,1)}$）。
+\end{keybox}
+
+\begin{notebox}[預告第 7 章]
+這些整數 $\chi^\lambda_\mu$ 正是對稱群 $S_n$ 不可約表示的\textbf{特徵標}：$\lambda$ 標示表示，$\mu$ 標示共軛類（循環型），$\mu=(1^n)$（單位元）那一行就是維數 $f^\lambda$。
+\end{notebox}

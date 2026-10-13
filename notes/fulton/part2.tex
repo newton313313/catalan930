@@ -1,0 +1,205 @@
+% Young 表講義第 2 段：第 3–4 章（動畫 F14–F19）
+% 圖與表在 fulton/figs.tex（由 fulton/make_figs.py 產生，part1.tex 已 \input）。
+
+% ---------------------------------------------------------------------
+\section{第 3 章：遞增子序列與主定理的證明（動畫 F14--F15）}\label{sec:f-ch3}
+
+\subsection{遞增子序列與 $L(w,k)$}\label{sec:f-increasing}
+
+Schensted 發明列插入，原本是為了研究字裡的遞增子序列 \fulref{p.30}。令 $L(w,k)$ 為從 $w$ 取出 $k$ 個\textbf{互不相交}的
+弱遞增子序列，長度總和的最大值。例子 $w=1\,3\,4\,2\,3\,4\,1\,2\,2\,3\,3\,2$：$L(w,1)=6$、$L(w,2)=9$、$k\ge 3$ 時 $L(w,k)=12$（圖~\ref{fig:f-increasing}）。
+
+\begin{figure}[H]
+\centering
+\FulIncreasing
+\caption{$w$ 的 1、2、3 個不相交弱遞增子序列（分色）達到 $L(w,k)=6,9,12$；右邊是 $P(w)$，它的各列長 $6,3,3$。}
+\label{fig:f-increasing}
+\end{figure}
+
+長度的分配並不唯一：$L(w,2)=9$ 可以是 $6+3$，也可以是 $5+4$；而且\textbf{沒有}長度 $6,3,3$ 的三條（程式窮舉確認），
+也就是 $k=1$ 時最長的那一條，不一定能保留到 $k=3$。可是換成與 $w$ 等價的 $w'=w(P(w))=3\,4\,4\,2\,3\,3\,1\,1\,2\,2\,2\,3$，
+從右邊一塊一塊取（也就是 $P(w)$ 的各列），立刻得到最好的取法 $6$、$6+3$、$6+3+3$。這兩件事一般都成立：
+
+\begin{thmbox}[Lemma 1 \fulref{p.32}]
+若 $w$ 是形狀 $\lambda$ 的表的字，則 $L(w,k)=\lambda_1+\cdots+\lambda_k$。
+\end{thmbox}
+
+理由：在表的字裡，一條遞增子序列在圖上一定由左往右、從不往下走（同一行下面的數較大，卻在字裡排在前面），
+所以每一行至多用到一格。$k$ 條加起來不會超過前 $k$ 列的格數，而前 $k$ 列本身就達到這個數。
+
+\begin{thmbox}[Lemma 2 \fulref{p.32--33}]
+若 $w\equiv w'$，則對所有 $k$，$L(w,k)=L(w',k)$。
+\end{thmbox}
+
+只需看一次基本變換，例如 $K'$：$w=u\,y\,x\,z\,v$、$w'=u\,y\,z\,x\,v$（$x<y\le z$）。$w'$ 的遞增子序列不會同時含 $z$ 和 $x$（$z>x$ 卻在前面），
+所以照搬到 $w$ 仍遞增，$L(w,k)\ge L(w',k)$。反方向的關鍵情形是：$w$ 的某一條同時用到 $x$、$z$（形如 $u_1\,x\,z\,v_1$），
+另一條用到 $y$（形如 $u_2\,y\,v_2$）。這時把兩條換成 $u_2\,y\,z\,v_1$ 與 $u_1\,x\,v_2$——\textbf{交換尾巴}，兩條在 $w'$ 裡都遞增，總長不變。
+$K''$ 的情形相同。
+
+由兩個 Lemma，與 $w$ 等價的任何表，形狀都由 $w$ 決定：$\lambda_k=L(w,k)-L(w,k-1)$。
+
+% ---------------------------------------------------------------------
+\subsection{唯一性的證明}\label{sec:f-unique}
+
+\begin{thmbox}[Lemma 3 \fulref{p.33}]
+若 $w\equiv w'$，各自去掉 $p$ 個最大的字母（一樣大時右邊的算比較大，先去掉）與 $q$ 個最小的字母，剩下的字仍然等價。
+\end{thmbox}
+
+一樣只看一次基本變換：去掉的若不是被交換的那三個字母，顯然；若是，去掉最大字母時只可能去掉 $z$，兩邊剩下的字完全相同。
+例：$1\,3\,4\,2\,3\,1\,3$ 去掉 3 個最大的（4 與右邊兩個 3）剩下 $1\,3\,2\,1$。
+
+\textbf{主定理唯一性的證明} \fulref{p.34}。設 $w\equiv w(T)$。形狀已由 $L(w,k)$ 決定。令 $x$ 為 $w$ 最大的字母，
+$w_0$ 為去掉最右邊那個 $x$ 的字，$T_0$ 為從 $T$ 去掉最右邊的 $x$ 的表；由 Lemma 3，$w_0\equiv w(T_0)$，
+由歸納法 $T_0$ 是唯一的。$T$ 比 $T_0$ 多一格，$x$ 只能放在那一格，所以 $T$ 也是唯一的。
+
+這個證明本身就是一個演算法：只用 $L(w,k)$，一次去掉一個最大字母，看形狀少了哪一格，那個字母就放那一格（表~\ref{tab:f-rebuild}）。
+（實際計算當然還是用列插入比較快。）
+
+\begin{table}[H]
+\centering
+\FulRebuild
+\caption{由 $L(w,k)$ 重建 $P(w)$：第 $p$ 列是去掉 $p$ 個最大字母後的字 $w_p$；它的形狀比 $w_{p+1}$ 多出的那一格，就是 $w_p$ 最大字母的位置。
+由下往上填回去，得到圖~\ref{fig:f-increasing} 右邊的 $P(w)$。}
+\label{tab:f-rebuild}
+\end{table}
+
+\begin{keybox}[到這裡]
+主定理成立：每個字恰與一個表的字等價。於是第 2 章的推論、以及第 1 章的三個 Claim（\S\ref{sec:f-recap}）全部證完。
+\end{keybox}
+
+\textbf{嚴格遞減子序列} \fulref{p.34，練習 1--2}。同樣的論證給出：最長嚴格遞減子序列的長度 = $P(w)$ 的列數；
+$k$ 條不相交嚴格遞減子序列的最大總長 = 前 $k$ 行的格數。推論（Erdős–Szekeres）：長度大於 $n^2$ 的字，一定有長度大於 $n$ 的
+遞增或嚴格遞減子序列——$P(w)$ 的格子比 $n\times n$ 多，第一列或列數總有一個超過 $n$。
+例：$w=4\,9\,2\,10\,6\,1\,8\,3\,7\,5$（長度 $10>3^2$），$P(w)=\yts{135,267,48{10},9}$，
+形狀 $(3,3,3,1)$：最長遞增 3、最長嚴格遞減 4。
+
+\begin{notebox}
+這些是 Greene 定理（1976）的特例：任何有限偏序集都可定義 $L(W,k)$，其差分與「反鏈」的差分恰好是一對共軛分割 \fulref{p.35}。本書不需要。
+\end{notebox}
+
+% ---------------------------------------------------------------------
+\section{第 4 章：Robinson–Schensted–Knuth 對應（動畫 F16--F19）}\label{sec:f-ch4}
+
+\subsection{Robinson–Schensted 對應}\label{sec:f-rs}
+
+建 $P(w)$ 的同時，在第 $k$ 步長出的新格子寫上 $k$，得到同形狀的\textbf{記錄表} $Q(w)$ \fulref{p.36--37}；
+新格子總是外角，所以 $Q(w)$ 是標準表。例 $w=5\,4\,8\,2\,3\,4\,1\,7\,5\,3\,1$（圖~\ref{fig:f-rs}）。
+
+\begin{figure}[H]
+\centering
+\FulRS
+\caption{$w=5\,4\,8\,2\,3\,4\,1\,7\,5\,3\,1$：前 4 步的 $(P_k,Q_k)$，以及最後的 $(P,Q)$。}
+\label{fig:f-rs}
+\end{figure}
+
+\textbf{反過來。}找出 $Q$ 最大的數 $r$ 所在的格子，從 $P$ 的同一格反向擠出，擠出第一列的數就是 $x_r$；
+再把 $r$ 從 $Q$ 拿掉，重複下去，一步一步還原 $w$。所以 $(P,Q)$ 決定 $w$。
+
+\begin{thmbox}[Robinson–Schensted 對應 \fulref{p.38}]
+長度 $r$、字母取自 $[n]$ 的字 $\longleftrightarrow$ 同形狀的一對 $(P,Q)$：$P$ 是數字在 $[n]$ 的表，$Q$ 是 $r$ 格的標準表。
+特別地，$S_n$ 的排列 $\longleftrightarrow$ 同形狀的一對標準表（Robinson 對應）。
+\end{thmbox}
+
+數一數排列，得到 $n!=\sum_{\lambda\vdash n}(f^\lambda)^2$：$3!=1+4+1$、$4!=1+9+4+9+1=24$。
+這也說明 \S\ref{sec:f-knuth} 的小註：$P$ 固定、$Q$ 跑遍 $f^\lambda$ 個標準表，就是與 $w(P)$ 等價的所有字。
+另外 $Q$ 決定排列的升降：$w_i>w_{i+1}$ 若且唯若 $i+1$ 在 $Q$ 裡位於 $i$ 的下面一列以下（練習 17）。
+
+% ---------------------------------------------------------------------
+\subsection{R-S-K：雙列陣列與對稱定理}\label{sec:f-rsk}
+
+Knuth 的推廣 \fulref{p.38--39}：考慮雙列陣列 $\omega=\left(\begin{smallmatrix}u_1&\cdots&u_r\\ v_1&\cdots&v_r\end{smallmatrix}\right)$，
+要求它是\textbf{字典序}：上列 $u_1\le u_2\le\cdots\le u_r$，上列相同的地方下列也弱遞增。把下列 $v_k$ 依序列插入得到 $P$，
+同時把上列 $u_k$ 放進新長出的格子得到 $Q$。$Q$ 也是表：上列相同的那幾步，插入的 $v$ 弱遞增，由第 1 章的 Row Bumping Lemma，
+新格子一格比一格靠右、不往下，所以相同的 $u$ 不會疊在同一行。
+
+\begin{figure}[H]
+\centering
+\FulArray
+\caption{練習 1 \fulref{p.40}：陣列 $\omega$、它的矩陣 $A$（$a(i,j)$ = 欄 $\binom{i}{j}$ 出現的次數），與對應的 $(P,Q)$。}
+\label{fig:f-array}
+\end{figure}
+
+\begin{thmbox}[R-S-K 定理 \fulref{p.40}]
+字典序的雙列陣列 $\longleftrightarrow$ 同形狀的一對表 $(P,Q)$，而且
+(i) $P$ 的數就是下列、$Q$ 的數就是上列；(ii) $\omega$ 是字（上列是 $1,\ldots,r$）$\iff$ $Q$ 是標準表；
+(iii) $\omega$ 是排列 $\iff$ $P$、$Q$ 都是標準表。
+\end{thmbox}
+
+\textbf{矩陣的語言} \fulref{p.41}。陣列可以記成矩陣 $A$：第 $i$ 列和 = $Q$ 裡 $i$ 的個數，第 $j$ 行和 = $P$ 裡 $j$ 的個數。
+圖~\ref{fig:f-array} 的 $A$ 列和是 $(3,2,4)$、行和是 $(5,4)$，正好是 $Q$ 與 $P$ 的內容。所以 R-S-K 是「非負整數矩陣 $\leftrightarrow$ 同形狀的表對」。
+
+\begin{thmbox}[對稱定理（Schützenberger、Knuth）\fulref{p.40}]
+若 $\omega$ 對應 $(P,Q)$，則上下翻轉的陣列（即轉置矩陣 $A^{T}$，再排回字典序）對應 $(Q,P)$。
+\end{thmbox}
+
+例：$A^T$ 對應的正是 $(Q,P)$（練習 2）。對排列而言，上下翻轉就是取反函數：$P(w^{-1})=Q(w)$、$Q(w^{-1})=P(w)$。
+例 $w=3\,1\,4\,2$、$w^{-1}=2\,4\,1\,3$：$P(w)=\yts{12,34}=Q(w^{-1})$，$Q(w)=\yts{13,24}=P(w^{-1})$。
+因此對稱矩陣 $\leftrightarrow$ $P=Q$ 的表對，也就是 $\leftrightarrow$ 一個表；對合（$w=w^{-1}$）$\leftrightarrow$ 標準表：
+$S_4$ 有 10 個對合 $=1+3+2+3+1=\sum_{\lambda\vdash 4}f^\lambda$。
+
+% ---------------------------------------------------------------------
+\subsection{矩陣球構造}\label{sec:f-balls}
+
+不用一次一次地插入，直接從矩陣讀出 $(P,Q)$ 的方法 \fulref{p.42--44}。在 $(i,j)$ 位置放 $a(i,j)$ 個球，同一格的球由西北往東南斜排。
+\textbf{編號}：每個球的號碼 = 比它西北方（列號 $\le$、行號 $\le$ 的其他格，以及同一格裡排在前面的）所有球的號碼都大的最小整數。
+於是 \textbf{$P$ 的第一列} = 每個號碼最左邊出現的行號，\textbf{$Q$ 的第一列} = 每個號碼最上面出現的列號。
+
+\textbf{導出矩陣 $A^\flat$}：號碼相同的 $\ell$ 個球一定由西南到東北排成一串；除了最後一個，在每個球的右邊、下一個球的正下方放一個新球，
+共 $\ell-1$ 個。對 $A^\flat$ 重新編號，讀出 $P$、$Q$ 的第二列；如此重複，直到沒有兩個球同號為止。
+
+\begin{figure}[H]
+\centering
+\FulBalls
+\caption{$A$ 的球與編號，讀出第一列；號碼 2 的兩球（$(1,2)$、$(2,1)$）在 $(2,2)$ 產生新球，號碼 3、4 各在 $(3,2)$ 產生新球，
+得到 $A^\flat$，讀出第二列。結果與圖~\ref{fig:f-array} 的 $(P,Q)$ 相同。}
+\label{fig:f-balls}
+\end{figure}
+
+書上用球的總數做歸納，證明矩陣球構造給出的正是 R-S-K 的 $(P,Q)$（命題 1，p.44--46）。編號的規則對列與行完全對稱，
+把 $A$ 轉置，「最左的行」與「最上的列」互換，就得到 $(Q,P)$——\textbf{對稱定理一目了然}。$A$ 是排列矩陣時，這就是 Viennot 的「影子線」構造。
+
+\textbf{對稱矩陣} \fulref{p.47，練習 4}。$A$ 對稱時 $P=Q$，且 $P$ 第一列的長度 $=\operatorname{tr}A+\operatorname{tr}A^\flat$；
+由此 $\operatorname{tr}A$ = 形狀中長度為奇數的行數。例 $S=\left(\begin{smallmatrix}2&1\\1&1\end{smallmatrix}\right)$：
+$P=Q=\yts{1112,2}$，$\operatorname{tr}S+\operatorname{tr}S^\flat=3+1=4$，各行長 $2,1,1,1$ 中有 3 個奇數 $=\operatorname{tr}S$。
+對合的情形：不動點的個數 = 奇數長的行數。
+
+% ---------------------------------------------------------------------
+\subsection{R-S-K 的應用}\label{sec:f-apps}
+
+\textbf{Kostka 數與 $\mu$ 的順序無關} \fulref{p.50--51}。先看只有兩個數字的情形：形狀 $(r+s+t,\,r)$、只含 1 與 2 的表，
+第 2 列一定全是 2，它上面的 $r$ 格全是 1，第 1 列剩下的是 $s$ 個 1 接 $t$ 個 2；把 $s,t$ 對調，就是內容 $(r+s,r+t)$ 與 $(r+t,r+s)$
+的表之間的一一對應（例 $r,s,t=2,3,1$：形狀 $(6,2)$、內容 $(5,3)$ 與 $(3,5)$ 各恰有 1 個表）。一般情形只需交換相鄰的 $\mu_k,\mu_{k+1}$：
+在 R-S-K 下，固定 $P$、看 $Q$ 的內容就是看 $A$ 的列和；把 $A$ 切成前 $k-1$ 列 $B$、第 $k,k+1$ 列 $C$、其餘 $D$，則 $P(A)=P(B)\cdot P(C)\cdot P(D)$，
+用兩個數字的情形把 $C$ 換成列和對調、$P$ 不變的 $C'$ 即可。於是 \textbf{Schur 多項式是對稱的}（第 2 章借用的事實在此得證）。
+
+\textbf{Cauchy–Littlewood 公式} \fulref{p.52}：
+\[
+\prod_{i,j}\frac{1}{1-x_i y_j}=\sum_\lambda s_\lambda(x_1,\ldots,x_n)\,s_\lambda(y_1,\ldots,y_m).
+\]
+左邊展開，是所有非負整數矩陣 $A$ 的 $\prod(x_jy_i)^{a(i,j)}$；若 $A\leftrightarrow(P,Q)$，這一項正是 $x^Py^Q$，而右邊是所有同形狀 $(P,Q)$ 的 $x^Py^Q$ 之和。
+小驗算：$2\times2$、元素和為 3 的矩陣有 $\binom{6}{3}=20$ 個 $=\sum_{\lambda\vdash3}d_\lambda(2)^2=16+4+0$
+（$d_\lambda(m)$ = 數字取自 $[m]$ 的 $\lambda$ 形表的個數）。
+
+\textbf{計數恆等式} \fulref{p.52}。由 Robinson 與 Robinson–Schensted 對應、對稱定理：
+\[
+n!=\sum_{\lambda\vdash n}(f^\lambda)^2,\qquad m^n=\sum_{\lambda\vdash n}d_\lambda(m)\,f^\lambda,\qquad
+\sum_{\lambda\vdash n}f^\lambda=\#\{w\in S_n:w=w^{-1}\}.
+\]
+例：$2^3=8=4\cdot1+2\cdot2+0\cdot1$；$n=4$ 的對合有 10 個。
+
+\textbf{兩個鉤長公式} \fulref{p.53--56}。鉤長公式 $f^\lambda=n!/\prod h(i,j)$ 在另一份講義（Chu 論文導讀的附錄 A.13，動畫 M13）已經證明；
+書上的例子 $\lambda=(6,5,5,3)$ 得 $f^\lambda=19!/\prod h(i,j)=6{,}651{,}216$。Stanley 的\textbf{鉤–內容公式}：
+\[
+d_\lambda(m)=\prod_{(i,j)\in\lambda}\frac{m+j-i}{h(i,j)} ,
+\]
+分子是在對角線上寫 $m$、往右一格加 1、往下一格減 1。$m=5$ 時得 $d_{(6,5,5,3)}(5)=3{,}360$（圖~\ref{fig:f-hook}；書在第 6 章證明，這裡用程式直接列舉驗證）。
+
+\begin{figure}[H]
+\centering
+\FulHook
+\caption{$\lambda=(6,5,5,3)$：左為鉤長 $h(i,j)$，右為 $5+j-i$（\colorbox{cB!35}{對角線}是 $m=5$）。}
+\label{fig:f-hook}
+\end{figure}
+
+\textbf{遞增與遞減}（練習 12）：最長遞增子序列長 $\ell$、最長遞減子序列長 $k$ 的排列個數 $=\sum(f^\lambda)^2$，
+$\lambda$ 跑遍恰有 $k$ 列、$\ell$ 行的形狀。例：$S_4$ 中兩者都是 2 的排列是 $2143,2413,3142,3412$，共 $(f^{(2,2)})^2=4$ 個。

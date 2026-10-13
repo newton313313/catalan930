@@ -1,0 +1,224 @@
+\input{mit/figs_part1}
+% =====================================================================
+% 附錄 A 第 1 段：A.1–A.4（動畫 M01–M04）
+% 圖由 mit/make_figs_part1.py 產生（含數字檢查），請勿手改 mit/figs_part1.tex
+% =====================================================================
+
+% ---------------------------------------------------------------------
+\subsection{Cauchy 乘積}\label{sec:m01}
+
+第 1.12 節把「根＋左＋右」直接翻譯成 $C=1+xC^2$。這一小節把中間的關鍵一步看清楚：
+為什麼「左、右互相獨立」在代數上就是「生成函數相乘」\mitref{L1}。
+
+\textbf{冪級數的乘法。}設 $A(x)=\sum_n a_nx^n$、$B(x)=\sum_n b_nx^n$。相乘時
+$a_kx^k$ 和 $b_{n-k}x^{n-k}$ 的乘積正好落在 $x^n$，所以
+\begin{equation}\label{eq:m01-cauchy}
+[x^n]\,(A\cdot B)=\sum_{k=0}^{n}a_k\,b_{n-k}=a_0b_n+a_1b_{n-1}+\cdots+a_nb_0 .
+\end{equation}
+這叫做 \textbf{Cauchy 乘積}。排成乘法表最清楚：第 $i$ 列放 $a_ix^i$、第 $j$ 行放 $b_jx^j$，
+格子 $(i,j)$ 放 $a_ib_j\,x^{i+j}$。次方相同的格子都在同一條反對角線 $i+j=n$ 上，
+$[x^n]$ 就是把這條反對角線上的格子加起來。例如 $x^2$ 的係數（圖~\ref{fig:m01-table} 的黃色格子）是
+$\textcolor{cLeft}{C_0}\textcolor{cRight}{C_2}+\textcolor{cLeft}{C_1}\textcolor{cRight}{C_1}
++\textcolor{cLeft}{C_2}\textcolor{cRight}{C_0}=2+1+2=5$。
+
+\begin{figure}[H]
+\centering
+\FigMiCauchy
+\caption{$C(x)\cdot C(x)$ 的乘法表：\textcolor{cLeft}{列}是第一個 $C(x)$ 的項，\textcolor{cRight}{行}是第二個。
+同一條反對角線 $i+j=n$ 的格子同色，加起來就是 $[x^n]\,C^2$。淡灰色的格子屬於 $x^4$ 以上，
+這張 $4\times4$ 的表只畫到它們的一部分。}
+\label{fig:m01-table}
+\end{figure}
+
+\textbf{組合意義。}$\textcolor{cLeft}{C_k}\textcolor{cRight}{C_{n-k}}$ 數的是有序對
+「\textcolor{cLeft}{左邊}一個大小 $k$ 的卡塔蘭物件、\textcolor{cRight}{右邊}一個大小 $n-k$ 的」：
+左右各自選、互不影響，所以\textbf{相乘}；$k$ 不同是不同的情況，所以\textbf{相加}。
+因此 $[x^n]\,C^2$ 就是「總大小為 $n$ 的（左，右）有序對」的個數。
+拿掉根之後剩下的左、右兩部分，正好就是這樣的有序對：把遞迴式 \eqref{eq:segner} 的 $n$ 換成 $n+1$，
+\begin{equation}\label{eq:m01-shift}
+C_{n+1}=\sum_{k=0}^{n}\textcolor{cLeft}{C_k}\,\textcolor{cRight}{C_{n-k}}=[x^n]\,C^2\qquad(n\ge0).
+\end{equation}
+也就是說，$C^2$ 的係數整串往後移一格，就是 $C$ 去掉常數項：
+\[
+\begin{array}{r@{\;}c@{\;}*{5}{r@{\;}c@{\;}}l}
+C^2 &=& 1&+&2x&+&5x^2&+&14x^3&+& & &\cdots\\
+xC^2 &=& & & x&+&2x^2&+&5x^3&+&14x^4&+&\cdots\\
+C &=& 1&+&x&+&2x^2&+&5x^3&+&14x^4&+&\cdots
+\end{array}
+\]
+所以 $C-1=xC^2$，也就是 $C=1+xC^2$，即式 \eqref{eq:cgf}。
+
+\begin{keybox}[獨立 $\to$ 相乘]
+兩個互相獨立的部分 $\longleftrightarrow$ 生成函數相乘（Cauchy 乘積 \eqref{eq:m01-cauchy}）；
+根本身佔大小 $1$ $\longleftrightarrow$ 乘上 $x$；空的物件 $\longleftrightarrow$ 常數 $1$。
+這是第 5 節「兩條翻譯規則」只有一個變數的情形。
+\end{keybox}
+
+% ---------------------------------------------------------------------
+\subsection{生成函數的閉式}\label{sec:m02}
+
+第 1.12 節解出 $C(x)$ 並直接列出結果。這裡補上兩個細節 \mitref{L1}：
+\textbf{為什麼取減號}，以及 \textbf{$\sqrt{1-4x}$ 的係數怎麼算}。
+$C=1+xC^2$ 就是 $xC^2-C+1=0$，由二次公式（$a=x$，$b=-1$，$c=1$）得 $C=\bigl(1\pm\sqrt{1-4x}\,\bigr)/(2x)$。
+
+\noindent
+\begin{minipage}[c]{0.56\textwidth}
+\textbf{取哪一個號？}冪級數 $C(x)=C_0+C_1x+\cdots$ 在 $x=0$ 的值是常數項 $C_0=1$。
+\begin{itemize}[leftmargin=1.2em]
+  \item 取 $+$：$x\to0$ 時分子趨近 $2$，所以
+        $\frac{1+\sqrt{1-4x}}{2x}\approx\frac{2}{2x}=\frac1x\to\infty$，
+        不可能是 $C_0+C_1x+\cdots$。
+  \item 取 $-$：用 $\sqrt{1-4x}\approx1-2x$，得 $\frac{1-(1-2x)}{2x}=1=C_0$。
+        也可以先有理化：$\frac{1-\sqrt{1-4x}}{2x}=\frac{2}{1+\sqrt{1-4x}}$，代 $x=0$ 就是 $1$。
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\textwidth}
+\centering
+\FigMiiBranches
+\captionof{figure}{兩個根在 $0<x\le\frac14$ 的圖形；兩支在 $x=\frac14$（根號為 $0$）會合於 $2$。}
+\label{fig:m02-branches}
+\end{minipage}
+
+\medskip
+\textbf{二項級數。}Newton 的廣義二項式定理：$(1+u)^r=\sum_{m\ge0}\binom{r}{m}u^m$，
+其中 $\binom{r}{m}=\frac{r(r-1)\cdots(r-m+1)}{m!}$，$r$ 可以是任意實數。
+取 $r=\frac12$、$u=-4x$，得到 $\sqrt{1-4x}=\sum_{m\ge0}\binom{1/2}{m}(-4)^m\,x^m$。前幾項：
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}c|cccccc@{}}
+$m$ & 0 & 1 & 2 & 3 & 4 & 5\\
+\hline
+$\binom{1/2}{m}$ & $1$ & $\frac12$ & $-\frac18$ & $\frac1{16}$ & $-\frac5{128}$ & $\frac7{256}$\\
+$(-4)^m$ & $1$ & $-4$ & $16$ & $-64$ & $256$ & $-1024$\\
+\hline
+$\binom{1/2}{m}(-4)^m$ & $\mathbf{1}$ & $\mathbf{-2}$ & $\mathbf{-2}$ & $\mathbf{-4}$ & $\mathbf{-10}$ & $\mathbf{-28}$
+\end{tabular}
+\end{center}
+分數乘上 $(-4)^m$ 之後全都是整數。\textbf{一般項}（$m\ge1$）：分子的 $m$ 個因子
+$\frac12,-\frac12,-\frac32,\ldots,-\frac{2m-3}{2}$ 各帶一個 $\frac12$，其中 $m-1$ 個是負的，
+所以 $\binom{1/2}{m}=\frac{(-1)^{m-1}\,1\cdot3\cdots(2m-3)}{2^m\,m!}$；乘上 $(-4)^m$，
+再把奇數連乘積的分子、分母同乘偶數 $2\cdot4\cdots(2m-2)$：$1\cdot3\cdots(2m-3)=\frac{(2m-2)!}{2\cdot4\cdots(2m-2)}=\frac{(2m-2)!}{2^{m-1}(m-1)!}$
+（$m=1$ 時是空乘積 $1$）：
+\begin{equation}\label{eq:m02-coef}
+\binom{1/2}{m}(-4)^m=-\frac{2^m\cdot1\cdot3\cdots(2m-3)}{m!}=-\frac{2\,(2m-2)!}{m!\,(m-1)!}
+=-\frac{2}{m}\binom{2m-2}{m-1}\qquad(m\ge1).
+\end{equation}
+
+\textbf{代回去。}
+\begin{align*}
+\sqrt{1-4x}&=1-2x-2x^2-4x^3-10x^4-28x^5-\cdots,\\
+C(x)&=\frac{1-\sqrt{1-4x}}{2x}=\frac{2x+2x^2+4x^3+10x^4+28x^5+\cdots}{2x}=1+x+2x^2+5x^3+14x^4+\cdots
+\end{align*}
+一般地，$C_n$ 是 $-\frac12$ 乘上 $\sqrt{1-4x}$ 的 $x^{n+1}$ 係數；在式 \eqref{eq:m02-coef} 取 $m=n+1$：
+\[
+\boxed{\;C_n=-\frac12\,[x^{n+1}]\sqrt{1-4x}=-\frac12\cdot\Bigl(-\frac{2}{n+1}\binom{2n}{n}\Bigr)=\frac{1}{n+1}\binom{2n}{n}\;}
+\]
+
+% ---------------------------------------------------------------------
+\subsection{醉漢走路}\label{sec:m03}
+
+醉漢站在數線的 $0$，每一步往右 $+1$ 或往左 $-1$，機率各 $\frac12$，各步互相獨立。
+$-1$ 是懸崖：走到 $-1$ 就掉下去。\textbf{他最後一定會掉下去嗎？} \mitref{L1--L2}
+把時間畫成橫軸、位置畫成縱軸，往上一步記 U、往下一步記 D，一次走法就是一條 $\pm1$ 路徑。
+
+\textbf{為什麼是 Dyck 路徑？}假設第 $t$ 步第一次走到 $-1$，那麼之前一直 $\ge0$；一步只走 $1$，
+所以第 $t-1$ 步一定在 $0$、第 $t$ 步往下。從 $0$ 回到 $0$ 要走偶數步，所以 $t-1=2n$；
+前 $2n$ 步「一直 $\ge0$、最後回到 $0$」正是 Dyck 路徑。反過來，半長 $n$ 的 Dyck 路徑再往下一步，
+就是在第 $2n+1$ 步第一次掉下去。
+
+\begin{thmbox}[第一次掉下去的時刻]
+第一次走到 $-1$ 發生在第 $2n+1$ 步 $\iff$ 前 $2n$ 步是半長 $n$ 的 Dyck 路徑，而第 $2n+1$ 步往下。
+這樣的走法有 $C_n$ 條，每一條的機率都是 $(\frac12)^{2n+1}$，所以
+\[
+P(\text{第 $2n+1$ 步第一次掉下去})=\frac{C_n}{2^{2n+1}} .
+\]
+\end{thmbox}
+
+$n=0,1,2,3$ 時機率分別是 $\frac12,\frac18,\frac2{32},\frac5{128}$（圖~\ref{fig:m03-walk}）。
+
+\begin{figure}[H]
+\centering
+\FigMiiiWalk
+\caption{左：走法 \textcolor{cA}{UUDUDD}\,\textcolor{cBad}{D}（貫穿例子的 Dyck 路徑再往下一步），第 7 步第一次走到 $-1$。
+右：第 $2n+1$ 步第一次掉下去的所有走法（$n=0,1,2,3$），\textcolor{cA}{框起來}的就是左邊那一條；
+灰線是地面 $0$，\textcolor{cBad}{紅虛線}是懸崖 $-1$。}
+\label{fig:m03-walk}
+\end{figure}
+
+\textbf{全部加起來。}不同的 $n$ 是互斥的情況，用上一小節的閉式：
+\[
+P(\text{最後掉下去})=\sum_{n\ge0}\frac{C_n}{2^{2n+1}}=\frac12\sum_{n\ge0}C_n\Bigl(\frac14\Bigr)^n=\frac12\,C\Bigl(\frac14\Bigr)
+=\frac12\cdot\frac{1-\sqrt{1-1}}{2\cdot\frac14}=\frac12\cdot2=1 .
+\]
+$x=\frac14$ 正好是根號變成 $0$ 的地方，也就是收斂半徑的邊界。因為 $C_n\approx\frac{4^n}{\sqrt{\pi}\,n^{3/2}}$，
+級數 $\sum C_n/4^n$ 仍然收斂，可以直接代入（Abel 定理）。也可以不用 Abel 定理，直接看部分和：
+
+\begin{notebox}[部分和]
+令 $S_K$ 為前 $2K-1$ 步之內掉下去的機率（$n<K$ 的項相加）。用歸納法可以驗證
+\[
+1-S_K=\frac{1}{4^K}\binom{2K}{K}=\frac12\cdot\frac34\cdot\frac56\cdots\frac{2K-1}{2K}\le\frac{1}{\sqrt{2K+1}}\longrightarrow0 .
+\]
+歸納的一步是 $\frac{1}{4^{K}}\binom{2K}{K}-\frac{1}{4^{K+1}}\binom{2K+2}{K+1}=\frac{C_K}{2^{2K+1}}$；
+不等式來自 $\bigl(\frac{2i-1}{2i}\bigr)^2\le\frac{2i-1}{2i}\cdot\frac{2i}{2i+1}$。所以總和是 $1$，只是趨近得很慢：
+$S_1,S_2,S_3,S_4=\frac12,\frac58,\frac{11}{16},\frac{93}{128}$（還沒掉下去的是 $\frac12,\frac38,\frac5{16},\frac{35}{128}$），
+走了 199 步（$K=100$）還有約 $5.6\%$ 的機率沒掉下去。醉漢一定會掉下懸崖，只是可能要走很久。
+\end{notebox}
+
+% ---------------------------------------------------------------------
+\subsection{循環移位}\label{sec:m04}
+
+第 1.6 節用反射原理證明 $C_n=\binom{2n}{n}-\binom{2n}{n-1}$。這裡介紹另一個證明——
+\textbf{循環移位} \mitref{L2}，它直接得到 $C_n=\frac{1}{2n+1}\binom{2n+1}{n}$，不需要做減法。
+
+取 $n+1$ 個 $+1$ 與 $n$ 個 $-1$（總和 $+1$、長度 $2n+1$），首尾相接排成一圈。
+從第 $j$ 點出發讀一圈（$j=0,1,\ldots,2n$），得到 $2n+1$ 種\textbf{循環讀法}；
+如果出發之後每一個前綴和都 $>0$，就說這種讀法是\textbf{好的}。
+
+\begin{thmbox}[古典循環引理]
+$n+1$ 個 $+1$、$n$ 個 $-1$ 排成一圈，$2n+1$ 種讀法中\textbf{恰有一種}是好的。
+\end{thmbox}
+
+\textbf{例。}$n=3$，取下面第一列的序列；第二列是它從第 0 點到第 7 點的高度（前綴和）：
+\[
+\begin{array}{r@{\qquad}l}
+\text{序列（$j=0$）} & -1,+1,-1,-1,+1,+1,+1\\
+\text{高度} & 0,-1,0,-1,-2,-1,0,1\\
+\text{從第 4 點讀起（$j=4$）} & +1,+1,+1,-1,+1,-1,-1
+\end{array}
+\]
+最低點是第 4 點（高度 $-2$）。7 種讀法中只有 $j=4$ 是好的（圖~\ref{fig:m04-rotations}），
+它是一個 $+1$ 接上貫穿例子的 Dyck 路徑 UUDUDD。
+
+\begin{figure}[H]
+\centering
+\FigMivRotations
+\caption{序列 $-1,+1,-1,-1,+1,+1,+1$ 的 7 種循環讀法（從第 $j$ 點出發）。灰色是 $+1$，\textcolor{cA}{藍色}是 $-1$；
+\textcolor{cBad}{紅點}是第一個高度 $\le0$ 的點。只有 $j=4$ 是好的，它的起點正是原序列（$j=0$）的
+\textcolor{cTop}{最後一個最低點}（高度 $-2$）。}
+\label{fig:m04-rotations}
+\end{figure}
+
+\textbf{證明。}設各點高度是 $S_0=0,S_1,\ldots,S_{2n+1}=1$，令 $i$ 是 $S_0,\ldots,S_{2n}$ 中\textbf{最後一個最低點}，
+最低的高度是 $\mu$。
+\begin{itemize}
+  \item \textbf{從 $i$ 出發是好的。}讀到原序列的第 $k$ 點（$i<k\le2n+1$）時，前綴和是 $S_k-S_i>0$
+        （$i$ 之後沒有一樣低或更低的點，而 $S_{2n+1}=1>0\ge\mu$）；
+        繞過接頭之後，讀到第 $k$ 點（$0<k\le i$）時前綴和是 $1+S_k-\mu\ge1$。
+  \item \textbf{只有 $i$。}若從 $j$ 出發是好的，則 $k>j$ 時 $S_k>S_j$；$k<j$ 時 $1+S_k-S_j>0$，即 $S_k\ge S_j$。
+        所以 $S_j$ 是最低的高度，而且 $j$ 之後沒有一樣低的點：$j=i$。\hfill$\square$
+\end{itemize}
+
+\textbf{計數。}這樣的序列共有 $\binom{2n+1}{n}$ 種（選出 $-1$ 的位置）。同一圈的 $2n+1$ 種讀法都不相同
+（若有兩種相同，序列就有週期，好的讀法會不只一種），所以序列恰好分成 $\binom{2n+1}{n}/(2n+1)$ 圈，每圈恰有一種好的。
+另一方面，好的序列第一步一定是 $+1$，之後一直 $\ge1$、最後回到 $1$：正是\textbf{一個 $+1$ 接一條 Dyck 路徑}，
+共 $C_n$ 種。所以
+\begin{equation}\label{eq:m04-cycle}
+\boxed{\;C_n=\frac{1}{2n+1}\binom{2n+1}{n}=\frac{(2n)!}{n!\,(n+1)!}=\frac{1}{n+1}\binom{2n}{n}\;}
+\end{equation}
+例如 $n=3$：$\binom{7}{3}=35$ 種序列，每圈 7 種，恰好 $35/7=5=C_3$ 圈（另外 30 種是不好的）。
+好的序列也就是第 1.9 節「A 得 $n+1$ 票、B 得 $n$ 票、A 始終嚴格領先」的開票順序。
+
+\textbf{推廣。}第~\ref{sec:raney} 節的循環引理把同樣的想法推廣到終點高度 $t$ 與多種步長（$-1,-2,\ldots$）：
+$N+t$ 種讀法中恰有 $t$ 種是好的，由此證明 Raney 公式。取 $\vv=(2)$、$t=1$、$\vn=(n)$ 就回到這裡：
+$A_1(\vn)=\frac{1}{2n+1}\binom{2n+1}{n}=C_n$。

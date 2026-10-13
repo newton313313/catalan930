@@ -1,0 +1,135 @@
+% Young 表講義第 3 段：第 5 章 Littlewood–Richardson 規則（動畫 F20–F24）
+% 圖與表在 fulton/figs.tex（由 fulton/make_figs.py 產生，part1.tex 已 \input）。
+
+\section{第 5 章：Littlewood–Richardson 規則（動畫 F20--F24）}\label{sec:f-ch5}
+
+\subsection{表的因數分解與 LR 數}\label{sec:f-factor}
+
+整數可以因數分解：$12=3\times4=2\times6$。表也可以問同樣的問題 \fulref{p.60}：給一個形狀 $\nu$ 的表 $V$，
+有幾種寫法 $V=T\cdot U$，其中 $T$ 的形狀是 $\lambda$、$U$ 的形狀是 $\mu$？把這些 $[T,U]$ 的集合記為 $\mathcal T(\lambda,\mu,V)$。
+另一個看似無關的集合：形狀 $\nu/\lambda$、rectification 等於給定的 $U_0$（形狀 $\mu$）的斜表，記為 $\mathcal S(\nu/\lambda,U_0)$。
+
+\begin{figure}[H]
+\centering
+\FulFactor
+\caption{$\lambda=\mu=(2,1)$、$\nu=(3,2,1)$。上：$V$ 恰有兩種分解（把 $w(U)=5\,2\,3$ 依序插入 $T$ 就能驗算）。
+下：$(3,2,1)/(2,1)$ 上內容 $(2,1)$ 的斜表有 3 個，滑完之後恰好兩個變成 $U_0$。}
+\label{fig:f-factor}
+\end{figure}
+
+在圖~\ref{fig:f-factor} 的例子裡兩邊都是 2。換一個 $V$（例如 $\yts{112,23,3}$）分解數仍是 2；
+其實形狀 $(3,2,1)$ 的 16 個標準表，每一個都恰好有 2 種分解（動畫 F20）。這不是巧合：
+
+\begin{thmbox}[命題 1、2 \fulref{p.58--62}]
+(1) 把字典序陣列 $\binom{u_1\cdots u_m}{v_1\cdots v_m}$ 的下列依序插入任何一個表 $T$，並把上列放進新長出的格子，
+得到的斜表 $S$ 會 rectify 成 R-S-K 給的那個 $Q$。\\
+(2) 由此，$\mathcal T(\lambda,\mu,V_0)$ 與 $\mathcal S(\nu/\lambda,U_0)$ 之間有一一對應（對任何 $V_0$、$U_0$）。
+\end{thmbox}
+
+對應的做法：給 $[T,U]$，用 R-S-K 把 $(U,U_0)$ 變成陣列，下列插入 $T$、上列放進新格子，就得到 $\mathcal S$ 裡的斜表；反過來也能還原。
+兩個集合彼此不知道對方用的是哪個 $V_0$、$U_0$，所以：
+
+\begin{keybox}[Littlewood–Richardson 數]
+$|\mathcal T(\lambda,\mu,V_0)|=|\mathcal S(\nu/\lambda,U_0)|$ 只和形狀 $\lambda,\mu,\nu$ 有關，記作 $c^\nu_{\lambda\mu}$
+（推論 1，\fulref{p.62}）。上面的例子 $c^{(3,2,1)}_{(2,1),(2,1)}=2$。
+\end{keybox}
+
+\subsection{LR 數的對稱性與乘法公式}\label{sec:f-lrsym}
+
+\begin{thmbox}[推論 2 \fulref{p.62}]
+$c^\nu_{\lambda\mu}=c^\nu_{\mu\lambda}=c^{\tilde\nu}_{\tilde\lambda\tilde\mu}$（$\sim$ 是共軛）；而且 $c^\nu_{\lambda\mu}$ 也等於斜表 $\lambda*\mu$ 上
+rectify 成某個給定 $\nu$ 形表的斜表個數。
+\end{thmbox}
+
+例：$c^{(4,2,1)}_{(2,1),(3,1)}=c^{(4,2,1)}_{(3,1),(2,1)}=c^{(3,2,1,1)}_{(2,1),(2,1,1)}=2$（三個圖一起轉置，數字不變）。
+最後一句給了一個判斷 0 的快速方法：滑動時格子只往左上移，外框不會變大，所以 $\nu$ 若放不進 $\lambda*\mu$ 的外框，$c^\nu_{\lambda\mu}=0$。
+書上的例子 $\lambda=(2,2)$、$\mu=(3,2)$、$\nu=(3,3,3)$：$|\nu|=4+5$、$\lambda,\mu\subset\nu$ 都沒問題，
+但 $\lambda*\mu$ 的第 3 列只有 2 格，$\nu$ 卻要 3 格，所以 $c^{(3,3,3)}_{(2,2),(3,2)}=0$ \fulref{p.63}。
+
+\textbf{乘法公式。}$c^\nu_{\lambda\mu}$ 就是「形狀 $\nu$ 的每個表能寫成 $\lambda$ 形表乘 $\mu$ 形表的方法數」，翻譯到 tableau ring：
+\[
+S_\lambda\cdot S_\mu=\sum_\nu c^\nu_{\lambda\mu}\,S_\nu ,\qquad S_{\nu/\lambda}=\sum_\mu c^\nu_{\lambda\mu}\,S_\mu
+\qquad\text{（推論 3、4，\fulref{p.63}）}，
+\]
+其中 $S_{\nu/\lambda}$ 是 $\nu/\lambda$ 上所有斜表的 rectification 之和。由 $c^\nu_{\lambda\mu}=c^\nu_{\mu\lambda}$，這些 $S_\lambda$ 生成的子環是交換的；
+取像 $T\mapsto x^T$，就得到 Schur 多項式的乘法 $s_\lambda s_\mu=\sum c^\nu_{\lambda\mu}s_\nu$ 與斜 Schur 多項式 $s_{\nu/\lambda}=\sum c^\nu_{\lambda\mu}s_\mu$。
+
+\subsection{反格字與 LR 斜表}\label{sec:f-yamanouchi}
+
+LR 數要怎麼\textbf{算}？關鍵是一種字 \fulref{p.63}。
+
+\begin{keybox}[反格字（Yamanouchi 字）]
+從字尾往前讀到任何位置，1 的個數 $\ge$ 2 的個數 $\ge$ 3 的個數 $\ge\cdots$。想成\textbf{倒著開票}：開票過程中，1 號候選人永遠不落後 2 號、
+2 號不落後 3 號……。字是反格字的斜表叫做 \textbf{LR 斜表}。
+\end{keybox}
+
+例：$2\,1\,3\,2\,1\,2\,1$ 是反格字；$1\,2\,3\,2\,1\,2\,1$ 不是——倒著開到第 6 票（最後 6 個字母 $2\,3\,2\,1\,2\,1$）時，2 號有 3 票、1 號只有 2 票。
+
+\begin{thmbox}[命題 3 \fulref{p.64}]
+$c^\nu_{\lambda\mu}$ = 形狀 $\nu/\lambda$、內容 $\mu$ 的 LR 斜表個數。
+\end{thmbox}
+
+理由分兩步。\textbf{Lemma 1}：一個斜表是內容 $\mu$ 的 LR 斜表，若且唯若它 rectify 成 $U(\mu)$（第 $i$ 列全是 $i$ 的表）。
+對真正的表這很直接：反格字的最後一個字母（第一列的最右格）必須是 1，第一列於是全是 1；第二列最右邊必須大於 1 又不能超過 2，於是全是 2；依此類推。
+\textbf{Lemma 2}：Knuth 等價的字同時是或同時不是反格字（只需檢查一次基本變換；唯一要看的是 $k,k{+}1$ 相鄰交換的那幾種情形）\fulref{p.66}。
+滑動保持 Knuth 等價，所以「是 LR 斜表」在滑動下不變，Lemma 1 從表推廣到斜表。再取 $U_0=U(\mu)$，由 \S\ref{sec:f-factor} 的
+$|\mathcal S(\nu/\lambda,U(\mu))|=c^\nu_{\lambda\mu}$，就是命題 3。圖~\ref{fig:f-factor} 下排三個斜表的字是 $2\,1\,1$、$1\,2\,1$、$1\,1\,2$，
+前兩個是反格字、第三個不是：$c=2$。
+
+\subsection{LR 規則實例}\label{sec:f-lrrule}
+
+書上的例子 \fulref{p.63--65}：$\nu/\lambda=(5,4,3,2)/(3,3,1)$ 上的 LR 斜表共 15 個，依內容 $\mu$ 分堆（圖~\ref{fig:f-lrall}）。
+
+\begin{figure}[H]
+\centering
+\FulLRAll
+\caption{$(5,4,3,2)/(3,3,1)$ 的 15 個 LR 斜表（\textcolor{cLeft}{1}、\textcolor{cB}{2}、\textcolor{cRight}{3}、\textcolor{cC}{4} 分色，灰色是 $\lambda$），
+依內容 $\mu$ 分堆：每堆的個數就是 $c^\nu_{\lambda\mu}$。}
+\label{fig:f-lrall}
+\end{figure}
+
+\[
+\begin{aligned}
+s_{(5,4,3,2)/(3,3,1)}={}&s_{(5,2)}+s_{(5,1,1)}+s_{(4,1,1,1)}+s_{(2,2,2,1)}\\
+&+2\bigl(s_{(4,3)}+s_{(3,2,1,1)}+s_{(3,3,1)}+s_{(3,2,2)}\bigr)+3\,s_{(4,2,1)} .
+\end{aligned}
+\]
+同樣地，在每個 $\nu\supset(2,1)$ 上數內容 $(2,1)$ 的 LR 斜表 \fulref{p.66--67}：
+\[
+s_{(2,1)}\cdot s_{(2,1)}=s_{(4,2)}+s_{(4,1,1)}+s_{(3,3)}+2\,s_{(3,2,1)}+s_{(3,1,1,1)}+s_{(2,2,2)}+s_{(2,2,1,1)} ;
+\]
+$(5,1)$ 與 $(2,1,1,1,1)$ 雖然也包含 $(2,1)$，卻一個 LR 斜表也填不出來。程式把兩邊都展開成多項式核對過。
+\textbf{練習 2}：若 $\nu_i=\lambda_i+\mu_i$，則 $c^\nu_{\lambda\mu}=1$——倒著讀時第一列最先被讀到，只能全是 1，用完後第二列只能全是 2……只有一種填法
+（例 $c^{(5,3,1)}_{(3,1),(2,2,1)}=1$）。
+
+\subsection{LR 數的其他算法}\label{sec:f-lrother}
+
+\textbf{反格字 $\leftrightarrow$ 標準表} \fulref{p.68}。反格字 $w$ 從右邊數第 $p$ 個字母是 $x$，就把 $p$ 放進第 $x$ 列；反格的條件保證每一步都還是 Young 圖，
+得到形狀為 $w$ 的內容的標準表 $U(w)$（圖~\ref{fig:f-rw} 右）。
+
+\textbf{Remmel–Whitney} \fulref{p.68--69}。把 $\nu/\lambda$ 的格子由上到下、每列由右往左編號（\textbf{反向編號}，圖~\ref{fig:f-rw} 左）。
+$c^\nu_{\lambda\mu}$ = $\mu$ 上滿足下面兩條的標準表 $U$ 的個數：
+(i) $k-1$ 與 $k$ 在反向編號的同一列 $\Rightarrow$ $U$ 裡 $k$ 在 $k-1$ 的右邊、不比它低；
+(ii) $k$ 在反向編號裡位於 $j$ 的正下方 $\Rightarrow$ $U$ 裡 $k$ 比 $j$ 低、不比它右。
+這正是「LR 斜表的格子 $k$ 裡填 $x$ $\iff$ $k$ 在 $U$ 的第 $x$ 列」翻譯過來的條件：(i) 是列不減，(ii) 是行遞增。
+
+\begin{figure}[H]
+\centering
+\FulRW
+\caption{左：$(5,4,3,2)/(3,3,1)$ 的反向編號。右：書上的反格字 $1123121$ 與它的標準表 $U(w)$，形狀 $(4,2,1)$ 恰是 $w$ 的內容。}
+\label{fig:f-rw}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\FulRWTable
+\caption{對每個 $\mu$，把 $\mu$ 上所有標準表拿來檢查 (i)(ii)：189 個裡恰有 15 個過關，各 $\mu$ 的個數正是圖~\ref{fig:f-lrall} 的 $c^\nu_{\lambda\mu}$。}
+\label{tab:f-rw}
+\end{table}
+
+另外還有 Zelevinsky 的 \emph{picture}：$\mu$ 與 $\nu/\lambda$ 之間保持某種順序的雙射，個數也是 $c^\nu_{\lambda\mu}$（推論 5，\fulref{p.70}）。
+
+\begin{notebox}[彩蛋：回到卡塔蘭數]
+只用 1、2，各 $n$ 個的反格字，對應形狀 $(n,n)$ 的標準表，所以個數是 $f^{(n,n)}=C_n$（練習 8）：$n=1,\ldots,5$ 依序是 $1,2,5,14,42$。
+這正是另一份講義（Chu 論文導讀）第 1 節 Dyck 路徑的那個卡塔蘭數。
+\end{notebox}

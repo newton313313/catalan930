@@ -1,0 +1,201 @@
+% Young 表講義第 5 段：第 7 章 對稱群的表示（動畫 F28–F41）
+% 內文的數字由 fulton/make_figs.py 的 check_numbers_ch7() 核對（資料：codes/data/fulton7_math.json、codes/utils/rep_data.py）。
+
+\section{第 7 章：對稱群的表示（動畫 F28--F41）}\label{sec:f-ch7}
+
+\begin{keybox}[這一章在做什麼]
+第 6 章的整數 $\chi^\lambda_\mu$ 要找到「主人」：對每個 $\lambda\vdash n$ 造出 $S_n$ 的一個不可約表示 $S^\lambda$（\textbf{Specht 模}），
+它的維數是標準表的個數 $f^\lambda$、特徵標是 $\chi^\lambda_\mu$。工具全是 Young 表：列 tabloid 給出大模組 $M^\lambda$，行的交錯和切出 $S^\lambda$，
+標準表給基底，拉直演算法把任意表寫回標準表。最後一個環同構 $R\cong\Lambda$ 把第 5、6 章的組合恆等式整批翻譯成表示論。
+\end{keybox}
+
+本章的例子幾乎都用 $\lambda=(2,1)$、$n=3$：$T_a=\yts{12,3}$、$T_b=\yts{13,2}$ 是它的兩個標準表。
+置換用一行記法或循環記法；$\sigma\cdot T$ 把表中的數字 $i$ 換成 $\sigma(i)$，乘法 $\sigma\tau$ 是先 $\tau$ 後 $\sigma$。
+
+% ------------------------------------------------------------------
+\subsection{Tabloid 與 $S_n$ 的作用（F28--F31）}\label{sec:f-tabloid}
+
+把 $1,\ldots,n$ 不重複地填進 $\lambda$ 的格子，叫做 $\lambda$ 的\textbf{編號}（numbering），共 $n!$ 個；$S_n$ 作用在上面 \fulref{p.83}。
+對編號 $T$ 定兩個子群：\textbf{列群} $R(T)$（只在各列內部搬動數字）與\textbf{行群} $C(T)$（只在各行內部搬動）。
+$\lambda=(3,2)$ 時 $|R(T)|=3!\,2!=12$、$|C(T)|=2!\,2!\,1!=4$；而 $R(T)\cap C(T)=\{1\}$，因為同時保持列與行的置換只能不動每一格。
+
+\textbf{列 tabloid} $\{T\}$ 是「忘掉列內順序」的編號：$\{T\}=\{T'\}$ 當且僅當 $T'=p\cdot T$、$p\in R(T)$。
+它們張成的向量空間記作 $M^\lambda$，維數 $n!/(\lambda_1!\lambda_2!\cdots)$：$M^{(2,1)}$ 是 3 維、$M^{(3,2)}$ 是 10 維、$M^{(2,2,1)}$ 是 30 維。
+
+\begin{thmbox}[Lemma 1：碰撞引理 \fulref{p.84}]
+設 $T$、$T'$ 是形狀 $\lambda$、$\lambda'$ 的編號，且 $\lambda$ \emph{不}嚴格支配 $\lambda'$。則
+(i) 有兩個數同在 $T'$ 的某一列、又同在 $T$ 的某一行；或 (ii) $\lambda'=\lambda$，且有 $p'\in R(T')$、$q\in C(T)$ 使 $p'\cdot T'=q\cdot T$。
+\end{thmbox}
+
+例：$T=\yts{12,3}$、$T'=\yts{123}$。$(3)$ 支配 $(2,1)$，反過來不成立，於是 1 與 3 同在 $T'$ 的列、又同在 $T$ 的行——情形 (i)。
+這時對換 $\tau=(1\,3)\in C(T)$ 固定 $\{T'\}$，下一節的交錯和就會把 $\{T'\}$ 消成 0（動畫 F30 的「碰撞」）。
+支配不是全序：$(3,3)$ 與 $(4,1,1)$ 的部分和是 $3,6,6$ 與 $4,5,6$，誰也不支配誰。
+
+\textbf{$M^{(2,1)}$ 的幾何}（F31）。記 $t_i$ 為第二列是 $i$ 的 tabloid，$M^{(2,1)}=\mathbb C t_1\oplus\mathbb C t_2\oplus\mathbb C t_3$ 就是 $S_3$ 置換三個座標。
+對角線 $t_1+t_2+t_3$ 是不動的直線；和為 0 的平面才是有趣的部分。在平面的正交基底下，$(1\,2)$ 是鏡射 $\mathrm{diag}(-1,1)$，$(1\,2\,3)$ 是轉 $120^\circ$。
+
+% ------------------------------------------------------------------
+\subsection{Specht 模（F32--F33）}\label{sec:f-specht}
+
+群環 $A=\mathbb C[S_n]$ 裡定義 \fulref{p.85}
+\[
+a_T=\sum_{p\in R(T)}p,\qquad b_T=\sum_{q\in C(T)}\operatorname{sgn}(q)\,q,\qquad c_T=b_T\cdot a_T\ \ (\text{Young 對稱化子}),
+\]
+以及 \textbf{polytabloid} $v_T=b_T\cdot\{T\}=\sum_{q\in C(T)}\operatorname{sgn}(q)\{q\cdot T\}$。$\sigma\cdot v_T=v_{\sigma\cdot T}$（練習 3），
+所以 $v_T$ 張成的子空間 $S^\lambda\subset M^\lambda$ 是子表示，稱為 \textbf{Specht 模} \fulref{p.87}。$\lambda=(2,1)$：
+\[
+v_{T_a}=\{\yts{12,3}\}-\{\yts{23,1}\}=t_3-t_1,\qquad v_{T_b}=\{\yts{13,2}\}-\{\yts{23,1}\}=t_2-t_1 ,
+\]
+正好張成上面那個和為 0 的平面。$S^{(n)}$ 是平凡表示、$S^{(1^n)}$ 是符號表示 $U_n$（練習 4）。
+
+\begin{thmbox}[命題 1、2 \fulref{p.88}]
+(1) 每個 $S^\lambda$ 不可約；$\lambda\ne\mu$ 時 $S^\lambda\not\cong S^\mu$；$S_n$ 的每個不可約表示恰同構於一個 $S^\lambda$。\\
+(2) $T$ 跑遍 $\lambda$ 的標準表時，$v_T$ 構成 $S^\lambda$ 的基底；所以 $\dim S^\lambda=f^\lambda$。
+\end{thmbox}
+
+關鍵是 Lemma 2 \fulref{p.86}：若 $\lambda$ 不嚴格支配 $\lambda'$，則 $b_T\cdot\{T'\}$ 是 0（碰撞的情形 (i)）或 $\pm v_T$（情形 (ii)）。
+因此 $b_T$ 把 $M^\lambda$ 壓到一條直線 $\mathbb C v_T$ 上，任何子表示不是包含 $S^\lambda$ 就是與它正交——不可約性由此而來。
+
+\textbf{矩陣與特徵標}（F33）。在基底 $(v_a,v_b)=(v_{T_a},v_{T_b})$ 下，矩陣的第 $j$ 行是第 $j$ 個基底向量的像：
+\[
+\rho(1\,2)=\begin{pmatrix}1&0\\-1&-1\end{pmatrix},\qquad
+\rho(2\,3)=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+\rho(1\,2\,3)=\begin{pmatrix}0&1\\-1&-1\end{pmatrix}.
+\]
+（例：$(1\,2)$ 把 $v_a=t_3-t_1$ 送到 $t_3-t_2=v_a-v_b$。）取跡得到特徵標：單位元、對換、3-循環上依序是 $2,0,-1$，
+正是第 6 章的 $\chi^{(2,1)}$。整張 $S_3$ 的表：$\chi^{(3)}=1,1,1$、$\chi^{(2,1)}=2,0,-1$、$\chi^{(1,1,1)}=1,-1,1$；
+維數平方和 $1+4+1=6=|S_3|$，正則表示裡每個不可約出現的次數等於它的維數：$6=1+2\cdot2+1$。
+
+% ------------------------------------------------------------------
+\subsection{表示環 $R$ 與對稱函數 $\Lambda$（F34--F37）}\label{sec:f-ring}
+
+\textbf{Young 規則的雛形}（Lemma 3 的推論，\fulref{p.88}）：$M^\lambda=S^\lambda\oplus\bigoplus_{\nu\triangleright\lambda}(S^\nu)^{\oplus k_{\nu\lambda}}$，
+只會出現支配 $\lambda$ 的形狀。重數 $k_{\nu\lambda}$ 是什麼？先算 $M^\lambda$ 的特徵標。
+
+\begin{thmbox}[Lemma 4 \fulref{p.89}]
+$M^\lambda$ 在共軛類 $C(\mu)$ 上的特徵標，等於 $p_\mu$ 中 $x^\lambda$ 的係數 $\xi^\lambda_\mu$。
+\end{thmbox}
+置換表示的特徵標就是「不動的 tabloid 個數」，而 $\sigma$ 固定 $\{T\}$ 恰好是 $\sigma$ 的每個循環都落在 $T$ 的某一列裡——這正是展開 $p_\mu=\prod_r(x_1^{\mu_r}+x_2^{\mu_r}+\cdots)$ 時挑變數的方式。
+例：$\lambda=(3,2)$、$\sigma=(1\,2)(3\,4)$（類型 $(2,2,1)$）。不動的 tabloid 是 $\{\yts{125,34}\}$ 與 $\{\yts{345,12}\}$ 兩個，
+而 $(x_1^2+x_2^2)^2(x_1+x_2)$ 中 $x_1^3x_2^2$ 的係數也是 2。
+
+\textbf{表示環}（\S7.3，\fulref{p.90}）。令 $R_n$ 為 $S_n$ 的表示的 Grothendieck 群（以不可約表示 $[S^\lambda]$ 為基底，並規定它們正交規範），$R=\bigoplus_n R_n$；
+乘法用誘導：$[V]\circ[W]=[\operatorname{Ind}_{S_n\times S_m}^{S_{n+m}}V\boxtimes W]$。定義
+\[
+\varphi:R\to\Lambda,\qquad \varphi([V])=\sum_{\mu\vdash n}\frac{\chi_V(C(\mu))}{z(\mu)}\,p_\mu .
+\]
+
+\begin{thmbox}[定理 \fulref{p.91}]
+$\varphi$ 是保持內積的分次環同構，且 $\varphi([M^\lambda])=h_\lambda$、$\varphi([S^\lambda])=s_\lambda$。於是 $\chi^\lambda_\mu$ 就是 $S^\lambda$ 在 $C(\mu)$ 上的特徵標。
+\end{thmbox}
+
+$h_\lambda=h_{\lambda_1}h_{\lambda_2}\cdots$ 對應 $M^\lambda=\operatorname{Ind}_{S_{\lambda_1}\times S_{\lambda_2}\times\cdots}^{S_n}(\text{平凡})$；第 5、6 章的恆等式整批翻譯過來 \fulref{p.92--93}：
+
+\begin{keybox}[字典（推論 1--4、命題 3）]
+\begin{tabular}{@{}l@{\quad}l@{\quad}l@{}}
+對稱函數 & 表示 & 例子\\ \midrule
+$h_\mu=\sum_\lambda K_{\lambda\mu}s_\lambda$ & Young 規則 $M^\mu=\bigoplus(S^\lambda)^{\oplus K_{\lambda\mu}}$ & 表~\ref{tab:f-young221}\\
+$s_\lambda s_\mu=\sum c^\nu_{\lambda\mu}s_\nu$ & LR 規則 $S^\lambda\circ S^\mu=\bigoplus(S^\nu)^{\oplus c^\nu_{\lambda\mu}}$ & $c^{(3,2,1)}_{(2,1),(2,1)}=2$\\
+$s_\lambda s_{(1)}=\sum_{\lambda^+}s_{\lambda^+}$（Pieri） & 分支律 $\operatorname{Ind}_{S_n}^{S_{n+1}}S^\lambda=\bigoplus S^{\lambda^+}$ & $2\cdot4=3+2+3$\\
+$p_\mu=\sum\chi^\lambda_\mu s_\lambda$ & Frobenius 特徵標公式 & 下面\\
+$\omega(s_\lambda)=s_{\tilde\lambda}$ & $S^\lambda\otimes U_n\cong S^{\tilde\lambda}$ & $\chi^{(1,1,1)}=\chi^{(3)}\cdot\operatorname{sgn}$
+\end{tabular}
+\end{keybox}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$\lambda$ & $(5)$ & $(4,1)$ & $(3,2)$ & $(3,1,1)$ & $(2,2,1)$\\
+\midrule
+半標準表（內容 $1^2 2^2 3$） & \yts{11223} & \yts{1122,3}\ \yts{1123,2} & \yts{112,23}\ \yts{113,22} & \yts{112,2,3} & \yts{11,22,3}\\[3pt]
+$K_{\lambda,(2,2,1)}$ & 1 & 2 & 2 & 1 & 1\\
+$f^\lambda=\dim S^\lambda$ & 1 & 4 & 5 & 6 & 5\\
+\bottomrule
+\end{tabular}
+\caption{Young 規則（F34）：$M^{(2,2,1)}=S^{(5)}\oplus2S^{(4,1)}\oplus2S^{(3,2)}\oplus S^{(3,1,1)}\oplus S^{(2,2,1)}$，維數 $1+8+10+6+5=30=5!/(2!\,2!\,1!)$。
+只出現支配 $(2,2,1)$ 的形狀，且 $S^{(2,2,1)}$ 本身恰出現一次。}
+\label{tab:f-young221}
+\end{table}
+
+\textbf{Frobenius 公式}（推論 4，\fulref{p.93}，F36）。取 $k\ge\ell(\lambda)$ 個變數，$\ell_i=\lambda_i+k-i$，則
+$\chi^\lambda_\mu$ = $\Delta(x)\cdot p_\mu(x)$ 中 $x_1^{\ell_1}\cdots x_k^{\ell_k}$ 的係數（$\Delta=\prod_{i<j}(x_i-x_j)$）。
+$\lambda=(2,1)$、$k=2$、$\ell=(3,1)$、$\Delta=x_1-x_2$，看 $x_1^3x_2$ 的係數：
+\[
+(x_1-x_2)(x_1+x_2)^3\to 3-1=2,\quad (x_1-x_2)(x_1^2+x_2^2)(x_1+x_2)=x_1^4-x_2^4\to0,\quad (x_1-x_2)(x_1^3+x_2^3)\to-1 .
+\]
+與矩陣取跡得到的 $2,0,-1$ 一致。$\mu=(1^n)$ 時公式給出 $f^\lambda$ 的行列式公式（練習 7）。
+
+\textbf{分支律}（推論 3，\fulref{p.93}，F37）。誘導到 $S_{n+1}$：在 Young 圖上加一格的所有方式，
+$\operatorname{Ind}_{S_3}^{S_4}S^{(2,1)}=S^{(3,1)}\oplus S^{(2,2)}\oplus S^{(2,1,1)}$，維數 $3+2+3=8=4\cdot2$。
+由 Frobenius 互反律，限制到 $S_{n-1}$ 是「拿掉一格」：$S^{(2,1)}|_{S_2}=S^{(2)}\oplus S^{(1,1)}$，
+具體的特徵向量是 $2v_a-v_b$（$(1\,2)$ 作用為 $+1$）與 $v_b$（作用為 $-1$）。從空圖一格一格往下長，就是 Young 格；
+$f^\lambda$ = 從空圖走到 $\lambda$ 的路徑數 = 標準表的個數。
+
+% ------------------------------------------------------------------
+\subsection{對偶構造與拉直演算法（F38--F40）}\label{sec:f-straighten}
+
+\textbf{行 tabloid}（\S7.4，\fulref{p.95}，F38）。把「列」換成「行」、並帶上符號：$[T]$ 是 $T$ 模掉行內搬動的類，但規定
+$[q\cdot T]=\operatorname{sgn}(q)[T]$（$q\in C(T)$），像楔積一樣。它們張成 $\widetilde M^\lambda$，對偶地有 $\tilde v_T=\sum_{p\in R(T)}[p\cdot T]$ 與子表示 $\widetilde S^\lambda$。
+
+\begin{thmbox}[Lemma 5 \fulref{p.96}]
+$S^\lambda\hookrightarrow M^\lambda\to\widetilde S^\lambda$ 與 $\widetilde S^\lambda\hookrightarrow\widetilde M^\lambda\to S^\lambda$ 的合成都是同構（在 $\mathbb Q$ 上）。
+\end{thmbox}
+
+因此 $S^\lambda$ 也可以寫成\textbf{商}：$\alpha:\widetilde M^\lambda\to S^\lambda$、$[T]\mapsto v_T$ 是滿射。核 $Q^\lambda$ 由\textbf{交換關係}生成：
+對第 $j$、$j{+}1$ 行與 $k$，把第 $j{+}1$ 行最上面 $k$ 個數與第 $j$ 行的 $k$ 個數交換（各自保持上下順序），對所有選法求和得 $\pi_{j,k}(T)$，
+關係是 $[T]-\pi_{j,k}(T)\in Q^\lambda$ \fulref{p.97--98}。
+
+\begin{thmbox}[Lemma 6 與命題 4 \fulref{p.98--99}]
+標準表的類 $[T]$ 張成 $\widetilde M^\lambda/Q^\lambda$，而 $Q^\lambda=\ker\alpha$。所以 $S^\lambda$ 是以所有 $v_T$ 為生成元、以
+「$v_{q\cdot T}=\operatorname{sgn}(q)v_T$」與交換關係為關係的向量空間（推論，\fulref{p.101}）。
+\end{thmbox}
+
+\textbf{拉直}（F39）就是反覆用這兩種關係把任意 $v_T$ 寫成標準表的組合（下面把 $v_T$ 寫成 $v(T)$）。$T=\yts{21,3}$：交換 $j=k=1$ 得 $v(\yts{12,3})+v(\yts{23,1})$，
+再把第一行排好（一次對換，變號）：
+\[
+v(\yts{21,3})=v(\yts{12,3})-v(\yts{13,2})=v_a-v_b .
+\]
+$\lambda=(3,2)$ 的例子要兩次交換：$v(\yts{125,43})=v(\yts{125,34})-v(\yts{135,24})$，
+在 5 個標準表的基底下座標是 $(0,0,1,0,-1)$。這些等式都直接用 $v_T=b_T\{T\}$ 展開核對過。
+
+\textbf{Specht 多項式}（練習 17，\fulref{p.102}）。令 $F_T=\prod_{\text{行}}\prod_{i\text{ 在 }j\text{ 上方}}(x_i-x_j)$，
+它們張成的多項式空間也同構於 $S^\lambda$：$F_{T_a}=x_1-x_3$、$F_{T_b}=x_1-x_2$，而非標準的 $\yts{21,3}$ 給 $x_2-x_3=(x_1-x_3)-(x_1-x_2)$——同一個拉直式。
+
+\textbf{Young 對稱化子}（練習 18、19，\fulref{p.103}，F40）。$T=T_a$：$a_T=1+(1\,2)$、$b_T=1-(1\,3)$，
+\[
+c_T=b_Ta_T=1+(1\,2)-(1\,3)-(1\,2\,3),\qquad c_T\cdot c_T=3\,c_T .
+\]
+一般 $c_T^2=n_\lambda c_T$，$n_\lambda=n!/f^\lambda$ = 鉤長乘積（這裡 $3=3!/2=3\cdot1\cdot1$）；左理想 $A\,c_T\cong S^\lambda$。
+
+\begin{notebox}[模 3 的反例（練習 15，\fulref{p.102}）]
+$M^\lambda$、$\widetilde M^\lambda$ 都能定義在 $\mathbb Z$ 上，但 $S^{(2,1)}$ 與 $\widetilde S^{(2,1)}$ 在 $\mathbb Z$ 上（或特徵 3 的體上）不同構。
+模 3 時 $v_a+v_b=t_2+t_3-2t_1\equiv t_1+t_2+t_3$ 被每個置換固定，所以 $S^{(2,1)}$ 有一條平凡直線；
+$\widetilde S^{(2,1)}$ 在相應基底下 $\rho(1\,2)=\bigl(\begin{smallmatrix}1&-1\\0&-1\end{smallmatrix}\bigr)$、$\rho(2\,3)=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$，
+沒有非零不動向量（只有符號直線 $(1,-1)$）。Lemma 5 的兩個映射在這兩組基底下是
+$\bigl(\begin{smallmatrix}2&-1\\-1&2\end{smallmatrix}\bigr)$ 與 $\bigl(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\bigr)$，乘積 $3I$、行列式 3：
+在 $\mathbb Q$ 上可逆，模 3 就壞掉了。同理 $c_T^2=3c_T\equiv0$ 而 $c_T\not\equiv0$。
+\end{notebox}
+
+% ------------------------------------------------------------------
+\subsection{四個視角（F41）}\label{sec:f-views}
+
+同一個 2 維表示 $S^{(2,1)}$ 有四種實現，拉直保證每一種的基底都是 $f^\lambda=2$ 個標準表：
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+實現 & 生成元 & 章節\\
+\midrule
+子模 $S^\lambda\subset M^\lambda$ & $v_T=b_T\{T\}$ & \S\ref{sec:f-specht}\\
+左理想 $A\,c_T$ & $c_T=b_Ta_T$，$c_T^2=n_\lambda c_T$ & \S\ref{sec:f-straighten}\\
+商 $\widetilde M^\lambda/Q^\lambda$ & $[T]$，模掉交換關係 & \S\ref{sec:f-straighten}\\
+Specht 多項式 & $F_T=\prod(x_i-x_j)$ & \S\ref{sec:f-straighten}\\
+\bottomrule
+\end{tabular}
+\end{center}
+三個尺度別搞混：$\dim M^{(2,1)}=3$、$\dim S^{(2,1)}=2$、$n_{(2,1)}=3$。
+
+\begin{notebox}[預告第 8 章]
+把編號 $1,\ldots,n$ 換成向量空間 $E=\mathbb C^m$ 裡的向量、行換成楔積，同一組交換關係定義 \textbf{Schur 模} $E^\lambda$，它是 $GL(E)$ 的不可約表示，
+維數是數字在 $[m]$ 的半標準表個數：$m=3$ 時 $\dim E^{(2,1)}=8$，而 $\dim S^{(2,1)}=2$ 只看 $n$。
+\end{notebox}

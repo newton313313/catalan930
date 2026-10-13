@@ -1,0 +1,130 @@
+% figs.tex —— 由 fulton/make_figs.py 產生，請勿手動修改。
+% 重新產生：python fulton/make_figs.py（附錄 B，動畫 F09–F19）
+
+\newcommand{\FulFactor}{%
+\begin{tabular}{@{}l@{\qquad}l@{}}$V=\begin{ytableau}1 & 2 & 3 \\ 4 & 5 \\ 6\end{ytableau}=$ & $\begin{ytableau}1 & 4 \\ 6\end{ytableau}\cdot\begin{ytableau}2 & 3 \\ 5\end{ytableau}$\quad 或\quad $\begin{ytableau}1 & 6 \\ 4\end{ytableau}\cdot\begin{ytableau}2 & 3 \\ 5\end{ytableau}$\\[10pt]$U_0=\begin{ytableau}1 & 1 \\ 2\end{ytableau}$ & $\begin{ytableau}*(gray!30) {} & *(gray!30) {} & 1 \\ *(gray!30) {} & 1 \\ 2\end{ytableau}\ \to\ \begin{ytableau}1 & 1 \\ 2\end{ytableau}$\ \textcolor{cC}{\checkmark}\qquad $\begin{ytableau}*(gray!30) {} & *(gray!30) {} & 1 \\ *(gray!30) {} & 2 \\ 1\end{ytableau}\ \to\ \begin{ytableau}1 & 1 \\ 2\end{ytableau}$\ \textcolor{cC}{\checkmark}\qquad $\begin{ytableau}*(gray!30) {} & *(gray!30) {} & 2 \\ *(gray!30) {} & 1 \\ 1\end{ytableau}\ \to\ \begin{ytableau}1 & 1 & 2\end{ytableau}$\ \textcolor{cBad}{$\times$}\end{tabular}}
+
+\newcommand{\FulLRAll}{%
+{\ytableausetup{smalltableaux}\begin{tabular}{@{}r@{\quad}l@{}}$c=1$ & \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(cLeft!35) 1 & *(cB!40) 2\end{ytableau}$\\[-1pt]{\scriptsize $(5,2)$}\end{tabular}\ \ \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(cLeft!35) 1 & *(cRight!30) 3\end{ytableau}$\\[-1pt]{\scriptsize $(5,1,1)$}\end{tabular}\ \ \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cRight!30) 3 \\ *(cLeft!35) 1 & *(cC!30) 4\end{ytableau}$\\[-1pt]{\scriptsize $(4,1,1,1)$}\end{tabular}\ \ \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cB!40) 2 & *(cRight!30) 3 \\ *(cRight!30) 3 & *(cC!30) 4\end{ytableau}$\\[-1pt]{\scriptsize $(2,2,2,1)$}\end{tabular}\\[4pt]
+$c=2$ & \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(cB!40) 2 & *(cB!40) 2\end{ytableau}$\,$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cB!40) 2 \\ *(cLeft!35) 1 & *(cB!40) 2\end{ytableau}$\\[-1pt]{\scriptsize $(4,3)$}\end{tabular}\ \ \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cRight!30) 3 \\ *(cB!40) 2 & *(cC!30) 4\end{ytableau}$\,$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cB!40) 2 & *(cRight!30) 3 \\ *(cLeft!35) 1 & *(cC!30) 4\end{ytableau}$\\[-1pt]{\scriptsize $(3,2,1,1)$}\end{tabular}\\[4pt]
+ & \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cB!40) 2 \\ *(cB!40) 2 & *(cRight!30) 3\end{ytableau}$\,$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cRight!30) 3 \\ *(cB!40) 2 & *(cB!40) 2\end{ytableau}$\\[-1pt]{\scriptsize $(3,3,1)$}\end{tabular}\ \ \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cB!40) 2 \\ *(cRight!30) 3 & *(cRight!30) 3\end{ytableau}$\,$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cB!40) 2 & *(cRight!30) 3 \\ *(cLeft!35) 1 & *(cRight!30) 3\end{ytableau}$\\[-1pt]{\scriptsize $(3,2,2)$}\end{tabular}\\[4pt]
+$c=3$ & \begin{tabular}{c}$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(cB!40) 2 & *(cRight!30) 3\end{ytableau}$\,$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cB!40) 2 \\ *(cLeft!35) 1 & *(cRight!30) 3\end{ytableau}$\,$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cLeft!35) 1 & *(cLeft!35) 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & *(cB!40) 2 \\ *(gray!30) {} & *(cLeft!35) 1 & *(cRight!30) 3 \\ *(cLeft!35) 1 & *(cB!40) 2\end{ytableau}$\\[-1pt]{\scriptsize $(4,2,1)$}\end{tabular}\\[4pt]\end{tabular}}}
+
+\newcommand{\FulRW}{%
+反向編號：$\begin{ytableau}*(gray!30) {} & *(gray!30) {} & *(gray!30) {} & 2 & 1 \\ *(gray!30) {} & *(gray!30) {} & *(gray!30) {} & 3 \\ *(gray!30) {} & 5 & 4 \\ 7 & 6\end{ytableau}$\qquad\qquad$w=1\,1\,2\,3\,1\,2\,1\ \longmapsto\ U(w)=\begin{ytableau}1 & 3 & 6 & 7 \\ 2 & 5 \\ 4\end{ytableau}$}
+
+\newcommand{\FulRWTable}{%
+{\footnotesize\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}l|ccccccccc|c@{}}$\mu$ & $(5,2)$ & $(5,1,1)$ & $(4,1,1,1)$ & $(2,2,2,1)$ & $(4,3)$ & $(3,2,1,1)$ & $(3,3,1)$ & $(3,2,2)$ & $(4,2,1)$ & 合計\\\hline$\mu$ 上的標準表 & 14 & 15 & 20 & 14 & 14 & 35 & 21 & 21 & 35 & 189\\ 符合 (i)(ii) 的 & 1 & 1 & 1 & 1 & 2 & 2 & 2 & 2 & 3 & 15\end{tabular}}}
+
+\newcommand{\FulCharFour}{%
+\begin{tabular}{@{}l|ccccc@{}}$\lambda\backslash\mu$ & $(4)$ & $(3,1)$ & $(2,2)$ & $(2,1,1)$ & $(1,1,1,1)$\\\hline$\chi^{(4)}$ & 1 & 1 & 1 & 1 & 1\\
+$\chi^{(3,1)}$ & -1 & 0 & -1 & 1 & 3\\
+$\chi^{(2,2)}$ & 0 & -1 & 2 & 0 & 2\\
+$\chi^{(2,1,1)}$ & 1 & 0 & -1 & -1 & 3\\
+$\chi^{(1,1,1,1)}$ & -1 & 1 & 1 & -1 & 1\\\midrule $z(\mu)$ & 4 & 3 & 8 & 4 & 24\\\end{tabular}}
+
+\newcommand{\FulRecap}{%
+$T=\begin{ytableau}1 & 2 & 2 & *(yellow!45) 3 \\ 2 & 3 & *(yellow!45) 5 & 5 \\ 4 & 4 & *(yellow!45) 6 \\ 5 & 6\end{ytableau}\quad\xrightarrow{\ \leftarrow 2\ }\quad T\leftarrow 2=\begin{ytableau}1 & 2 & 2 & *(yellow!45) 2 \\ 2 & 3 & *(yellow!45) 3 & 5 \\ 4 & 4 & *(yellow!45) 5 \\ 5 & 6 & *(cC!35) 6\end{ytableau}$\qquad $U=\begin{ytableau}1 & 3 \\ 2\end{ytableau}$\qquad $T\cdot U=\begin{ytableau}1 & 1 & 2 & 2 & 3 \\ 2 & 2 & 3 & 5 \\ 3 & 4 & 5 \\ 4 & 6 & 6 \\ 5\end{ytableau}$}
+
+\newcommand{\FulRuns}{%
+{\ytableausetup{smalltableaux}$\begin{ytableau}\none & \none & \none & \none & \none & \none & \none & \none & \none & \none & \none & 2 \\ \none & \none & \none & \none & \none & \none & 1 & 2 & 2 & 3 & 3 \\ \none & \none & \none & 2 & 3 & 4 \\ 1 & 3 & 4\end{ytableau}$}}
+
+\newcommand{\FulKnuthRules}{%
+\begin{tabular}{@{}c@{\qquad\qquad}c@{}}$\textcolor{cLeft}{K'}:\ y\,z\,x\mapsto y\,x\,z\quad(x<y\le z)$ & $\textcolor{cRight}{K''}:\ x\,z\,y\mapsto z\,x\,y\quad(x\le y<z)$\\[6pt]$\begin{ytableau}y & z\end{ytableau}\leftarrow x\ =\ \begin{ytableau}x & z \\ y\end{ytableau}$ & $\begin{ytableau}x & z\end{ytableau}\leftarrow y\ =\ \begin{ytableau}x & y \\ z\end{ytableau}$\\[4pt]字：$y\,z\,x\ \to\ y\,x\,z$ & 字：$x\,z\,y\ \to\ z\,x\,y$\end{tabular}}
+
+\newcommand{\FulChain}{%
+\begin{tabular}{@{}rll@{}}\toprule 步 & 字 & 規則\\\midrule0 & $5\,6\,4\,4\,6\,2\,3\,5\,5\,1\,2\,2\,3\,\textcolor{cB}{\mathbf{2}}$ & $w(T)\cdot 2$\\
+1 & $5\,6\,4\,4\,6\,2\,3\,5\,5\,1\,2\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{2}}\,\textcolor{cB}{\mathbf{2}}$ & $\textcolor{cRight}{K''}$\\
+2 & $5\,6\,4\,4\,6\,2\,3\,5\,5\,1\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{2}}\,\textcolor{cB}{\mathbf{2}}\,2$ & $\textcolor{cRight}{K''}$\\
+3 & $5\,6\,4\,4\,6\,2\,3\,5\,5\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{1}}\,\textcolor{cB}{\mathbf{2}}\,2\,2$ & $\textcolor{cRight}{K''}$\\
+4 & $5\,6\,4\,4\,6\,2\,3\,\textcolor{cB}{\mathbf{5}}\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{5}}\,1\,2\,2\,2$ & $\textcolor{cLeft}{K'}$\\
+5 & $5\,6\,4\,4\,6\,2\,\textcolor{cB}{\mathbf{5}}\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{3}}\,5\,1\,2\,2\,2$ & $\textcolor{cRight}{K''}$\\
+6 & $5\,6\,4\,4\,6\,\textcolor{cB}{\mathbf{5}}\,\textcolor{cB}{\mathbf{2}}\,\textcolor{cB}{\mathbf{3}}\,3\,5\,1\,2\,2\,2$ & $\textcolor{cRight}{K''}$\\
+7 & $5\,6\,4\,\textcolor{cB}{\mathbf{6}}\,\textcolor{cB}{\mathbf{4}}\,\textcolor{cB}{\mathbf{5}}\,2\,3\,3\,5\,1\,2\,2\,2$ & $\textcolor{cRight}{K''}$\\
+8 & $5\,6\,\textcolor{cB}{\mathbf{6}}\,\textcolor{cB}{\mathbf{4}}\,\textcolor{cB}{\mathbf{4}}\,5\,2\,3\,3\,5\,1\,2\,2\,2$ & $\textcolor{cRight}{K''}$\\\bottomrule\end{tabular}}
+
+\newcommand{\FulSlide}{%
+$\begin{ytableau}1 & *(yellow!40) {} & 4 \\ 2 & 3 & 5\end{ytableau}\ \longrightarrow\ \begin{ytableau}1 & 3 & 4 \\ 2 & *(yellow!40) {} & 5\end{ytableau}$\qquad $2\,3\,5\,1\,4\equiv 2\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{1}}\,\textcolor{cB}{\mathbf{5}}\,4\equiv \textcolor{cB}{\mathbf{2}}\,\textcolor{cB}{\mathbf{1}}\,\textcolor{cB}{\mathbf{3}}\,5\,4\equiv 2\,1\,\textcolor{cB}{\mathbf{5}}\,\textcolor{cB}{\mathbf{3}}\,\textcolor{cB}{\mathbf{4}}\equiv \textcolor{cB}{\mathbf{2}}\,\textcolor{cB}{\mathbf{5}}\,\textcolor{cB}{\mathbf{1}}\,3\,4$}
+
+\newcommand{\FulPieri}{%
+\begin{tabular}{@{}r@{\ }l@{}}$S_{(2,1)}\cdot S_{(2)}=$ & $\begin{ytableau}{} & {} & *(cLeft!40) {} & *(cLeft!40) {} \\ {}\end{ytableau}+\begin{ytableau}{} & {} & *(cLeft!40) {} \\ {} & *(cLeft!40) {}\end{ytableau}+\begin{ytableau}{} & {} & *(cLeft!40) {} \\ {} \\ *(cLeft!40) {}\end{ytableau}+\begin{ytableau}{} & {} \\ {} & *(cLeft!40) {} \\ *(cLeft!40) {}\end{ytableau}$\\[10pt]$S_{(2,1)}\cdot S_{(1,1)}=$ & $\begin{ytableau}{} & {} & *(cRight!35) {} \\ {} & *(cRight!35) {}\end{ytableau}+\begin{ytableau}{} & {} & *(cRight!35) {} \\ {} \\ *(cRight!35) {}\end{ytableau}+\begin{ytableau}{} & {} \\ {} & *(cRight!35) {} \\ *(cRight!35) {}\end{ytableau}+\begin{ytableau}{} & {} \\ {} \\ *(cRight!35) {} \\ *(cRight!35) {}\end{ytableau}$\end{tabular}}
+
+\newcommand{\FulKostkaTabs}{%
+$\begin{ytableau}*(cLeft!35) 1 & *(cLeft!35) 1 & *(cB!40) 2 \\ *(cB!40) 2 & *(cRight!30) 3\end{ytableau}$\ \ {\small $\varnothing\subset (2)\subset (3,1)\subset (3,2)$}\qquad\qquad $\begin{ytableau}*(cLeft!35) 1 & *(cLeft!35) 1 & *(cRight!30) 3 \\ *(cB!40) 2 & *(cB!40) 2\end{ytableau}$\ \ {\small $\varnothing\subset (2)\subset (2,2)\subset (3,2)$}}
+
+\newcommand{\FulKostkaMatrix}{%
+\begin{tabular}{@{}l|ccccc@{}}$\lambda\backslash\mu$ & $(1,1,1,1)$ & $(2,1,1)$ & $(2,2)$ & $(3,1)$ & $(4)$\\\hline$(1,1,1,1)$ & \textbf{1} & \textcolor{gray}{0} & \textcolor{gray}{0} & \textcolor{gray}{0} & \textcolor{gray}{0}\\
+$(2,1,1)$ & 3 & \textbf{1} & \textcolor{gray}{0} & \textcolor{gray}{0} & \textcolor{gray}{0}\\
+$(2,2)$ & 2 & 1 & \textbf{1} & \textcolor{gray}{0} & \textcolor{gray}{0}\\
+$(3,1)$ & 3 & 2 & 1 & \textbf{1} & \textcolor{gray}{0}\\
+$(4)$ & 1 & 1 & 1 & 1 & \textbf{1}\\\end{tabular}}
+
+\newcommand{\FulCut}{%
+$T=\begin{ytableau}*(cLeft!30) 1 & *(cLeft!30) 2 & *(cRight!25) 2 & *(cRight!25) 3 \\ *(cLeft!30) 2 & *(cLeft!30) 3 & *(cRight!25) 5 & *(cRight!25) 5 \\ *(cLeft!30) 4 & *(cLeft!30) 4 & *(cRight!25) 6 \\ *(cLeft!30) 5 & *(cLeft!30) 6\end{ytableau}$\qquad $T'=\begin{ytableau}1 & 2 \\ 2 & 3 \\ 4 & 4 \\ 5 & 6\end{ytableau}$\quad $T''=\begin{ytableau}2 & 3 \\ 5 & 5 \\ 6\end{ytableau}$\qquad$T'*T''=\begin{ytableau}*(gray!25) {} & *(gray!25) {} & 2 & 3 \\ *(gray!25) {} & *(gray!25) {} & 5 & 5 \\ *(gray!25) {} & *(gray!25) {} & 6 \\ 1 & 2 \\ 2 & 3 \\ 4 & 4 \\ 5 & 6\end{ytableau}$}
+
+\newcommand{\FulIncreasing}{%
+\begin{tabular}{@{}lll@{}}$k=1$: & $\textcolor{cLeft}{\mathbf{1}}\ 3\ 4\ 2\ 3\ 4\ \textcolor{cLeft}{\mathbf{1}}\ \textcolor{cLeft}{\mathbf{2}}\ \textcolor{cLeft}{\mathbf{2}}\ \textcolor{cLeft}{\mathbf{3}}\ \textcolor{cLeft}{\mathbf{3}}\ 2$ & $L(w,1)=6$\\
+$k=2$: & $\textcolor{cB}{\mathbf{1}}\ \textcolor{cB}{\mathbf{3}}\ 4\ 2\ \textcolor{cB}{\mathbf{3}}\ \textcolor{cB}{\mathbf{4}}\ \textcolor{cLeft}{\mathbf{1}}\ \textcolor{cLeft}{\mathbf{2}}\ \textcolor{cLeft}{\mathbf{2}}\ \textcolor{cLeft}{\mathbf{3}}\ \textcolor{cLeft}{\mathbf{3}}\ 2$ & $L(w,2)=9=5+4$\\
+$k=3$: & $\textcolor{cLeft}{\mathbf{1}}\ \textcolor{cLeft}{\mathbf{3}}\ \textcolor{cLeft}{\mathbf{4}}\ \textcolor{cB}{\mathbf{2}}\ \textcolor{cB}{\mathbf{3}}\ \textcolor{cLeft}{\mathbf{4}}\ \textcolor{cRight}{\mathbf{1}}\ \textcolor{cRight}{\mathbf{2}}\ \textcolor{cRight}{\mathbf{2}}\ \textcolor{cB}{\mathbf{3}}\ \textcolor{cB}{\mathbf{3}}\ \textcolor{cRight}{\mathbf{2}}$ & $L(w,3)=12=4+4+4$\\\end{tabular}\qquad$P(w)=\begin{ytableau}*(cLeft!30) 1 & *(cLeft!30) 1 & *(cLeft!30) 2 & *(cLeft!30) 2 & *(cLeft!30) 2 & *(cLeft!30) 3 \\ *(cB!30) 2 & *(cB!30) 3 & *(cB!30) 3 \\ *(cRight!30) 3 & *(cRight!30) 4 & *(cRight!30) 4\end{ytableau}$}
+
+\newcommand{\FulRebuild}{%
+{\small\begin{tabular}{@{}rlccl@{}}\toprule $p$ & $w_p$（灰色是已去掉的） & $L(w_p,1..3)$ & 形狀 & 最大字母放哪\\\midrule0 & $1\,3\,4\,2\,3\,4\,1\,2\,2\,3\,3\,2$ & 6, 9, 12 & $(6,3,3)$ & $4\to$ 第 3 列\\
+1 & $1\,3\,4\,2\,3\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,3\,3\,2$ & 6, 9, 11 & $(6,3,2)$ & $4\to$ 第 3 列\\
+2 & $1\,3\,\textcolor{gray!45}{\mathbf{4}}\,2\,3\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,3\,3\,2$ & 6, 9, 10 & $(6,3,1)$ & $3\to$ 第 1 列\\
+3 & $1\,3\,\textcolor{gray!45}{\mathbf{4}}\,2\,3\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,3\,\textcolor{gray!45}{\mathbf{3}}\,2$ & 5, 8, 9 & $(5,3,1)$ & $3\to$ 第 2 列\\
+4 & $1\,3\,\textcolor{gray!45}{\mathbf{4}}\,2\,3\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,2$ & 5, 7, 8 & $(5,2,1)$ & $3\to$ 第 2 列\\
+5 & $1\,3\,\textcolor{gray!45}{\mathbf{4}}\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,2$ & 5, 6, 7 & $(5,1,1)$ & $3\to$ 第 3 列\\
+6 & $1\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,2$ & 5, 6, 6 & $(5,1)$ & $2\to$ 第 1 列\\
+7 & $1\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{2}}$ & 4, 5, 5 & $(4,1)$ & $2\to$ 第 1 列\\
+8 & $1\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,1\,2\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{2}}$ & 3, 4, 4 & $(3,1)$ & $2\to$ 第 1 列\\
+9 & $1\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,2\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,1\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{2}}$ & 2, 3, 3 & $(2,1)$ & $2\to$ 第 2 列\\
+10 & $1\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,1\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{2}}$ & 2, 2, 2 & $(2)$ & $1\to$ 第 1 列\\
+11 & $1\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{4}}\,\textcolor{gray!45}{\mathbf{1}}\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{2}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{3}}\,\textcolor{gray!45}{\mathbf{2}}$ & 1, 1, 1 & $(1)$ & $1\to$ 第 1 列\\\bottomrule\end{tabular}}}
+
+\newcommand{\FulRS}{%
+{\ytableausetup{smalltableaux}$k=1$：$x_1=5$\ \ $\begin{ytableau}5\end{ytableau}\ \ \begin{ytableau}1\end{ytableau}$\quad $k=2$：$x_2=4$\ \ $\begin{ytableau}4 \\ 5\end{ytableau}\ \ \begin{ytableau}1 \\ 2\end{ytableau}$\quad $k=3$：$x_3=8$\ \ $\begin{ytableau}4 & 8 \\ 5\end{ytableau}\ \ \begin{ytableau}1 & 3 \\ 2\end{ytableau}$\quad $k=4$：$x_4=2$\ \ $\begin{ytableau}2 & 8 \\ 4 \\ 5\end{ytableau}\ \ \begin{ytableau}1 & 3 \\ 2 \\ 4\end{ytableau}$}\\[8pt]$P=\begin{ytableau}1 & 1 & 3 & 5 \\ 2 & 3 \\ 4 & 4 \\ 5 & 7 \\ 8\end{ytableau}\qquad Q=\begin{ytableau}1 & 3 & 6 & 8 \\ 2 & 5 \\ 4 & 9 \\ 7 & 10 \\ 11\end{ytableau}$}
+
+\newcommand{\FulArray}{%
+$\omega=\begin{pmatrix}1 & 1 & 1 & 2 & 2 & 3 & 3 & 3 & 3\\1 & 2 & 2 & 1 & 2 & 1 & 1 & 1 & 2\end{pmatrix}\qquad A=\begin{pmatrix}1 & 2\\1 & 1\\3 & 1\end{pmatrix}\qquad P=\begin{ytableau}1 & 1 & 1 & 1 & 1 & 2 \\ 2 & 2 & 2\end{ytableau}\quad Q=\begin{ytableau}1 & 1 & 1 & 2 & 3 & 3 \\ 2 & 3 & 3\end{ytableau}$}
+
+\newcommand{\FulBalls}{%
+$A$:\ \begin{tikzpicture}[baseline=(current bounding box.center)]
+\draw[gray!60] (0,0.00) -- (2.00,0.00);
+\draw[gray!60] (0,-1.00) -- (2.00,-1.00);
+\draw[gray!60] (0,-2.00) -- (2.00,-2.00);
+\draw[gray!60] (0,-3.00) -- (2.00,-3.00);
+\draw[gray!60] (0.00,0) -- (0.00,-3.00);
+\draw[gray!60] (1.00,0) -- (1.00,-3.00);
+\draw[gray!60] (2.00,0) -- (2.00,-3.00);
+\node[font=\scriptsize,gray] at (-0.25,-0.50) {1};
+\node[font=\scriptsize,gray] at (-0.25,-1.50) {2};
+\node[font=\scriptsize,gray] at (-0.25,-2.50) {3};
+\node[font=\scriptsize,gray] at (0.50,0.22) {1};
+\node[font=\scriptsize,gray] at (1.50,0.22) {2};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (0.50,-0.50) {1};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.38,-0.38) {2};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.62,-0.62) {3};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (0.50,-1.50) {2};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.50,-1.50) {4};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (0.25,-2.25) {3};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (0.50,-2.50) {4};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (0.75,-2.75) {5};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.50,-2.50) {6};\end{tikzpicture}\ \ {\small\begin{tabular}{@{}l@{}}$P$ 第 1 列：$1,1,1,1,1,2$\\$Q$ 第 1 列：$1,1,1,2,3,3$\end{tabular}}\qquad $A^\flat$:\ \begin{tikzpicture}[baseline=(current bounding box.center)]
+\draw[gray!60] (0,0.00) -- (2.00,0.00);
+\draw[gray!60] (0,-1.00) -- (2.00,-1.00);
+\draw[gray!60] (0,-2.00) -- (2.00,-2.00);
+\draw[gray!60] (0,-3.00) -- (2.00,-3.00);
+\draw[gray!60] (0.00,0) -- (0.00,-3.00);
+\draw[gray!60] (1.00,0) -- (1.00,-3.00);
+\draw[gray!60] (2.00,0) -- (2.00,-3.00);
+\node[font=\scriptsize,gray] at (-0.25,-0.50) {1};
+\node[font=\scriptsize,gray] at (-0.25,-1.50) {2};
+\node[font=\scriptsize,gray] at (-0.25,-2.50) {3};
+\node[font=\scriptsize,gray] at (0.50,0.22) {1};
+\node[font=\scriptsize,gray] at (1.50,0.22) {2};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.50,-1.50) {1};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.38,-2.38) {2};
+\node[circle,draw=cA,fill=cA!15,inner sep=0pt,minimum size=9pt,font=\tiny] at (1.62,-2.62) {3};\end{tikzpicture}\ \ {\small\begin{tabular}{@{}l@{}}$P$ 第 2 列：$2,2,2$\\$Q$ 第 2 列：$2,3,3$\end{tabular}}}
+
+\newcommand{\FulHook}{%
+$h(i,j)=\begin{ytableau}9 & 8 & 7 & 5 & 4 & 1 \\ 7 & 6 & 5 & 3 & 2 \\ 6 & 5 & 4 & 2 & 1 \\ 3 & 2 & 1\end{ytableau}\qquad 5+j-i=\begin{ytableau}*(cB!35) 5 & 6 & 7 & 8 & 9 & 10 \\ 4 & *(cB!35) 5 & 6 & 7 & 8 \\ 3 & 4 & *(cB!35) 5 & 6 & 7 \\ 2 & 3 & 4\end{ytableau}$}

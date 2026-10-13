@@ -1,0 +1,313 @@
+% 附錄 A 第 4 段：A.12–A.14（動畫 M12–M14，MIT 18.212 L4）
+% 圖由 mit/make_figs_part4.py 產生（含數字檢查）；格子 (i,j) = 第 i 列第 j 行，1 起算。
+\input{mit/figs_part4}
+
+% ---------------------------------------------------------------------
+\subsection{標準 Young 表與 Dyck 路徑}\label{sec:m12}
+
+這一節看兩列等長的形狀 $(n,n)$：它的標準 Young 表就是 Dyck 路徑 \mitref{L4}。
+回憶第~\ref{sec:m11} 節的\textbf{標準 Young 表}：把 $1,2,\ldots,|\lambda|$（$|\lambda|$ 是格子數）各填一次到形狀 $\lambda$ 的 Young 圖，
+每一列由左到右、每一行由上到下都遞增；個數記為 $f^{\lambda}$。
+
+\textbf{讀表的規則。}依序讀 $1,2,\ldots,2n$：數字 $i$ 在第一列，第 $i$ 步就往上（U）；
+在第二列，第 $i$ 步就往下（D）。貫穿的例子：第一列是 $1,2,4$、第二列是 $3,5,6$，
+所以第 1、2、4 步是 U，第 3、5、6 步是 D，得到 UUDUDD（圖~\ref{fig:m12-convert}）。
+
+\begin{figure}[H]
+\centering
+\FigMXIIConvert
+\caption{形狀 $(3,3)$ 的表：\textcolor{cLeft}{第一列的數 $\to$ U}、\textcolor{cRight}{第二列的數 $\to$ D}。
+例子 $\begin{smallmatrix}1&2&4\\3&5&6\end{smallmatrix}$ 變成 Dyck 路徑 UUDUDD。}
+\label{fig:m12-convert}
+\end{figure}
+
+\textbf{為什麼不會掉到地面以下。}記 $T_{r,j}$ 為第 $r$ 列第 $j$ 格的數。
+列是遞增的，所以第 $j$ 個 U 是第 $T_{1,j}$ 步，第 $j$ 個 D 是第 $T_{2,j}$ 步。
+行也是遞增的：$T_{1,j}<T_{2,j}$，也就是\textbf{第 $j$ 個 D 之前，一定已經有第 $j$ 個 U}。
+所以任何時候 U 的個數都 $\ge$ D 的個數，路徑不低於地面。例子的三行是 $1<3$、$2<5$、$4<6$。
+
+\textbf{反過來。}給一條半長 $n$ 的 Dyck 路徑，把 U 所在的步號由小到大填進第一列、D 所在的步號填進第二列。
+兩列自動遞增；路徑不低於地面，表示第 $j$ 個 U 比第 $j$ 個 D 早，也就是每一行遞增。
+兩個方向互為反函數，所以是一一對應。
+
+\begin{thmbox}[兩列的標準 Young 表]
+形狀 $(n,n)$ 的標準 Young 表與半長 $n$ 的 Dyck 路徑一一對應，所以 $f^{(n,n)}=C_n$。
+\end{thmbox}
+
+\begin{figure}[H]
+\centering
+\FigMXIIAll
+\caption{形狀 $(3,3)$ 的 5 個標準 Young 表與對應的 5 條 Dyck 路徑（順序同動畫 M12），
+\textcolor{cTop}{虛線框}是貫穿的例子。}
+\label{fig:m12-all}
+\end{figure}
+
+程式逐一列舉 $n=1,\ldots,6$：$f^{(n,n)}=1,2,5,14,42,132$，與 $C_n$ 相同。
+換成投票問題的語言（圖~\ref{fig:ballot}）：第 $i$ 張票投給 A 就把 $i$ 放進第一列、投給 B 就放進第二列，
+「行遞增」就是「A 從不落後」；例子對應開票順序 AABABB。
+
+\textbf{一般的形狀。}$\lambda=(\lambda_1,\ldots,\lambda_k)$ 有 $k$ 列。
+數字 $i$ 在第 $r$ 列，第 $i$ 步就走 $e_r$（第 $r$ 個座標加 1）。
+讀完前 $t$ 個數之後的位置 $(x_1,\ldots,x_k)$，就是各列已經填了幾格。
+第 $r$ 列要填第 $j$ 格時，它上面那格（第 $r-1$ 列第 $j$ 格）必須早就填好，也就是填完之後仍有 $x_{r-1}\ge x_r$。
+所以「每一行遞增」等於\textbf{一路上都保持 $x_1\ge x_2\ge\cdots\ge x_k$}（表~\ref{tab:m12-general}）。
+
+\begin{thmbox}[標準 Young 表 $=$ 格子路徑]
+形狀 $\lambda$ 的標準 Young 表，一一對應到 $\mathbb{Z}^k$ 中從原點走到 $\lambda$、每一步是某個 $e_r$、
+一路保持 $x_1\ge x_2\ge\cdots\ge x_k$ 的格子路徑。
+$\lambda=(n,n)$ 時，$x_1\ge x_2$ 就是「U 不比 D 少」，回到 Dyck 路徑。
+\end{thmbox}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}c@{\qquad}cccccl@{}}
+\toprule
+表 & 讀完 1 & 讀完 2 & 讀完 3 & 讀完 4 & 讀完 5 & \\
+\midrule
+\FigMXIIGenGood & $(1,0,0)$ & $(1,1,0)$ & $(2,1,0)$ & $(2,1,1)$ & $(2,2,1)$ & 一路 $x_1\ge x_2\ge x_3$ \\[0.5em]
+\FigMXIIGenBad & $(1,0,0)$ & $(1,1,0)$ & $(1,1,1)$ & $\textcolor{cBad}{(1,2,1)}$ & $(2,2,1)$
+  & \textcolor{cBad}{$x_2>x_1$，不是標準 Young 表}\\
+\bottomrule
+\end{tabular}
+\caption{形狀 $\lambda=(2,2,1)$。上：依序走 $e_1,e_2,e_1,e_3,e_2$，每一步都有 $x_1\ge x_2\ge x_3$，終點是 $\lambda$。
+下：把 5 放在 4 上面（\textcolor{cBad}{紅框}那一行 $5>4$），讀到 4 時 $x_2=2>x_1=1$，路徑跑出區域。}
+\label{tab:m12-general}
+\end{table}
+
+% ---------------------------------------------------------------------
+\subsection{鉤長公式}\label{sec:m13}
+
+$f^{\lambda}$ 有一條漂亮的公式，只用到每一格的「鉤長」\mitref{L4}。
+
+\textbf{鉤。}格子 $c$ 的\textbf{鉤}（hook）由三部分組成：$c$ 自己、同一列在它右邊的格子（\textbf{臂}，arm）、
+同一行在它下面的格子（\textbf{腿}，leg）。鉤裡的格子數叫做\textbf{鉤長}：
+\[
+h(c)=\operatorname{arm}(c)+\operatorname{leg}(c)+1 .
+\]
+$c$ 在第 $i$ 列第 $j$ 行時，$\operatorname{arm}(c)=\lambda_i-j$、$\operatorname{leg}(c)=\lambda'_j-i$，
+其中 $\lambda'_j$ 是第 $j$ 行的長度。例：$\lambda=(4,3,1)$ 的格子 $c=(1,2)$ 有 2 格臂、1 格腿，
+$h(c)=4$（圖~\ref{fig:m13-hook} 左）。
+
+\begin{figure}[H]
+\centering
+\FigMXIIIHook
+\caption{$\lambda=(4,3,1)$。左：格子 $c=(1,2)$ 的鉤，由\textcolor{cTop}{橘色的 $c$ 自己}和黃色的臂、腿組成。右：每一格的鉤長。}
+\label{fig:m13-hook}
+\end{figure}
+
+把每一格的鉤長乘起來：
+\[
+H(\lambda)=\prod_{c\in\lambda}h(c)=6\cdot4\cdot3\cdot1\cdot4\cdot2\cdot1\cdot1=576,\qquad
+\frac{8!}{H(\lambda)}=\frac{40320}{576}=70 .
+\]
+而形狀 $(4,3,1)$ 的標準 Young 表恰有 70 個（程式列舉）。這不是巧合：
+
+\begin{thmbox}[鉤長公式（Frame--Robinson--Thrall，1954）]
+$\lambda$ 是 $n$ 的分割時，形狀 $\lambda$ 的標準 Young 表個數是
+\begin{equation}\label{eq:m13-hook}
+f^{\lambda}=\frac{n!}{\prod_{c\in\lambda}h(c)}=\frac{n!}{H(\lambda)} .
+\end{equation}
+\end{thmbox}
+
+\textbf{驗算。}第~\ref{sec:m11} 節列出的 $(3,2)$，以及上一節的 $(3,3)$（格子裡是鉤長）：
+\[
+\FigMXIIIHookSmall\quad \frac{5!}{4\cdot3\cdot1\cdot2\cdot1}=\frac{120}{24}=5,
+\qquad\qquad
+\FigMXIIIHookSquare\quad \frac{6!}{(4\cdot3\cdot2)(3\cdot2\cdot1)}=\frac{720}{144}=5=C_3 .
+\]
+一般的 $(n,n)$：第一列的鉤長是 \textcolor{cLeft}{$n+1,n,\ldots,2$}，第二列是 \textcolor{cRight}{$n,n-1,\ldots,1$}，
+所以 $H=(n+1)!\,n!$，
+\[
+f^{(n,n)}=\frac{(2n)!}{(n+1)!\,n!}=C_n ,
+\]
+這是 $f^{(n,n)}=C_n$ 的第二個證明。
+
+\textbf{角落遞迴。}以下 $\lambda$ 是 $n$ 的分割。右邊和下面都沒有格子的格子叫\textbf{角落}；拿掉角落 $c$，剩下的 $\lambda-c$ 仍是 Young 圖。
+在標準 Young 表裡，最大的數 $n$ 一定在某個角落：它右邊或下面的數都要比 $n$ 大，所以那裡不能有格子。
+拿掉 $n$，剩下的是形狀 $\lambda-c$ 的標準 Young 表；反過來，在 $\lambda-c$ 的表的格子 $c$ 填上 $n$，
+就得到 $\lambda$ 的表。所以
+\begin{equation}\label{eq:m13-corner}
+f^{\lambda}=\sum_{c\ \text{是角落}}f^{\lambda-c},\qquad f^{\varnothing}=1 .
+\end{equation}
+例：$(3,2)$ 的 5 個表依 5 的位置分成 $2+3$ 個（圖~\ref{fig:m13-corner}），
+$f^{(3,2)}=f^{(2,2)}+f^{(3,1)}=2+3=5$。
+
+\begin{figure}[H]
+\centering
+\FigMXIIICorner
+\caption{角落遞迴：$(3,2)$ 的 5 個表依最大數 5 所在的\textcolor{cC}{角落}分成兩組，拿掉 5 就是較小形狀的表。}
+\label{fig:m13-corner}
+\end{figure}
+
+\textbf{化約成「機率和為 1」。}令 $F(\lambda)=n!/H(\lambda)$。要證 $F=f$，對 $n$ 歸納：
+$F(\varnothing)=1$，所以只要再證明 $F$ 也滿足角落遞迴 \eqref{eq:m13-corner}。
+設 $n-1$ 格的形狀都已有 $f=F$，則 $f^{\lambda}=\sum_c F(\lambda-c)$，只需證 $\sum_c F(\lambda-c)=F(\lambda)$。
+兩邊除以 $F(\lambda)$：
+\begin{equation}\label{eq:m13-reduce}
+\sum_{c}\frac{(n-1)!}{H(\lambda-c)}\cdot\frac{H(\lambda)}{n!}
+=\sum_{c\ \text{是角落}}\frac{1}{n}\cdot\frac{H(\lambda)}{H(\lambda-c)}=1 .
+\end{equation}
+驗算 $(3,2)$：$H(3,2)=24$、$H(2,2)=12$、$H(3,1)=8$，
+\[
+\frac15\cdot\frac{24}{12}+\frac15\cdot\frac{24}{8}=\frac25+\frac35=1 .
+\]
+式 \eqref{eq:m13-reduce} 的每一項都是正的、加起來是 1，很像機率。
+下一節的「鉤上漫步」讓它們真的變成機率：停在角落 $c$ 的機率。
+
+% ---------------------------------------------------------------------
+\subsection{鉤上漫步的證明}\label{sec:m14}
+
+這一節用 Greene、Nijenhuis 與 Wilf（1979）的機率論證 \mitref{L4} 證明式 \eqref{eq:m13-reduce}，
+於是得到鉤長公式。例子沿用 $\lambda=(4,3,1)$，$n=8$。格子 $(i,j)$ 指第 $i$ 列第 $j$ 行。
+
+\textbf{(1) 鉤上漫步。}
+\begin{enumerate}[leftmargin=1.6em]
+  \item 從 $n$ 格中\textbf{均勻}隨機選一格當起點，每格機率 $\frac1n$。
+  \item 在格子 $x$ 上，若 $h(x)>1$，就從 $x$ 的鉤上「$x$ 以外的 $h(x)-1$ 格」均勻選一格跳過去，
+        每格機率 $\frac{1}{h(x)-1}$。
+  \item $h(x)=1$ 時停止。
+\end{enumerate}
+每一跳都往右或往下，所以一定會停。$h(x)=1$ 表示右邊、下面都沒有格子，也就是角落：
+\textbf{漫步一定停在某個角落}。圖~\ref{fig:m14-walks} 左是一次漫步：從 $(1,1)$（$h=6$）以機率 $\frac15$ 跳到 $(1,3)$（$h=3$），
+再以 $\frac12$ 跳到角落 $(2,3)$，整條漫步的機率是 $\frac18\cdot\frac15\cdot\frac12=\frac1{80}$。
+
+\begin{figure}[H]
+\centering
+\FigMXIVWalks
+\caption{兩條鉤上漫步（格子裡是鉤長，\textcolor{cTop}{橘框}是起點，\textcolor{cC}{綠色}是終點角落）。
+左：$(1,1)\to(1,3)\to(2,3)$；右：$(1,1)\to(2,1)\to(2,3)$。
+兩條經過的列都是 \textcolor{cLeft}{$A=\{1,2\}$}、行都是 \textcolor{cRight}{$B=\{1,3\}$}（列號、行號加粗）。}
+\label{fig:m14-walks}
+\end{figure}
+
+\textbf{(2) 主張。}
+\begin{thmbox}[主張]
+停在角落 $c$ 的機率是
+\begin{equation}\label{eq:m14-claim}
+P(c)=\frac{1}{n}\cdot\frac{H(\lambda)}{H(\lambda-c)} .
+\end{equation}
+\end{thmbox}
+漫步一定停在某個角落，所以 $\sum_c P(c)=1$；代入 \eqref{eq:m14-claim} 正是 \eqref{eq:m13-reduce}。
+因此\textbf{只要證明主張，鉤長公式就對 $n$ 歸納成立}。
+例：$(4,3,1)$ 的三個角落 $(1,4)$、$(2,3)$、$(3,1)$，拿掉後分別是 $(3,3,1)$、$(4,2,1)$、$(4,3)$，
+$H$ 分別是 $240$、$144$、$360$：
+\[
+P(1,4)=\frac{576}{8\cdot240}=\frac{3}{10},\qquad
+P(2,3)=\frac{576}{8\cdot144}=\frac12,\qquad
+P(3,1)=\frac{576}{8\cdot360}=\frac15 ,
+\]
+和列舉所有漫步得到的機率完全相同，而且 $\frac{3}{10}+\frac12+\frac15=1$。
+
+\textbf{(3) 一條漫步的機率與投影。}漫步 $a_1\to a_2\to\cdots\to a_m$（$a_m$ 是角落）的機率是
+\[
+\frac1n\prod_{k=1}^{m-1}\frac{1}{h(a_k)-1} ,
+\]
+後面的乘積叫做這條漫步的\textbf{權重}（不含選起點的 $\frac1n$）。
+把漫步\textbf{投影}：經過的列組成集合 $A$，經過的行組成集合 $B$。
+每一跳只改變列或行之一，而且只會變大，所以起點是 $(\min A,\min B)$，終點是 $c=(\max A,\max B)$。
+圖~\ref{fig:m14-walks} 的兩條漫步投影相同，權重分別是 $\frac15\cdot\frac12=\frac1{10}$ 與 $\frac15\cdot\frac13=\frac1{15}$。
+證明的策略：\textbf{把同一組 $(A,B)$ 的漫步放在一起加總}。
+
+\textbf{(4) 關鍵恆等式。}設 $c=(\alpha,\beta)$ 是角落，格子 $(a,b)$ 在它的左上方（$a\le\alpha$、$b\le\beta$）。則
+\begin{equation}\label{eq:m14-identity}
+h(a,b)-1=\bigl(h(a,\beta)-1\bigr)+\bigl(h(\alpha,b)-1\bigr).
+\end{equation}
+\textit{證明。}$h-1$ 就是臂長加腿長。把 $(a,b)$ 的臂在第 $\beta$ 行切開、腿在第 $\alpha$ 列切開：
+\[
+\operatorname{arm}(a,b)=(\beta-b)+\operatorname{arm}(a,\beta),\qquad
+\operatorname{leg}(a,b)=(\alpha-a)+\operatorname{leg}(\alpha,b).
+\]
+因為 $c$ 是角落，第 $\alpha$ 列在第 $\beta$ 行結束、第 $\beta$ 行在第 $\alpha$ 列結束，所以
+$\beta-b=\operatorname{arm}(\alpha,b)$、$\alpha-a=\operatorname{leg}(a,\beta)$。代入相加即得。$\square$
+
+例：$(a,b)=(1,1)$、$c=(2,3)$ 時是 $5=2+3$（圖~\ref{fig:m14-identity}）。
+
+\begin{figure}[H]
+\centering
+\FigMXIVIdentity
+\caption{關鍵恆等式 $5=2+3$：\textcolor{cTop}{橘框}格子 $(1,1)$、$(1,3)$、$(2,1)$ 的鉤上自己以外的格子；
+\textcolor{cC}{綠色虛框}是 $c=(2,3)$。}
+\label{fig:m14-identity}
+\end{figure}
+
+\textbf{(5) 引理。}對 $i<\alpha$、$j<\beta$ 令
+\[
+x_i=\frac{1}{h(i,\beta)-1}\quad(c\text{ 上方的格}),\qquad
+y_j=\frac{1}{h(\alpha,j)-1}\quad(c\text{ 左方的格}).
+\]
+這些格子的鉤都含 $c$，所以 $h\ge2$，分母不是 0。
+
+\begin{thmbox}[引理]
+設 $A\subseteq\{1,\ldots,\alpha\}$ 含 $\alpha$、$B\subseteq\{1,\ldots,\beta\}$ 含 $\beta$。
+從 $(\min A,\min B)$ 出發、經過的列集合恰為 $A$、行集合恰為 $B$ 的所有漫步（它們都停在 $c$），權重和是
+\begin{equation}\label{eq:m14-lemma}
+W(A,B)=\prod_{i\in A\setminus\{\alpha\}}x_i\prod_{j\in B\setminus\{\beta\}}y_j .
+\end{equation}
+\end{thmbox}
+
+\textit{證明}（對 $|A|+|B|$ 歸納）。$|A|+|B|=2$ 時 $A=\{\alpha\}$、$B=\{\beta\}$，唯一的漫步是停在 $c$ 不動，
+權重 1（空乘積），成立。一般情形，令 $a=\min A$、$b=\min B$、$R$ 為 \eqref{eq:m14-lemma} 的右邊。第一跳只有兩種可能：
+\begin{itemize}
+  \item \textbf{往下}到 $(a',b)$，$a'$ 是 $A$ 的下一個元素；剩下的漫步屬於 $(A\setminus\{a\},B)$，
+        由歸納假設，權重和是 $R/x_a=R\,\bigl(h(a,\beta)-1\bigr)$。
+  \item \textbf{往右}到 $(a,b')$，$b'$ 是 $B$ 的下一個元素；剩下的權重和是 $R/y_b=R\,\bigl(h(\alpha,b)-1\bigr)$。
+\end{itemize}
+（若 $a=\alpha$ 就不能往下，而這時 $h(a,\beta)-1=h(c)-1=0$，把往下那一項寫成 $R\,(h(a,\beta)-1)$ 仍然正確；
+$b=\beta$ 也一樣。）第一跳的機率是 $\frac{1}{h(a,b)-1}$，再用 \eqref{eq:m14-identity}：
+\[
+W(A,B)=\frac{R\,\bigl(h(a,\beta)-1\bigr)+R\,\bigl(h(\alpha,b)-1\bigr)}{h(a,b)-1}=R .\qquad\square
+\]
+例：$A=\{1,2\}$、$B=\{1,3\}$、$c=(2,3)$，
+$R=x_1y_1=\frac{1}{h(1,3)-1}\cdot\frac{1}{h(2,1)-1}=\frac12\cdot\frac13=\frac16$，正是 $\frac1{10}+\frac1{15}$。
+歸納的那一步：先往下，剩下的權重和是 $R\cdot2=\frac13$；先往右，剩下的是 $R\cdot3=\frac12$；
+$\frac15\bigl(\frac13+\frac12\bigr)=\frac16$。
+
+\textbf{(6) 加總。}每一條停在 $c$ 的漫步恰有一組投影 $(A,B)$。可能的投影：$A$ 一定含 $\alpha$，
+每個 $i<\alpha$ 可選可不選，$B$ 也一樣，共 $2^{\alpha+\beta-2}$ 組。所以
+\begin{equation}\label{eq:m14-sum}
+\begin{aligned}
+P(c)&=\frac1n\sum_{A,B}\ \prod_{i\in A\setminus\{\alpha\}}x_i\prod_{j\in B\setminus\{\beta\}}y_j
+=\frac1n\prod_{i<\alpha}(1+x_i)\prod_{j<\beta}(1+y_j)\\
+&=\frac1n\prod_{i<\alpha}\frac{h(i,\beta)}{h(i,\beta)-1}\ \prod_{j<\beta}\frac{h(\alpha,j)}{h(\alpha,j)-1}.
+\end{aligned}
+\end{equation}
+第一行的第二個等號是把乘積展開：每個因子 $(1+x_i)$ 選 $1$（$i\notin A$）或選 $x_i$（$i\in A$）。
+第二行用 $1+\frac{1}{h-1}=\frac{h}{h-1}$。
+
+\textbf{(7) 結論。}$c$ 以外的格子 $x$，鉤含 $c$ 只有兩種情形：$x$ 在 $c$ 的正上方（第 $\beta$ 行、第 $i<\alpha$ 列），
+或正左方（第 $\alpha$ 列、第 $j<\beta$ 行）。所以拿掉 $c$ 只讓這些格子的鉤長各減 1，其他格子不變；
+$c$ 自己的鉤長是 1。因此
+\[
+\frac{H(\lambda)}{H(\lambda-c)}=\prod_{i<\alpha}\frac{h(i,\beta)}{h(i,\beta)-1}\ \prod_{j<\beta}\frac{h(\alpha,j)}{h(\alpha,j)-1},
+\]
+和 \eqref{eq:m14-sum} 比較，得到 $P(c)=\frac1n\cdot\frac{H(\lambda)}{H(\lambda-c)}$，主張得證；
+再由 (2)，鉤長公式得證。$\blacksquare$
+
+\textbf{例：$c=(2,3)$。}上方的 $(1,3)$ 鉤長 3，$x_1=\frac12$；左方的 $(2,1)$、$(2,2)$ 鉤長 4、2，$y_1=\frac13$、$y_2=1$。
+\[
+P(2,3)=\frac18\Bigl(1+\frac12\Bigr)\Bigl(1+\frac13\Bigr)(1+1)=\frac18\cdot\frac32\cdot\frac43\cdot\frac21=\frac12 .
+\]
+展開共 $2^3=8$ 項，每一項是一組 $(A,B)$；其中 $x_1y_1=\frac16$ 就是引理例子的那一組。
+另一方面拿掉 $c$（圖~\ref{fig:m14-remove}）：$\frac{H(4,3,1)}{H(4,2,1)}=\frac{576}{144}=4=\frac32\cdot\frac43\cdot\frac21$，
+所以 $P(2,3)=\frac18\cdot4=\frac12$，與 (2) 的結果一致。
+
+\begin{figure}[H]
+\centering
+\FigMXIVRemove
+\caption{拿掉角落 $c=(2,3)$（\textcolor{cC}{綠}）：只有 $c$ 上方的 $(1,3)$（\textcolor{cLeft}{青}，$3\to2$）
+與左方的 $(2,1)$、$(2,2)$（\textcolor{cRight}{紫紅}，$4\to3$、$2\to1$）鉤長各減 1。}
+\label{fig:m14-remove}
+\end{figure}
+
+\textbf{數值驗算。}程式用精確分數列舉 $\lambda=(3,2)$ 的全部 9 條鉤上漫步，
+得到 $P(1,3)=\frac25$、$P(2,2)=\frac35$，正是第~\ref{sec:m13} 節化約的驗算；
+對 $n\le7$ 的每個形狀、每個角落，主張也都成立。
+
+\begin{keybox}[證明的骨架]
+隨機漫步 $\to$ 一條漫步的機率是 $\frac{1}{h-1}$ 的乘積 $\to$ 依投影 $(A,B)$ 分組
+$\to$ 關鍵恆等式讓每一組的和變成乘積（引理）$\to$ 所有組加起來是 $\prod(1+x_i)\prod(1+y_j)$
+$\to$ 正好是 $H(\lambda)/H(\lambda-c)$。機率和為 1，就是鉤長公式的歸納步驟；
+$\lambda=(n,n)$ 時又回到 $f^{(n,n)}=C_n$。
+\end{keybox}

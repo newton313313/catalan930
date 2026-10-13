@@ -1,0 +1,1629 @@
+以下是我的對話和指令.
+對，前一版最大的問題是「把已經做好的東西又規劃了一次」。你的現有專案其實已經有很完整的 Chu 主線：`Scene01` 已做 classical Catalan/noncrossing matching，`Scene02` 已做 pairs→blocks，`Scene05–07` 已完成 root decomposition、recurrence、generating function，`Scene08` 甚至已有完整 Raney/cycle-lemma proof。:chatgpt-content-reference{index="1"}
+
+所以正確策略應該是：
+
+\[
+\boxed{
+\text{新增 MIT Lecture 1–4 缺少的內容}
++
+\text{重用／整合既有動畫}
+}
+\]
+
+而不是建立第二套平行版本。
+
+---
+
+# 一、修改後的整體影片結構
+
+最終順序建議變成：
+
+\[
+\boxed{\text{MIT Lecture 1}}
+\]
+
+↓
+
+\[
+\boxed{\text{MIT Lecture 2}}
+\]
+
+↓
+
+\[
+\boxed{\text{MIT Lecture 3}}
+\]
+
+其中直接插入你現有的
+
+\[
+\boxed{\texttt{Scene01ClassicalCatalan}}
+\]
+
+↓
+
+\[
+\boxed{\text{MIT Lecture 4}}
+\]
+
+↓
+
+直接進入你已經完成的
+
+\[
+\boxed{\texttt{Scene02FromPairsToBlocks}}
+\]
+
+↓
+
+原本 Chu：
+
+\[
+\texttt{Scene03}\to\cdots\to\texttt{Scene09}.
+\]
+
+這樣最漂亮，因為現有 `Scene02FromPairsToBlocks` 本身就是：
+
+\[
+\text{2-point matching}
+\rightarrow
+\text{arbitrary }v_i\text{-point block},
+\]
+
+剛好就是 MIT Catalan 基礎與 Chu paper 之間最自然的橋。
+
+---
+
+# 二、哪些絕對不要重做
+
+先給 AI 一張 coverage table。
+
+| 主題 | 現有動畫 | 怎麼處理 |
+|---|---|---|
+| Catalan noncrossing matching | `Scene01ClassicalCatalan` | **保留＋擴充，不重做** |
+| crossing / noncrossing chord | Scene01 | **保留** |
+| \(C_3=5\) matching | Scene01 | **保留** |
+| chord → triangle → polygon blocks | Scene02 | **完全不重做** |
+| \(\vec n,\vec v\) | Scene02–03 | **完全不重做** |
+| Chu Fig.1 \((1,1),(2,3)\) | Scene04 | **完全不重做** |
+| fixed-point decomposition | Scene05 | **完全不重做** |
+| Chu recurrence | Scene06 | **完全不重做** |
+| \(D=1+\sum x_iD^{v_i}\) | Scene07 | **保留，只加 callback** |
+| \(D=1+xD^2\) special case | Scene07 已有 | **不要再做第二次 derivation** |
+| Raney / cycle lemma 完整 proof | Scene08 | **不要再證明一次** |
+| Chu summary | Scene09 | 可小幅擴充 |
+
+交接文件明確顯示 `Scene07` 已經包括 Eq. (6) 與退化情況 \(D=1+xD^2\)，而 `Scene08` 已經包含 Raney 公式完整證明。:chatgpt-content-reference{index="2"}
+
+---
+
+# 三、真正需要新增的內容
+
+我會從上一版 25 個新 scene 壓成大約 **17 個新 scene + 少量修改既有 scene**。
+
+---
+
+## Lecture 1
+
+### NEW M01 — `CatalanDyckDefinition`
+
+內容：
+
+\[
+(e_1,\ldots,e_{2n}),\qquad e_i=\pm1,
+\]
+
+partial sums 非負、總和為零。
+
+動畫：
+
+\[
++1\to\nearrow,\qquad -1\to\searrow.
+\]
+
+展示：
+
+\[
+C_0=1,\ C_1=1,\ C_2=2,\ C_3=5,\ C_4=14.
+\]
+
+Lecture 1 本來就是從 Dyck paths 定義 Catalan numbers。:chatgpt-content-reference{index="3"}
+
+---
+
+## NEW M02 — `CatalanTriangulationAndRecurrence`
+
+這裡把原先「triangulation」和「recurrence」合成一幕。
+
+### 第一部分
+
+頂點編號：
+
+\[
+1,2,\ldots,n+2.
+\]
+
+triangulation 底層資料：
+
+```python
+[(1, 3), (1, 4)]
+```
+
+展示：
+
+\[
+3\text{-gon}:1,\quad
+4\text{-gon}:2,\quad
+5\text{-gon}:5.
+\]
+
+### 第二部分
+
+用 Dyck path 的 first return decomposition：
+
+\[
+P=UP_1DP_2.
+\]
+
+得到：
+
+\[
+\boxed{
+C_n=\sum_{k=0}^{n-1}C_kC_{n-1-k}
+}.
+\]
+
+Lecture 1 就是利用 smaller Dyck paths 導出 recurrence。:chatgpt-content-reference{index="4"}
+
+如果畫面允許，可以再快速指出 polygon triangulation 也具有同樣的「左右兩個獨立子多邊形」結構。
+
+---
+
+# NEW M03 — `CatalanCauchyProduct`
+
+這幕是**新增內容裡最重要的一幕**。
+
+因為現有 Scene07 有：
+
+\[
+D=1+\sum_i x_iD^{v_i},
+\]
+
+但還缺「為什麼 generating functions 的乘法代表 independent subproblems」。
+
+要真的動畫化 Cauchy product：
+
+\[
+C(x)
+=
+C_0+C_1x+C_2x^2+\cdots.
+\]
+
+兩份 \(C(x)\) 相乘。
+
+例如：
+
+\[
+[x^2]C(x)^2
+=
+C_0C_2+C_1C_1+C_2C_0.
+\]
+
+用 diagonal convolution 動畫。
+
+最後：
+
+\[
+[x^n]C^2
+=
+\sum_{k=0}^{n}C_kC_{n-k}.
+\]
+
+因此：
+
+\[
+C(x)-1=xC(x)^2
+\]
+
+↓
+
+\[
+\boxed{
+C=1+xC^2.
+}
+\]
+
+Lecture 1 正是在 recurrence 之後得到這條 generating-function equation。:chatgpt-content-reference{index="5"}
+
+**注意：**
+
+這裡是「推導普通 Catalan equation」。
+
+之後 Scene07 不再重新推導，而只說：
+
+\[
+C=1+xC^2
+\]
+
+是我們之前已經理解的 ordinary case。
+
+---
+
+# NEW M04 — `CatalanClosedForm`
+
+合併：
+
+1. quadratic equation；
+2. branch selection；
+3. binomial expansion。
+
+\[
+xC^2-C+1=0
+\]
+
+↓
+
+\[
+C=
+\frac{1\pm\sqrt{1-4x}}{2x}
+\]
+
+↓
+
+因為 \(C(0)=1\)：
+
+\[
+C=
+\frac{1-\sqrt{1-4x}}{2x}.
+\]
+
+再利用 generalized binomial theorem：
+
+\[
+\boxed{
+C_n=\frac1{n+1}\binom{2n}{n}.
+}
+\]
+
+Lecture 1 第 6–8 頁的內容都放這裡。:chatgpt-content-reference{index="6"}
+
+---
+
+# NEW M05 — `DrunkardsWalk`
+
+Lecture 1–2 的 drunkard example 可以合成一幕。
+
+不要做成兩幕。
+
+內容：
+
+- symmetric random walk；
+- cliff；
+- first hitting time；
+- Catalan paths；
+- generating-function summation；
+- 最終 probability \(1\)。
+
+Lecture 1 開始問題，Lecture 2 完成。:chatgpt-content-reference{index="7"} :chatgpt-content-reference{index="8"}
+
+---
+
+# Lecture 2
+
+## NEW M06 — `CatalanReflectionPrinciple`
+
+完整做，因為現有動畫完全沒有。
+
+\[
+\binom{2n}{n}
+\]
+
+all paths。
+
+bad path 第一次碰：
+
+\[
+y=-1.
+\]
+
+反射 initial segment：
+
+\[
+(0,0)\to(2n,0)
+\]
+
+bad path
+
+\[
+\longleftrightarrow
+\]
+
+\[
+(0,-2)\to(2n,0).
+\]
+
+因此：
+
+\[
+\#\text{bad}
+=
+\binom{2n}{n-1}
+\]
+
+與
+
+\[
+\boxed{
+C_n=
+\binom{2n}{n}
+-
+\binom{2n}{n-1}.
+}
+\]
+
+Lecture 2 的圖非常適合直接動畫化。:chatgpt-content-reference{index="9"}
+
+---
+
+# M07 — `CatalanCycleShiftPrelude`
+
+這裡**不要重新做一個完整 cycle lemma proof**。
+
+因為你現在 Scene08 已經有 Raney 的完整 cycle-lemma proof。:chatgpt-content-reference{index="10"}
+
+這個新 scene 只做 Lecture 2 的 classical preview：
+
+一個 sequence：
+
+\[
+e_1,e_2,\ldots,e_m.
+\]
+
+列 cyclic rotations。
+
+把好的 rotations highlight。
+
+最後一句：
+
+\[
+\boxed{
+\text{cyclic shifts can select positive paths}.
+}
+\]
+
+然後預告：
+
+```text
+We will meet this idea again in Raney's formula.
+```
+
+### Coding requirement
+
+先檢查：
+
+```text
+scene08_formula_verification.py
+utils/lattice_paths.py
+```
+
+如果 Scene08 已經有 cyclic rotations / path helper，就 **抽成 reusable helper**。
+
+M07 和 Scene08 共用。
+
+**絕對不要做兩份獨立 implementation。**
+
+---
+
+# Lecture 3
+
+## NEW M08 — `PlaneTrees`
+
+plane tree definition。
+
+展示：
+
+交換 child order：
+
+\[
+\text{same abstract tree}
+\neq
+\text{same plane tree}.
+\]
+
+然後 \(C_3=5\) 的五棵。
+
+Lecture 3 第一頁就是這個內容。:chatgpt-content-reference{index="11"}
+
+---
+
+# EXISTING Scene01 — 重新定位並擴充
+
+不要新增一個 `NoncrossingMatchingScene`。
+
+直接修改：
+
+```text
+Scene01ClassicalCatalan
+```
+
+把它正式納入 Lecture 3。
+
+現在它已經有：
+
+- 六點；
+- noncrossing pairing；
+- crossing pairing；
+- \(C_3=5\)。
+
+這些全部保留。
+
+### 只新增兩小段
+
+#### A. circle matching ↔ arc diagram
+
+現有圓上的六個點：
+
+\[
+1,\ldots,6
+\]
+
+逐漸攤平成水平線：
+
+```text
+1 2 3 4 5 6
+```
+
+原 chord Transform 成 upper arcs。
+
+讓觀眾知道：
+
+\[
+\text{circle chord representation}
+=
+\text{arc-diagram representation}.
+\]
+
+#### B. nonnesting
+
+Lecture 3 還有 nonnesting。
+
+只需要短短比較：
+
+crossing pattern：
+
+\[
+(i,k),(j,l),
+\qquad i<j<k<l.
+\]
+
+nesting pattern：
+
+\[
+(i,l),(j,k).
+\]
+
+顯示：
+
+```text
+noncrossing
+vs.
+nonnesting
+```
+
+不用另外做整場。
+
+Lecture 3 第二頁同時介紹這兩類 arc diagrams。:chatgpt-content-reference{index="12"}
+
+---
+
+# NEW M09 — `TriangulationToBinaryTree`
+
+不要重複講「五邊形有五種 triangulation」。
+
+M02 已經做過。
+
+這裡選 M02 的**其中一個 triangulation**。
+
+直接 import / reuse 它的 mathematical data。
+
+例如：
+
+```python
+[(1, 3), (1, 4)]
+```
+
+然後：
+
+- 每個 triangle 中心放 node；
+- adjacency → tree edge；
+- boundary/root → leaves；
+- polygon fade；
+- 留下 complete plane binary tree。
+
+Lecture 3 的 planar-dual construction。:chatgpt-content-reference{index="13"}
+
+---
+
+# NEW M10 — `TreeToDyck`
+
+不要再列 Catalan counts。
+
+只做 bijection。
+
+使用 M09 得到的 tree。
+
+depth-first traversal：
+
+往 child：
+
+\[
+U
+\]
+
+回 parent：
+
+\[
+D.
+\]
+
+下面同步生成 path。
+
+最後：
+
+\[
+\boxed{
+\text{plane tree}
+\leftrightarrow
+\text{Dyck path}.
+}
+\]
+
+:chatgpt-content-reference{index="14"}
+
+---
+
+# NEW M11 — `DyckToMatching`
+
+這裡也**不要重新展示五種 matching**。
+
+Scene01 已有。
+
+用 M10 最後那條 Dyck path。
+
+match：
+
+\[
+UUDUDD
+\]
+
+例如變成：
+
+\[
+(1,6),(2,3),(4,5).
+\]
+
+底下畫 arcs。
+
+最後最好讓這個 matching 使用和 Scene01 **完全同一個 data representation**。
+
+例如：
+
+```python
+matching = [(1, 6), (2, 3), (4, 5)]
+```
+
+Lecture 3 第五頁就是這個 bijection。:chatgpt-content-reference{index="15"}
+
+---
+
+# NEW M12 — `StackAndQueueSorting`
+
+上一版分成兩幕，這次合併。
+
+左半：
+
+\[
+\text{stack = LIFO}.
+\]
+
+做：
+
+- successful stack-sort；
+- \(231\) failure。
+
+右半：
+
+\[
+\text{queue = FIFO}.
+\]
+
+做 lecture 的 queue/cheater-line example。
+
+Lecture 3 的 stack/queue 內容連續出現，很適合合併。:chatgpt-content-reference{index="16"}
+
+---
+
+# NEW M13 — `PatternAvoidance`
+
+內容：
+
+pattern containment。
+
+例如選三個 entries：
+
+\[
+w_{i_1},w_{i_2},w_{i_3}.
+\]
+
+只保留 relative order。
+
+定義：
+
+\[
+231\text{-avoiding}.
+\]
+
+最後：
+
+\[
+\boxed{
+\text{stack-sortable}
+\Longleftrightarrow
+231\text{-avoiding}
+}
+\]
+
+以及：
+
+\[
+\#=C_n.
+\]
+
+Lecture 3 後面正是這個方向。:chatgpt-content-reference{index="17"}
+
+---
+
+# NEW M14 — `PartitionsYoungTableaux`
+
+把三件事放同一幕：
+
+### integer partition
+
+\[
+\lambda=(\lambda_1,\ldots,\lambda_k).
+\]
+
+### composition
+
+強調：
+
+\[
+(3,2)\neq(2,3)
+\]
+
+for compositions；
+
+但 integer partition 強制 descending order。
+
+### Young diagram
+
+\[
+(5,3,3,2,1)
+\]
+
+Transform 成 boxes。
+
+### SYT
+
+在 boxes 填：
+
+\[
+1,\ldots,n.
+\]
+
+row / column increasing。
+
+Lecture 3 最後就是這個 progression。:chatgpt-content-reference{index="18"}
+
+一定加：
+
+\[
+\boxed{
+\text{integer partition}
+\neq
+\text{Chu's set partition}.
+}
+\]
+
+---
+
+# Lecture 4
+
+## NEW M15 — `SYTtoDyck`
+
+shape：
+
+\[
+(n,n).
+\]
+
+讀：
+
+\[
+1,2,\ldots,2n.
+\]
+
+upper row：
+
+\[
+U.
+\]
+
+lower row：
+
+\[
+D.
+\]
+
+同步畫 Dyck path。
+
+最後：
+
+\[
+\boxed{
+f^{(n,n)}=C_n.
+}
+\]
+
+然後同一幕尾端快速 generalize：
+
+對
+
+\[
+\lambda=(\lambda_1,\ldots,\lambda_k)
+\]
+
+row \(r\)：
+
+\[
+e_r
+\]
+
+step in \(k\)-dimensional lattice。
+
+Lecture 4 前幾頁就是這兩件事。:chatgpt-content-reference{index="19"}
+
+---
+
+# NEW M16 — `HookLengthAndCornerRecurrence`
+
+合併三件事：
+
+### Hook
+
+選 box \(c\)。
+
+highlight：
+
+- 自己；
+- 右側；
+- 下側。
+
+得到：
+
+\[
+h(c).
+\]
+
+### Hook-length formula
+
+\[
+H(\lambda)
+=
+\prod_ch(c),
+\]
+
+\[
+\boxed{
+f^\lambda
+=
+\frac{n!}{H(\lambda)}
+}.
+\]
+
+### Corner recurrence
+
+最大數字 \(n\) 必在 corner。
+
+移掉它：
+
+\[
+\boxed{
+f^\lambda
+=
+\sum_{c\text{ corner}}
+f^{\lambda-c}.
+}
+\]
+
+再把證明目標 reduce 成：
+
+\[
+\boxed{
+\sum_c
+\frac1n
+\frac{H(\lambda)}{H(\lambda-c)}
+=1.
+}
+\]
+
+Lecture 4 正是這個順序。:chatgpt-content-reference{index="20"}
+
+---
+
+# NEW M17 — `HookWalkProof`
+
+Lecture 4 後半全部放這裡，但可在 class 裡分成：
+
+```python
+part1_definition()
+part2_probabilities()
+part3_weighted_paths()
+part4_rectangle_lemma()
+part5_conclusion()
+```
+
+像你的 Scene08 Raney proof 一樣。
+
+內容：
+
+hook walk
+
+↓
+
+path weight
+
+↓
+
+corner probability
+
+↓
+
+weighted rectangle lemma
+
+↓
+
+\[
+P(c)
+=
+\frac1n
+\frac{H(\lambda)}{H(\lambda-c)}
+\]
+
+↓
+
+\[
+\sum_cP(c)=1
+\]
+
+↓
+
+hook-length formula。
+
+Lecture 4 第 8–17 頁就是這個 proof。:chatgpt-content-reference{index="21"}
+
+---
+
+# 四、Lecture 4 結束後不要新增 Bridge Scene
+
+這是對上一版最重要的修改之一。
+
+**不用再做 `SceneBridgeMITtoChu`。**
+
+因為你已經有：
+
+```text
+Scene02FromPairsToBlocks
+```
+
+它的內容就是：
+
+\[
+\text{chord}
+\rightarrow
+\text{triangle}
+\rightarrow
+\text{quadrilateral}
+\rightarrow
+\text{general block}.
+\]
+
+:chatgpt-content-reference{index="22"}
+
+所以 MIT Lecture 4 完成後：
+
+稍微 pause：
+
+```text
+Back to noncrossing structures...
+```
+
+然後直接播放現有 Scene02。
+
+---
+
+# 五、Scene07 要修改，而不是重做
+
+你新加入 M03 後，觀眾已經知道：
+
+\[
+C=1+xC^2.
+\]
+
+所以現有：
+
+```text
+Scene07GeneratingFunction
+```
+
+開頭增加 5–10 秒 callback：
+
+左邊：
+
+\[
+\boxed{C=1+xC^2}
+\]
+
+subtitle：
+
+```text
+ordinary Catalan
+```
+
+右邊 root polygon：
+
+\[
+v_i\text{ regions}.
+\]
+
+Transform：
+
+\[
+C^2
+\rightarrow
+D^{v_i}.
+\]
+
+再：
+
+\[
+x
+\rightarrow
+x_i.
+\]
+
+然後進入原本已有內容：
+
+\[
+\boxed{
+D=1+\sum_i x_iD^{v_i}
+}.
+\]
+
+不要再次解普通 Catalan GF。
+
+---
+
+# 六、Scene08 也只做 callback
+
+M07 已經介紹 classical cyclic shifts。
+
+所以 `Scene08RaneyProof` 開頭增加：
+
+```text
+Earlier: cyclic shifts selected Catalan paths.
+Now: Raney generalizes the same idea.
+```
+
+然後直接用現有 proof。
+
+最好把：
+
+```text
+cyclic sequence visualization
+```
+
+抽成 shared utility。
+
+這樣 M07 和 Scene08 使用同一套 animation language。
+
+---
+
+# 七、Scene09 可以稍微擴充
+
+原來 Scene09 只總結 Chu。
+
+可以開頭快速出現：
+
+\[
+\text{Dyck}
+\leftrightarrow
+\text{tree}
+\leftrightarrow
+\text{matching}
+\]
+
+↓
+
+\[
+C=1+xC^2
+\]
+
+↓
+
+\[
+\text{Chu}
+\]
+
+↓
+
+\[
+D=1+\sum_i x_iD^{v_i}.
+\]
+
+然後再進原本 summary。
+
+不用把 Lecture 1–4 全部重講。
+
+---
+
+# 八、給 AI coding assistant 的修正版 Prompt
+
+下面這段取代我上一則回答的 prompt。
+
+> # Task: Add MIT 18.212 Lecture 1–4 material to the EXISTING Catalan/Chu ManimGL project WITHOUT duplicating completed animations
+>
+> This is an extension and integration task, not a rewrite.
+>
+> A substantial amount of Catalan and Chu material already exists and is working.
+>
+> Before creating any new scene, you MUST audit the existing project and classify every requested topic as:
+>
+> ```text
+> REUSE
+> EXTEND
+> NEW
+> ```
+>
+> Do not implement a NEW scene for material already adequately animated.
+>
+> ---
+>
+> ## Existing completed scenes
+>
+> The project already contains:
+>
+> ```text
+> Scene01ClassicalCatalan
+> Scene02FromPairsToBlocks
+> Scene03GeneralizedSetup
+> Scene04PaperExample
+> Scene05RootDecomposition
+> Scene06Recurrence
+> Scene07GeneratingFunction
+> Scene08FormulaVerification / Scene08RaneyProof
+> Scene09Summary
+> ```
+>
+> Important existing coverage:
+>
+> ```text
+> Scene01
+> - classical Catalan
+> - 6-point noncrossing matching
+> - crossing example
+> - C3 = 5
+>
+> Scene02
+> - chord → triangle → quadrilateral → pentagon
+> - transition from size-2 pairs to general blocks
+>
+> Scene03
+> - n-vector and v-vector
+> - generalized Catalan theorem
+>
+> Scene04
+> - Chu paper Fig. 1
+> - n=(1,1), v=(2,3)
+> - five configurations
+>
+> Scene05
+> - fixed point
+> - root block
+> - v_i independent regions
+> - x_i D^{v_i}
+>
+> Scene06
+> - Chu recurrence
+>
+> Scene07
+> - multivariable generating function
+> - D = 1 + Σ x_i D^{v_i}
+> - ordinary special case D = 1 + xD^2
+>
+> Scene08
+> - complete Raney-formula proof
+> - path construction
+> - cycle lemma
+> - cutting argument
+>
+> Scene09
+> - Chu summary
+> ```
+>
+> These scenes must not be recreated from scratch.
+>
+> ---
+>
+> # Existing environment
+>
+> This project uses **3Blue1Brown ManimGL**, not Manim Community.
+>
+> Use:
+>
+> ```python
+> from manimlib import *
+> ```
+>
+> and commands such as:
+>
+> ```text
+> manimgl
+> ShowCreation
+> ```
+>
+> Never use:
+>
+> ```text
+> manim -pql
+> Create
+> from manim import *
+> ```
+>
+> Always run from:
+>
+> ```text
+> C:\mypython\manim\projects\catalan_portable_101\codes
+> ```
+>
+> ---
+>
+> # FIRST TASK: perform a coverage audit
+>
+> Read:
+>
+> ```text
+> 交接說明_HANDOFF.md
+> codes/README.md
+> codes/main.py
+> codes/scenes/*
+> codes/utils/*
+> ```
+>
+> and all four supplied MIT lecture PDFs.
+>
+> Before coding, produce a table:
+>
+> ```text
+> MIT topic | existing coverage | action | target file
+> ```
+>
+> Each action must be:
+>
+> ```text
+> REUSE
+> EXTEND
+> NEW
+> ```
+>
+> Do not proceed until this audit is complete.
+>
+> ---
+>
+> # Intended final ordering
+>
+> New MIT Lecture 1 scenes
+>
+> ↓
+>
+> New MIT Lecture 2 scenes
+>
+> ↓
+>
+> new Plane Tree scene
+>
+> ↓
+>
+> **existing Scene01ClassicalCatalan**, extended with arc-diagram and nonnesting material
+>
+> ↓
+>
+> remaining new MIT Lecture 3 scenes
+>
+> ↓
+>
+> new MIT Lecture 4 scenes
+>
+> ↓
+>
+> **existing Scene02FromPairsToBlocks**
+>
+> ↓
+>
+> existing Scene03–Scene09.
+>
+> Scene02 is already the bridge from ordinary pair blocks to Chu's generalized blocks.
+>
+> Do NOT create a second bridge scene.
+>
+> ---
+>
+> # NEW scenes to create
+>
+> Create approximately these new conceptual scenes:
+>
+> ```text
+> MIT01_DyckDefinition
+> MIT02_TriangulationAndRecurrence
+> MIT03_CauchyProduct
+> MIT04_ClosedForm
+> MIT05_DrunkardsWalk
+> MIT06_ReflectionPrinciple
+> MIT07_CyclicShiftPrelude
+>
+> MIT08_PlaneTrees
+>
+> [existing Scene01 here]
+>
+> MIT09_TriangulationToBinaryTree
+> MIT10_TreeToDyck
+> MIT11_DyckToMatching
+> MIT12_StackAndQueue
+> MIT13_PatternAvoidance
+> MIT14_PartitionsYoungTableaux
+>
+> MIT15_SYTtoDyck
+> MIT16_HookLengthAndCornerRecurrence
+> MIT17_HookWalkProof
+> ```
+>
+> Do not mechanically follow filenames if a cleaner organization is found after inspecting the repository.
+>
+> ---
+>
+> # EXTEND existing Scene01 instead of recreating noncrossing matching
+>
+> Preserve everything currently working.
+>
+> Add only:
+>
+> 1. a transformation between circular chord matching and linear upper-arc diagram;
+> 2. a short noncrossing vs nonnesting comparison.
+>
+> Reuse the existing matching data and styling.
+>
+> Do not create another enumeration of the five \(C_3\) matchings.
+>
+> ---
+>
+> # Cauchy product is NEW and important
+>
+> The existing project has the final Chu generating-function equation but does not replace the need to explain the ordinary Catalan convolution.
+>
+> Create one new scene that explicitly animates:
+>
+> \[
+> C(x)=C_0+C_1x+C_2x^2+\cdots
+> \]
+>
+> and
+>
+> \[
+> [x^2]C(x)^2
+> =
+> C_0C_2+C_1C_1+C_2C_0.
+> \]
+>
+> Generalize to:
+>
+> \[
+> [x^n]C(x)^2
+> =
+> \sum_{k=0}^{n}C_kC_{n-k}.
+> \]
+>
+> Then derive:
+>
+> \[
+> C=1+xC^2.
+> \]
+>
+> This scene is the conceptual preparation for the existing Scene07.
+>
+> ---
+>
+> # EXTEND Scene07 rather than repeating ordinary Catalan generating functions
+>
+> Add a callback:
+>
+> \[
+> C=1+xC^2
+> \]
+>
+> labelled “ordinary Catalan”.
+>
+> Visually generalize:
+>
+> ```text
+> 2 independent regions → v_i independent regions
+> x → x_i
+> C^2 → D^{v_i}
+> ```
+>
+> Then continue into the already implemented:
+>
+> \[
+> D=1+\sum_i x_iD^{v_i}.
+> \]
+>
+> Do not rederive the quadratic solution for \(C\) here.
+>
+> ---
+>
+> # Cyclic shift material must reuse Scene08 infrastructure
+>
+> Lecture 2 requires a classical cyclic-shift argument.
+>
+> Scene08 already contains the stronger Raney/cycle-lemma machinery.
+>
+> Therefore:
+>
+> 1. inspect Scene08 first;
+> 2. extract reusable cyclic-sequence/path helpers if useful;
+> 3. build MIT07 as a short classical preview;
+> 4. reuse the same helpers later in Scene08.
+>
+> Do not maintain two independent cycle-lemma implementations.
+>
+> Modify Scene08's opening to say conceptually:
+>
+> ```text
+> Earlier: cyclic shifts selected Catalan paths.
+> Now: Raney generalizes the same mechanism.
+> ```
+>
+> Then keep the existing proof.
+>
+> ---
+>
+> # Bijections must use the same mathematical objects
+>
+> Do not draw unrelated examples in each scene.
+>
+> Reuse one consistent object through:
+>
+> \[
+> \text{triangulation}
+> \to
+> \text{binary tree}
+> \to
+> \text{Dyck path}
+> \to
+> \text{noncrossing matching}.
+> \]
+>
+> Example:
+>
+> ```python
+> triangulation = [(1, 3), (1, 4)]
+> ```
+>
+> should generate the dual tree.
+>
+> That tree should generate a deterministic DFS sequence.
+>
+> That sequence should generate a Dyck path.
+>
+> That Dyck path should generate:
+>
+> ```python
+> matching = [(1, 6), (2, 3), (4, 5)]
+> ```
+>
+> or whatever matching follows from the chosen consistent example.
+>
+> Do not independently hard-code all four drawings.
+>
+> ---
+>
+> # Mathematical data must be separated from visuals
+>
+> Preferred representations:
+>
+> ```python
+> dyck_path = [1, 1, -1, 1, -1, -1]
+>
+> triangulation = [(1, 3), (1, 4)]
+>
+> matching = [(1, 6), (2, 3), (4, 5)]
+>
+> partition = [5, 3, 3, 2, 1]
+> ```
+>
+> rendering utilities then convert them into Manim objects.
+>
+> ---
+>
+> # Stack / queue / pattern material
+>
+> These are NEW.
+>
+> Build one combined StackAndQueue scene.
+>
+> Then one separate PatternAvoidance scene.
+>
+> Include:
+>
+> ```text
+> stack = LIFO
+> queue = FIFO
+> ```
+>
+> and at least the lecture examples needed to show success/failure.
+>
+> End the pattern scene with:
+>
+> \[
+> \text{stack-sortable}
+> \Longleftrightarrow
+> 231\text{-avoiding},
+> \]
+>
+> and the Catalan enumeration.
+>
+> ---
+>
+> # Integer partition terminology
+>
+> Explicitly distinguish:
+>
+> ```text
+> integer partition
+> ```
+>
+> from:
+>
+> ```text
+> Chu's set partition into blocks.
+> ```
+>
+> Do not conflate them.
+>
+> ---
+>
+> # Lecture 4
+>
+> Cover:
+>
+> ```text
+> SYT of shape (n,n) ↔ Dyck path
+> generalized tableau lattice paths
+> hooks
+> hook lengths
+> hook-length formula
+> corner recurrence
+> hook walk
+> weighted paths
+> final hook-walk proof
+> ```
+>
+> The hook-walk proof may be one long scene divided internally into methods, similar to the existing Scene08 Raney proof.
+>
+> ---
+>
+> # No new Chu bridge
+>
+> After the MIT material, directly transition to:
+>
+> ```text
+> Scene02FromPairsToBlocks
+> ```
+>
+> because that existing scene already performs:
+>
+> ```text
+> pair/chord
+> → triangle
+> → polygonal block
+> → vectors n and v.
+> ```
+>
+> Do not recreate this material.
+>
+> ---
+>
+> # Update full playback only after individual scenes work
+>
+> After all new scenes are verified:
+>
+> update:
+>
+> ```text
+> main.py
+> render_all.py
+> README.md
+> 交接說明_HANDOFF.md
+> ```
+>
+> to reflect the new full sequence.
+>
+> Do not modify `FullDemo` until the individual scenes all render.
+>
+> ---
+>
+> # Development workflow
+>
+> For every requested concept:
+>
+> ```text
+> 1. search existing code
+> 2. determine REUSE / EXTEND / NEW
+> 3. only create code if necessary
+> 4. render at low quality
+> 5. inspect
+> 6. verify mathematics
+> 7. proceed
+> ```
+>
+> Never create a duplicate scene merely because the existing scene has a different filename.
+>
+> ---
+>
+> # First coding task only
+>
+> After the coverage audit:
+>
+> implement only:
+>
+> ```text
+> MIT01_DyckDefinition
+> ```
+>
+> plus whatever minimal reusable Dyck-path utility is needed.
+>
+> Render it with:
+>
+> ```powershell
+> manimgl main.py MIT01_DyckDefinition -w -l
+> ```
+>
+> Stop and report the result before implementing MIT02.
+
+---
+
+這個版本最重要的改變就是把「是否已經存在」放到 AI 的**第一優先判斷**。
+
+尤其是下面四個地方不要浪費時間：
+
+\[
+\boxed{
+\begin{aligned}
+\text{noncrossing matching} &\rightarrow \text{Scene01 reuse}\\
+\text{pairs}\to\text{general blocks} &\rightarrow \text{Scene02 reuse}\\
+D=1+\sum x_iD^{v_i} &\rightarrow \text{Scene07 extend}\\
+\text{cycle lemma/Raney} &\rightarrow \text{Scene08 reuse}
+\end{aligned}}
+\]
+
+這樣新增 MIT 四堂課之後，前面的基礎會變得豐富很多，但 Chu 那一段不會被重複內容拖得很長。
