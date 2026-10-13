@@ -53,6 +53,8 @@
 | 1080p 影片 92 支 | `codes/renders/` | 已輸出，見第 4 節的表 |
 | 數學驗證程式 | `codes/utils/counting.py` | 全部通過 |
 | 環境檢查程式 | `codes/check_env.py` | 開發機上全部通過（2026-10-05；也檢查 `tableaux.py`） |
+| 版本控制 | 本資料夾是獨立的 git repo（2026-10-13 起；`.gitignore` 排除 `codes/renders/`、`codes/latex_cache/`、`__pycache__`、LaTeX 中間檔） | 見第 2 節最後的「版本控制」 |
+| 一鍵輸出 | `codes/render_all.bat` | 2026-10-13 在 104 的複本上測過（從沒有 Anaconda 的 PATH 按兩下也能自己啟用 conda） |
 | 全新安裝測試 | `catalan_portable_103` 的複本＋全新 Python 虛擬環境（102 測試時裝到的是 numpy 2.2.6、Pillow 12.3，比開發機新） | `.\install_windows.bat` 後 `check_env.py --render` 全部通過；M01–M14 用空的 LaTeX 快取、嚴格模式全部重新輸出成功（00a–00m 在 102 測過）；講義的圖重新產生後與原檔相同，講義可以編譯（2026-10-04） |
 
 **工作資料夾與可攜版。** 開發機上的工作資料夾是 `C:\mypython\manim\projects\catalan930`，ManimGL 已經裝好，不需要第 2 節的安裝步驟。
@@ -63,6 +65,7 @@
 | `catalan_portable_101.zip` | 2026-10-01 | 加入卡塔蘭模組**之前**的版本（講義 15 頁、9 個場景） |
 | `catalan_portable_102` | 2026-10-03 | 卡塔蘭模組 13 個場景、講義 23 頁、26 支 1080p 影片（**不含** MIT 補充 M01–M14） |
 | `catalan_portable_103` | 2026-10-04 | 再加上 MIT 補充 14 個場景、講義 40 頁（含附錄 A）、42 支 1080p 影片（**不含** Fulton 的 F01–F08） |
+| `catalan_portable_104`（資料夾與 `.zip`） | 2026-10-13 | **目前最新**：全部 81 個場景與 10 組連續播放（含 Fulton F01–F45）、兩份講義（40 頁＋25 頁）、`codes/render_all.bat`。**不含影片**（8.7 MB），影片用 `render_all.bat` 自己輸出。在開發機的複本上測過 `check_env.py --render` 與 `render_all.bat 00h -l` |
 
 之後專案若再修改，照第 2 節最後的「重做可攜版」做新的一份。
 
@@ -73,7 +76,7 @@
 **需要：** Windows、Anaconda（Python 3.10 以上）、MiKTeX。
 字型用 Windows 內建的「微軟正黑體」與「標楷體」。
 
-1. 解壓縮到一個**之後不會再搬動**的位置，例如 `C:\mypython\catalan_portable_103`。
+1. 解壓縮到一個**之後不會再搬動**的位置，例如 `C:\mypython\catalan_portable_104`。
    ManimGL 會以「可編輯模式」安裝，指向這個資料夾；搬動後要重新安裝。
 2. 安裝 MiKTeX：https://miktex.org/download 。裝好後開新的終端機執行：
    ```bat
@@ -95,6 +98,8 @@
    manimgl main.py
    ```
    會列出所有場景，輸入編號後按 Enter。
+6. 要輸出全部影片：在檔案總管裡對 `codes\render_all.bat` 按兩下，選 1（全部，1080p，要好幾個小時）或 4（480p 快速檢查）。
+   可攜版 104 起不附影片，`codes\renders\` 是空的。
 
 **重要：所有 `manimgl` 指令都要在 `codes\` 資料夾裡執行**，因為 ManimGL 會讀取執行位置的 `custom_config.yml`。
 
@@ -117,6 +122,7 @@
 | 只看 Raney 公式的證明 | `manimgl main.py Scene08RaneyProof` |
 | 輸出某場景的 1080p 影片 | `manimgl main.py Scene05RootDecomposition -w --hd` |
 | 快速低畫質輸出（檢查用） | 把 `--hd` 換成 `-l` |
+| 一鍵輸出（選單） | 對 `render_all.bat` 按兩下；或 `render_all.bat --fulton5 -l`（參數照 `render_all.py`） |
 | 一次輸出全部影片 | `python render_all.py --intro-demo --full --complete --mit-demo --mit-complete --fulton-demo --fulton2-demo --fulton3-demo --fulton4-demo --fulton5-demo` |
 | 只輸出一部分 | `python render_all.py --intro`（00a–00m）、`--chu`（01–09、08r）、`--mit`（M01–M14）、`--fulton`（F01–F08）、`--fulton2`（F09–F19）、`--fulton3`（F20–F27）、`--fulton4`（F28–F41）、`--fulton5`（F42–F45）、`00c 05 M03 F04`（指定場景） |
 | 只輸出連續播放的影片 | `python render_all.py --complete --demos-only` |
@@ -132,29 +138,49 @@
 
 ### 重做可攜版（在開發機上）
 
-`catalan_portable_101`～`103` 都是這樣做的。專案改過之後要再做一份，照做即可
-（以下在 Git Bash、`C:\mypython\manim\projects` 裡執行，新資料夾以 `catalan_portable_104` 為例）：
+`catalan_portable_101`～`104` 都是這樣做的。專案改過之後要再做一份，照做即可
+（以下在 Git Bash、`C:\mypython\manim\projects` 裡執行，新資料夾以 `catalan_portable_105` 為例）：
 
-1. 把 `catalan930` 整個複製成新資料夾。`codes/latex_cache/` 與各處的 `__pycache__/` 不必帶；
-   `codes/renders/` 裡的影片很大，可以視需要刪掉。
+1. 把 `catalan930` 整個複製成新資料夾。`.git/`、`codes/latex_cache/` 與各處的 `__pycache__/` 不必帶；
+   `codes/renders/` 裡的影片很大（約 490 MB），104 起不帶，只留空資料夾（`render_all.bat` 已在 `codes/` 裡）。104 用的指令：
+   ```bash
+   mkdir catalan_portable_105
+   tar -C catalan930 --exclude='./codes/latex_cache' --exclude='__pycache__' --exclude='./codes/renders/*' --exclude='./.git' -cf - . | tar -C catalan_portable_105 -xf -
+   ```
 2. 匯出固定版本的 ManimGL 原始碼：
    ```bash
-   mkdir -p catalan_portable_104/third_party
-   git -C C:/mypython/manim archive --format=tar --prefix=manim/ fafa083 | tar -x -C catalan_portable_104/third_party
+   mkdir -p catalan_portable_105/third_party
+   git -C C:/mypython/manim archive --format=tar --prefix=manim/ fafa083 | tar -x -C catalan_portable_105/third_party
    ```
 3. 從上一份可攜版取出 `install_windows.bat`、`third_party/MANIM_VERSION.txt`、`setup_records/`，放到新資料夾的同一位置，
    並把 `MANIM_VERSION.txt` 裡的資料夾名稱改成新的。這三樣與專案內容無關，可以直接沿用
    （`setup_records/` 的兩個檔案也可以從 `C:\mypython\manim` 的 `install.log`、`manim使用說明.md` 複製）。
+   再把 `C:\mypython\manim\環境與交接_ENVIRONMENT.md`（環境說明的正本）複製到新資料夾的最上層。
 4. 壓縮。Windows 內建的壓縮用 cp950 存中文檔名（`catalan_portable_101.zip` 就是這樣），在繁中 Windows 上解壓縮沒問題；
-   換到其他語系的電腦，中文檔名會變亂碼。
+   換到其他語系的電腦，中文檔名會變亂碼。`catalan_portable_104.zip` 改用 Python 的 `zipfile` 壓縮（中文檔名存成 UTF-8 並設好旗標），沒有這個問題：
+   ```bash
+   python -c "import shutil; shutil.make_archive('catalan_portable_105', 'zip', '.', 'catalan_portable_105')"
+   ```
+
+### 版本控制（git）
+
+2026-10-13 起本資料夾（`catalan930/`）是一個獨立的 git repo，分支 `master`，沒有遠端。
+它位在 `C:\mypython\manim`（ManimGL 本身的 repo）裡面，但兩者無關：外層 repo 只會把 `projects/` 看成未追蹤的資料夾，不要把專案加進外層。
+
+- **不追蹤：** `codes/renders/`（影片，用 `render_all.bat` 重新輸出）、`codes/latex_cache/`、`__pycache__/`、LaTeX 的 `.aux/.log/.out/.toc`。講義 PDF 與 `ref/` 的原始資料**有**追蹤。
+- **換行：** `.gitattributes` 設成 `* -text`，檔案原封不動存進去（這台電腦的 `core.autocrlf` 是 `true`，不設的話會改動換行）。`.bat` 必須維持 CRLF。
+- **習慣：** 每完成一件事就 commit 一次（`git add -A`、`git commit -m "…"`）；要看改了什麼用 `git status`、`git diff`。
+- 這台電腦的 git 使用者名稱與信箱還是預設的 `userName`／`userEmail`，要改可以在本資料夾執行 `git config user.name "…"`、`git config user.email "…"`（只影響之後的 commit）。
 
 ---
 
 ## 3. 檔案結構
 
 ```text
-catalan930/                    開發機上的工作資料夾（可攜版的資料夾名稱是 catalan_portable_103）
+catalan930/                    開發機上的工作資料夾（可攜版的資料夾名稱是 catalan_portable_104）
 ├── 交接說明_HANDOFF.md        本文件
+├── .gitignore, .gitattributes git 設定（只在開發機；見第 2 節「版本控制」）
+├── 環境與交接_ENVIRONMENT.md  整台電腦的 ManimGL 環境說明（只在可攜版；正本在 C:\mypython\manim）
 ├── install_windows.bat        新電腦的安裝腳本（只在可攜版）
 ├── ref/                       原始資料（只讀，不要改）
 │   ├── 1-s2.0-0012365X87902147-main.pdf     Chu 論文原文
@@ -191,13 +217,14 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 │   ├── README.md              專案說明（給使用者看的）
 │   ├── main.py                總入口：列出所有場景、CatalanIntroDemo、FullDemo、CompleteDemo、MITDemo、MITCompleteDemo
 │   ├── render_all.py          一次輸出很多支影片
+│   ├── render_all.bat         一鍵輸出：按兩下出現選單（全部／只輸出連續播放／只輸出場景／480p），也可帶參數
 │   ├── check_env.py           環境檢查
 │   ├── custom_config.yml      ManimGL 設定（必須純 ASCII）
 │   ├── scenes/                scene00a…00m（卡塔蘭模組）、scene01…09（Chu）、sceneM01…M14（MIT 補充）、sceneF01…F45（Fulton），一個檔案一個場景
 │   ├── data/                  fulton7_math.json：第 7 章的固定算例（來自 fulton7_agent_pack，由 utils/rep_data.py 讀取）
 │   ├── utils/                 共用工具
 │   ├── latex_cache/           LaTeX 編譯的中間檔（ManimGL 自動產生，可以刪；做可攜版時不必帶）
-│   └── renders/               已輸出的 1080p 影片
+│   └── renders/               已輸出的 1080p 影片（git 不追蹤；可攜版 104 起是空的）
 ├── third_party/               （只在可攜版）
 │   ├── manim/                 ManimGL 原始碼，固定在 commit fafa083（2026-09-09）
 │   └── MANIM_VERSION.txt      版本與來源說明

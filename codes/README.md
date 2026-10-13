@@ -148,7 +148,8 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 
 | 指令 | 輸出 |
 |---|---|
-| `python render_all.py` | 全部單一場景（00a–00m、01–09、08r、M01–M14），1080p |
+| 對 `render_all.bat` 按兩下 | **一鍵輸出**：選單 1 全部場景＋10 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p；也可帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda |
+| `python render_all.py` | 全部單一場景（00a–00m、01–09、08r、M01–M14、F01–F45），1080p |
 | `python render_all.py --intro` | 只有卡塔蘭模組 00a–00m |
 | `python render_all.py --chu` | 只有 Chu 的部分 01–09 與 08r |
 | `python render_all.py --mit` | 只有 MIT 補充 M01–M14 |
@@ -389,6 +390,7 @@ catalan930/
 │   ├── main.py               每個場景的同名子類別＋十種連續播放：CatalanIntroDemo、FullDemo、CompleteDemo、MITDemo、MITCompleteDemo、
 │   │                         FultonDemo（F01–F08）、FultonDemo2（F09–F19）、FultonDemo3（F20–F27）、FultonDemo4（F28–F41）、FultonDemo5（F42–F45）
 │   ├── render_all.py         一次輸出很多支影片（--intro、--chu、--mit、--fulton…--fulton5、各 -demo、場景代號）
+│   ├── render_all.bat        一鍵輸出（按兩下出現選單；包裝 render_all.py；必須純 ASCII、CRLF）
 │   ├── check_env.py          環境檢查（python check_env.py --render）
 │   ├── custom_config.yml     ManimGL 設定（輸出資料夾、背景色、字型）—— 只能寫英文
 │   ├── scenes/               一個檔案一個場景：scene00a…00m（卡塔蘭模組）、scene01…09＋08r（Chu）、sceneM01…M14（MIT 補充）、sceneF01…F45（Fulton）
@@ -446,7 +448,7 @@ python utils/counting.py
 - **改例子**：每個場景檔案最上方的常數就是點的編號（從正上方順時針、由 0 起算）或路徑的字（R/U、U/D、A/B）。
 - **改顏色或字型**：改 `utils/styles.py`；卡塔蘭模組的根／左／右顏色在 `utils/catalan_draw.py` 開頭。
 - **改節奏**：調整 `self.wait(秒數)` 與 `run_time=`。
-- **新增場景**：繼承 `utils.scene_base.ChuScene`；輔助函式寫成模組層級的函式（不要寫成場景的方法，否則連續播放時會找不到）；再到 `main.py`、`render_all.py` 登記。
+- **新增場景**：繼承 `utils.scene_base.ChuScene`；輔助函式寫成模組層級的函式（不要寫成場景的方法，否則連續播放時會找不到）；再到 `main.py`、`render_all.py` 登記（新的連續播放也要加進 `render_all.bat` 的 `DEMOS` 變數）。
 
 ## 已知限制
 
