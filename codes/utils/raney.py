@@ -650,7 +650,7 @@ def _self_test():
         assert is_list(h, 1) and is_list(rest, 2)
 
     # 和 Chu 講義的路徑：倒過來讀的字串 = 好路徑
-    from utils import counting as ct  # noqa: E402
+    import utils.counting as ct  # noqa: E402
     for t, n_vec, v_vec in [(1, (1, 1), (2, 3)), (2, (1, 1), (2, 3)), (1, (2, 1), (2, 3)), (3, (1, 2), (2, 3))]:
         a = a_from_chu(n_vec, v_vec)
         lists = lists_with(t, a)

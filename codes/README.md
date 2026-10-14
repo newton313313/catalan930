@@ -53,7 +53,7 @@
 | LaTeX | MiKTeX 25.12：`latex` + `dvisvgm` 3.4.3 + **`cm-super`** | 場景裡的公式（沒有 cm-super 會出現 "SVG has no content"） |
 | 講義 | MiKTeX 的 `xelatex` + `xeCJK`、`tcolorbox`、`tikz`、`ytableau`、`booktabs`、`hyperref` | `../notes/*.tex`（第一次編譯時 MiKTeX 會自動裝套件） |
 | 字型 | 微軟正黑體 `Microsoft JhengHei` | 字幕與講義 |
-| 工具包 | `C:\mypython\manim\projects\combkit`（1.4.0） | `tools/render_check.py`（低畫質試渲染＋總覽圖）、`tools/strict_render.py`；`utils/` 改過後用 `tools/sync_from_catalan930.py` 同步 |
+| 工具包 | `C:\mypython\manim\projects\combkit`（1.5.0） | `tools/render_check.py`（低畫質試渲染＋總覽圖）、`tools/strict_render.py`；`utils/` 改過後用 `tools/sync_from_catalan930.py` 同步 |
 
 檢查環境：在 `codes/` 裡執行 `python check_env.py --render`。
 
