@@ -6,7 +6,7 @@
 開發機上是 `C:\mypython\manim\projects\catalan930`（例如 `notes/mit_plan.md` 就是 `C:\mypython\manim\projects\catalan930\notes\mit_plan.md`），
 可攜版則是解壓縮後的資料夾。`C:\mypython\manim` 是 ManimGL 本身的資料夾，底下**沒有** `notes/`。
 
-最後更新：2026-10-15（Fulton 第 9–10 章 F46–F55、`FultonDemo6`、`codes/utils/schubert.py`；combkit 1.9.0；之前：Raney (1960) 導讀的動畫 N01–N12、`RaneyPaperDemo`、例題產生器 `codes/utils/raney_examples.py`；combkit 1.8.0；之前：可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
+最後更新：2026-10-16（Young 表講義補上第 9–10 章，37 頁；之前：Fulton 第 9–10 章 F46–F55、`FultonDemo6`、`codes/utils/schubert.py`；combkit 1.9.0；之前：Raney (1960) 導讀的動畫 N01–N12、`RaneyPaperDemo`、例題產生器 `codes/utils/raney_examples.py`；combkit 1.8.0；之前：可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
 
 ---
 
@@ -43,7 +43,7 @@
 | 中文講義（40 頁） | `notes/chu1987_導讀.pdf`（原始檔 `.tex`） | 完成。第 1 節是卡塔蘭基礎模組（13 個小節，依序對應 00a–00m），第 7 節是 Raney 公式的完整證明，附錄 A 是 MIT 補充（A.1–A.14，依序對應 M01–M14） |
 | Raney (1960) 導讀（33 頁） | `notes/raney1960_導讀.pdf`（原始檔 `.tex`，內文 `notes/raney/part1..6.tex`） | 完成（2026-10-13）。G. N. Raney, *Functional composition patterns and power series reversion*（1960）的逐節導讀，記號與 Chu 講義相容；附記號對照表、大量例子、Gessel (2016) 與 Problem 4983 的補充、練習與答案。數學在 `codes/utils/raney.py`，圖與數字檢查在 `notes/raney/make_figs.py` |
 | Raney 引理筆記勘誤（7 頁） | `notes/ran_note015_改寫.pdf`（原始檔 `.tex`；原筆記 `notes/ran_note015.txt` 是他人所寫） | 完成（2026-10-15）。勘誤表＋改寫成 Chu 講義／Raney 導讀的記號；數字檢查 `notes/note015/check_numbers.py` |
-| Young 表講義（25 頁） | `notes/young_tableaux_導讀.pdf`（原始檔 `.tex`，內文 `notes/fulton/part1..6.tex`） | 完成（2026-10-11，從 Chu 講義的附錄 B 獨立出來並補上第 5–6 章；2026-10-12 補上第 7 章；2026-10-13 補上第 8 章）。第 1 節回顧 Fulton 第 1 章（F01–F08），第 2–8 節依序是第 2–8 章（F09–F45） |
+| Young 表講義（37 頁） | `notes/young_tableaux_導讀.pdf`（原始檔 `.tex`，內文 `notes/fulton/part1..8.tex`） | 完成（2026-10-11，從 Chu 講義的附錄 B 獨立出來並補上第 5–6 章；2026-10-12 補上第 7 章；2026-10-13 補上第 8 章；2026-10-16 補上第 9–10 章，寫給初學者、例子很多）。第 1 節回顧 Fulton 第 1 章（F01–F08），第 2–10 節依序是第 2–10 章（F09–F55） |
 | 卡塔蘭基礎模組 13 個場景 | `codes/scenes/scene00a…00m` | 完成（2026-10-03），都可單獨執行 |
 | Chu 的部分 9 個場景 | `codes/scenes/scene01…09` | 完成，都可單獨執行 |
 | MIT 補充 14 個場景 | `codes/scenes/sceneM01…M14` | 完成（2026-10-04），都可單獨執行 |
@@ -206,7 +206,7 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 ├── notes/                     中文講義與需求
 │   ├── chu1987_導讀.tex                       LaTeX 原始檔（xelatex + xeCJK + TikZ）
 │   ├── chu1987_導讀.pdf                       編譯好的講義，40 頁
-│   ├── young_tableaux_導讀.tex / .pdf        Young 表講義（Fulton 第 1–8 章，25 頁；xelatex，內文在 fulton/）
+│   ├── young_tableaux_導讀.tex / .pdf        Young 表講義（Fulton 第 1–10 章，37 頁；xelatex，內文在 fulton/）
 │   ├── raney1960_導讀.tex / .pdf             Raney (1960) 論文導讀（33 頁；xelatex，內文在 raney/）
 │   ├── ran_note015.txt                       他人寫的 Raney 引理筆記（原樣保留）
 │   ├── ran_note015_改寫.tex / .pdf           上面那份的勘誤與改寫（7 頁）；數字檢查 note015/check_numbers.py
@@ -480,7 +480,7 @@ M14 也分段（`part1_walk` … `part5_conclusion`），但寫成模組層級�
 | `custom_config.yml` | 輸出資料夾 `renders/`、背景色、fps、預設字型 |
 | `notes/make_catalan_figs.py` | 產生講義第 1 節的 TikZ 圖 `catalan_figs.tex`：物件由 `counting.py` 的樹產生，排列順序與根／左／右配色和動畫相同；產生前先檢查第 1 節寫到的數字（明安圖級數、Bertrand 公式、$\sqrt{1-4x}$ 的係數等） |
 | `notes/make_mit_figs.py` | 依序執行 `notes/mit/make_figs_part1..4.py`：每支先檢查附錄 A 該段寫到的數字，再寫出 `figs_partK.tex` |
-| `notes/fulton/make_figs.py` | Young 表講義的圖與表：先檢查 `fulton/part1..6.tex` 寫到的每一個數字（資料來自 `codes/utils/tableaux.py` 第 7–8 節；第 7 章用 `codes/utils/rep_data.py`），再寫出 `fulton/figs.tex` |
+| `notes/fulton/make_figs.py` | Young 表講義的圖與表：先檢查 `fulton/part1..8.tex` 寫到的每一個數字（資料來自 `codes/utils/tableaux.py` 第 7–8 節；第 7 章用 `codes/utils/rep_data.py`；第 9–10 章用 `codes/utils/schubert.py`，胞腔表、$S_4$ 的 Schubert 多項式表、Hasse 圖、pipe dream 圖也由它產生），再寫出 `fulton/figs.tex` |
 
 **可攜到別的計畫的工具包：** `codes/utils/` 的數學與畫圖模組、以及講義的 TikZ 函式，已另外打包成
 `C:\mypython\manim\projects\combkit`（import 名稱 `combkit.X`；說明見該資料夾的 `README.md`）。它是 2026-10-06 的複本；
@@ -638,7 +638,7 @@ $$
 - **MIT 補充**：規格與決定都在 `notes/mit_plan.md`；新場景照 `mit_plan.md` 第 6 節的實作規則寫。原始的 `MIT18212_1_4.txt`、`note103how.txt` 很長，需要時才看。
 - **改講義附錄 A**：內文在 `notes/mit/partK.tex`，圖改 `notes/mit/make_figs_partK.py`（每支都有 `check_numbers()`），執行 `python make_mit_figs.py` 後再編譯。
 - **改 Raney 導讀**：主檔 `notes/raney1960_導讀.tex`（導言區照抄 Chu 講義的顏色、盒子與記號），內文 `notes/raney/part1..6.tex`，圖與表改 `notes/raney/make_figs.py`（`check_numbers()`、`check_numbers_text()` 檢查正文寫到的每一個數字），執行後再編譯兩次。原始資料在 `C:\mypython\manim\projects\ref\raney\`：三個 PDF 由 `convert_to_md.py` 機械轉成 `md\`，Raney 原文另有依頁面影像逐字校對、公式改成 LaTeX 的 `md\raney1960_text.md`（讀原文用這份）。
-- **改 Young 表講義**：主檔 `notes/young_tableaux_導讀.tex`，內文在 `notes/fulton/part1..6.tex`，圖改 `notes/fulton/make_figs.py`（有 `check_numbers()`、`check_numbers_ch56()`、`check_numbers_ch7()`、`check_numbers_ch8()`），執行後再編譯；
+- **改 Young 表講義**：主檔 `notes/young_tableaux_導讀.tex`，內文在 `notes/fulton/part1..8.tex`，圖改 `notes/fulton/make_figs.py`（有 `check_numbers()`、`check_numbers_ch56()`、`check_numbers_ch7()`、`check_numbers_ch8()`、`check_numbers_ch910()`），執行後再編譯；
   行內的小 Young 表用該講義導言區的 `\yts{122,34}`（ytableau 的 `\ytableaushort`；兩位數要加大括號，如 `48{10}`）。
   Chu 講義的目錄放在第 1 頁靠的是導言區把目錄的節距縮成 0.45em（`\patchcmd{\l@section}`）；再加一節可能會擠到第 2 頁。
 - **尚未做的事**（可選）：配音與背景音樂；英文版字幕；講義的英文版。

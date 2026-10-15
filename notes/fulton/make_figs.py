@@ -668,11 +668,290 @@ def check_numbers_ch8():
     print("第 8 章（part6.tex）的數字全部正確")
 
 
+# =============================================================================
+# 第 9–10 章（part7.tex、part8.tex；動畫 F46–F55）：數字檢查與圖表
+# =============================================================================
+def rev_echelon(rows):
+    """Fulton §9.4 的列梯形：每列最後一個非零數是 1（樞紐），樞紐所在的行其他列都是 0，樞紐由左到右遞增。"""
+    from fractions import Fraction
+    M = [[Fraction(x) for x in r[::-1]] for r in rows]          # 把行倒過來做一般的 RREF
+    piv, r = [], 0
+    for c in range(len(M[0])):
+        k = next((i for i in range(r, len(M)) if M[i][c] != 0), None)
+        if k is None:
+            continue
+        M[r], M[k] = M[k], M[r]
+        M[r] = [x / M[r][c] for x in M[r]]
+        for i in range(len(M)):
+            if i != r and M[i][c] != 0:
+                M[i] = [a - M[i][c] * b for a, b in zip(M[i], M[r])]
+        piv.append(c)
+        r += 1
+    out = [row[::-1] for row in M[:r]][::-1]
+    return out, [len(rows[0]) - c for c in piv][::-1]
+
+
+def check_numbers_ch910():
+    """part7.tex（第 9 章）與 part8.tex（第 10 章）寫到的每一個數字。"""
+    from fractions import Fraction as Fr
+    from itertools import combinations
+
+    from utils.schubert import (act_right, box_product, bruhat_chain, bruhat_covers, bruhat_leq, bruhat_leq_tableau,
+                                bruhat_levels, count_flags_F2, count_subspaces_F2, descents, divided_difference,
+                                flag_cell_pattern, flag_ring_dim, gaussian_binomial, grass_cell_pattern,
+                                grassmannian_partition, inversions, length, perms, pipe_dreams, pipe_weight, plucker,
+                                plucker_from_coords, q_factorial, rank_matrix, rectangle_count, schubert_path,
+                                schubert_poly, swap_vars)
+    from utils.tableaux import schur_expand
+    X = lambda *e: {tuple(e): 1}
+    dd = divided_difference
+    # 射影空間的點數
+    assert [count_subspaces_F2(n + 1, 1) for n in (1, 2, 3)] == [3, 7, 15] == [2 ** (n + 1) - 1 for n in (1, 2, 3)]
+    # Plücker
+    A = [[1, 2, 0, 1], [0, 1, 3, 2]]
+    pA = plucker(A)
+    assert [pA[I] for I in sorted(pA)] == [1, 3, 2, 6, 3, -3]
+    gA = [[1, 3, 3, 3], [0, 2, 6, 4]]
+    assert [[sum(g * a for g, a in zip(gr, col)) for col in zip(*A)] for gr in ([1, 1], [0, 2])] == gA
+    assert [plucker(gA)[I] for I in sorted(pA)] == [2, 6, 4, 12, 6, -6]
+    rel = lambda x: x[(1, 2)] * x[(3, 4)] - x[(1, 3)] * x[(2, 4)] + x[(1, 4)] * x[(2, 3)]
+    assert rel(pA) == 1 * (-3) - 3 * 3 + 2 * 6 == 0
+    assert rel({(1, 2): 1, (1, 3): 0, (1, 4): 0, (2, 3): 0, (2, 4): 0, (3, 4): 1}) == 1
+    p3 = plucker([[1, 0, 1], [0, 1, 2]])
+    assert (p3[(1, 2)], p3[(1, 3)], p3[(2, 3)]) == (1, 2, -1)
+    u, v = (1, 0, 1), (0, 1, 2)
+    cross = (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+    assert cross == (-1, -2, 1) == (p3[(2, 3)], -p3[(1, 3)], p3[(1, 2)])
+    from utils.schubert import _det
+    for a, b in ([[1, 2, 0, 1], [0, 1, 3, 2]], [[2, -1, 5, 3], [4, 0, 1, 7]]):           # Laplace：2×(關係)
+        M = [a, b, a, b]
+        x = plucker([a, b])
+        lap = sum((-1) ** (3 + sum(I)) * x[I] * x[tuple(sorted(set(range(1, 5)) - set(I)))] for I in combinations(range(1, 5), 2))
+        assert lap == 2 * rel(x) and _det(M) == 0
+    ex2 = {(1, 2): 1, (1, 3): 2, (1, 4): 1, (2, 3): 1, (2, 4): 2, (3, 4): 3}
+    assert rel(ex2) == 3 - 4 + 1 == 0 and plucker_from_coords(ex2, 2, 4) == [[1, 0, -1, -2], [0, 1, 2, 1]]
+    pe = plucker([[1, 1, 0, 0], [0, 0, 1, 1]])
+    assert [pe[I] for I in sorted(pe)] == [0, 1, 1, 1, 1, 0] and rel(pe) == 0
+    # 旗：點在線上
+    y = plucker([[1, 2, 3], [0, 1, 1]])
+    inc = lambda x: x[0] * y[(2, 3)] - x[1] * y[(1, 3)] + x[2] * y[(1, 2)]
+    assert (y[(1, 2)], y[(1, 3)], y[(2, 3)]) == (1, 1, -1) and inc((1, 2, 3)) == 0 and inc((0, 1, 1)) == 0
+    assert inc((1, 0, 0)) == -1
+    assert [flag_ring_dim(*ab) for ab in ((1, 0), (0, 1), (2, 0), (1, 1), (2, 1), (1, 2), (2, 2))] == [3, 3, 6, 8, 15, 15, 27]
+    assert 3 * 3 - 1 == 8 and 6 * 3 - 3 * 1 == 15 and 6 * 6 - 3 * 3 == 27
+    # 列梯形的例子（Fulton §9.4 的寫法：r = 2、n = 2，樞紐在第 n+i−λ_i 行）
+    lam = lambda piv: tuple(2 + i + 1 - p for i, p in enumerate(piv))
+    E1, P1 = rev_echelon([[1, 2, 0, 1], [0, 1, 3, 2]])
+    assert E1 == [[Fr(-2, 3), -1, 1, 0], [1, 2, 0, 1]] and lam(P1) == (0, 0)
+    assert lam(rev_echelon([[3, 1, 0, 0], [1, 0, 2, 1]])[1]) == (1, 0)
+    assert lam(rev_echelon([[1, 0, 0, 0], [0, 1, 1, 1]])[1]) == (2, 0)
+    assert lam(rev_echelon([[1, 0, 1, 0], [0, 1, 0, 0]])[1]) == (1, 1)
+    assert lam(rev_echelon([[1, 0, 0, 0], [0, 1, 0, 0]])[1]) == (2, 2)
+    assert lam(rev_echelon([[0, 1, 0, 0], [0, 0, 0, 1]])[1]) == (1, 0)                   # 練習：⟨e2, e4⟩
+    assert gaussian_binomial(4, 2) == [1, 1, 2, 1, 1] and count_subspaces_F2(4, 2) == 35 == 15 * 14 // (3 * 2)
+    assert gaussian_binomial(3, 1) == [1, 1, 1] and gaussian_binomial(5, 2) == [1, 1, 2, 2, 2, 1, 1]
+    assert count_subspaces_F2(5, 2) == 155 == 31 * 30 // (3 * 2) and count_subspaces_F2(4, 3) == 15
+    # Schubert 計算（Gr(2,4)）
+    bp = lambda a, b: box_product(a, b, 2, 2)
+    assert bp((1,), (1,)) == {(2,): 1, (1, 1): 1} and bp((1,), (2,)) == bp((1,), (1, 1)) == {(2, 1): 1}
+    assert bp((1,), (2, 1)) == {(2, 2): 1} and bp((2,), (2,)) == bp((1, 1), (1, 1)) == {(2, 2): 1}
+    assert bp((2,), (1, 1)) == {} and bp((2, 1), (1,)) == {(2, 2): 1}
+    s = {(): 1}
+    for _ in range(4):
+        s = poly_sum([{nu: c * k for nu, k in bp(l, (1,)).items()} for l, c in s.items()])
+    assert s == {(2, 2): 2}
+    assert rectangle_count(2, 5) == 5 == factorial(6) * 1 // (factorial(4) * factorial(3)) and rectangle_count(3, 6) == 42
+    assert box_product((2, 1), (2, 1), 3, 3) == {(3, 3): 1, (3, 2, 1): 2, (2, 2, 2): 1}
+    # 第 10 章：旗流形
+    assert len(perms(2)) == 2 and len(perms(3)) == 6
+    assert inversions((2, 3, 1)) == [(1, 3), (2, 3)] and length((2, 3, 1)) == 2
+    w = (4, 2, 6, 1, 3, 5)
+    assert length(w) == 7 and [r.count("*") for r in flag_cell_pattern(w)] == [3, 1, 3, 0, 0, 0]
+    assert q_factorial(3) == [1, 2, 2, 1] and count_flags_F2(3) == 21 == 7 * 3
+    assert q_factorial(4) == [1, 3, 5, 6, 5, 3, 1] and count_flags_F2(4) == 315 == 15 * 7 * 3
+    # 上同調環 R(3) 的化簡：x1^3 = e1x1^2 − e2x1 + e3、h2(x1,x2) = e1(x1+x2) − e2（都是多項式恆等式）
+    e1 = poly_sum([X(1, 0, 0), X(0, 1, 0), X(0, 0, 1)])
+    e2 = poly_sum([X(1, 1, 0), X(1, 0, 1), X(0, 1, 1)])
+    e3 = X(1, 1, 1)
+    neg = lambda f: {k: -c for k, c in f.items()}
+    assert poly_sum([poly_mul(e1, X(2, 0, 0)), neg(poly_mul(e2, X(1, 0, 0))), e3]) == X(3, 0, 0)
+    assert poly_sum([poly_mul(e1, poly_sum([X(1, 0, 0), X(0, 1, 0)])), neg(e2)]) == poly_sum([X(2, 0, 0), X(1, 1, 0), X(0, 2, 0)])
+    # 差商
+    assert dd(X(2, 0, 0), 1) == poly_sum([X(1, 0, 0), X(0, 1, 0)]) and dd(X(1, 1, 0), 1) == {}
+    assert dd(X(0, 1, 0), 1) == {(0, 0, 0): -1} and dd(X(1, 0, 0), 1) == {(0, 0, 0): 1}
+    assert dd(X(3, 0, 0), 1) == poly_sum([X(2, 0, 0), X(1, 1, 0), X(0, 2, 0)])
+    assert dd(X(2, 1, 0), 1) == X(1, 1, 0) and dd(X(2, 1, 0), 2) == X(2, 0, 0) and dd(X(0, 1, 1), 2) == {}
+    assert dd(X(2, 0, 1), 1) == poly_sum([X(1, 0, 1), X(0, 1, 1)]) and dd(X(0, 2, 1), 2) == X(0, 1, 1)
+    f = X(2, 1, 0)
+    assert dd(dd(dd(f, 1), 2), 1) == dd(dd(dd(f, 2), 1), 2) == {(0, 0, 0): 1}
+    assert dd(poly_mul(X(1, 0, 0), X(1, 0, 0)), 1) == poly_sum([X(1, 0, 0), X(0, 1, 0)])
+    assert swap_vars(X(2, 1, 0), 1) == X(1, 2, 0)
+    # Schubert 多項式
+    S = lambda *w: schubert_poly(w)
+    assert S(1, 3, 2) == poly_sum([X(1, 0, 0), X(0, 1, 0)]) and S(3, 2, 1) == X(2, 1, 0)
+    path = schubert_path(5, [1, 4, 3, 2, 3])
+    assert [len(p) for _, p in path] == [1, 1, 1, 2, 5, 3]
+    s21543 = S(2, 1, 5, 4, 3)
+    assert len(s21543) == 13 and sum(s21543.values()) == 14 == len(pipe_dreams((2, 1, 5, 4, 3))) and s21543[(2, 1, 1, 0, 0)] == 2
+    assert S(1, 2, 4, 3) == poly_sum([X(1, 0, 0, 0), X(0, 1, 0, 0), X(0, 0, 1, 0)])
+    assert S(3, 1, 2, 4) == X(2, 0, 0, 0) and S(4, 2, 1, 3) == X(3, 1, 0, 0)                 # 練習 6：支配型
+    assert schubert_poly((1, 3, 2, 4, 5)) == {k + (0,): c for k, c in S(1, 3, 2, 4).items()}   # 穩定
+    # Monk：x1·x1 = 𝔖_312；(x1+x2)^2 = 𝔖_2314 + 𝔖_1423
+    assert poly_mul(X(1, 0, 0), X(1, 0, 0)) == S(3, 1, 2)
+    s1324 = S(1, 3, 2, 4)
+    assert poly_mul(s1324, s1324) == poly_sum([S(2, 3, 1, 4), S(1, 4, 2, 3)])
+    # pipe dream
+    assert len(pipe_dreams((1, 3, 2))) == 2 and len(pipe_dreams((3, 2, 1))) == 1
+    assert sum(pipe_weight(D, 5) == (2, 1, 1, 0, 0) for D in pipe_dreams((2, 1, 5, 4, 3))) == 2
+    # Bruhat
+    assert rank_matrix((1, 3, 2)) == [[1, 1, 1], [1, 1, 2], [1, 2, 3]] and rank_matrix((3, 1, 2)) == [[0, 0, 1], [1, 1, 2], [1, 2, 3]]
+    assert bruhat_leq((1, 3, 2), (3, 1, 2)) and bruhat_leq_tableau((2, 1, 4, 3), (4, 2, 3, 1))
+    assert not bruhat_leq((1, 4, 2, 3), (3, 1, 2, 4)) and not bruhat_leq((3, 1, 2, 4), (1, 4, 2, 3))
+    assert bruhat_leq((2, 4, 1, 3), (3, 4, 1, 2)) and not bruhat_leq((2, 3, 1), (3, 1, 2))
+    assert len(bruhat_covers(3)) == 8 and [len(l) for l in bruhat_levels(4)] == [1, 3, 5, 6, 5, 3, 1]
+    ch = bruhat_chain((4, 2, 8, 3, 6, 1, 7, 9, 5), (6, 7, 9, 2, 5, 1, 8, 3, 4))
+    assert len(ch) == 9 and length(ch[0]) == 22 and length(ch[-1]) == 14
+    # Grassmann 置換（r = 2、m = 4 的六個）
+    G = {(1, 2, 3, 4): (0, 0), (1, 3, 2, 4): (1, 0), (1, 4, 2, 3): (2, 0), (2, 3, 1, 4): (1, 1), (2, 4, 1, 3): (2, 1),
+         (3, 4, 1, 2): (2, 2)}
+    for w, l in G.items():
+        if w != (1, 2, 3, 4):
+            assert grassmannian_partition(w) == (l, 2)
+    assert grassmannian_partition((1, 3, 4, 2)) == ((1, 1, 0), 3) and S(3, 4, 1, 2) == X(2, 2, 0, 0)
+    s1 = schur_poly((1,), 2)
+    p4 = poly_mul(poly_mul(s1, s1), poly_mul(s1, s1))
+    assert schur_expand(p4, 2) == {(4,): 1, (3, 1): 3, (2, 2): 2}
+    # 補充：part7 的 s21^2 完整展開；part8 的例子與練習
+    from utils.tableaux import lr_coefficient
+    full = {nu: lr_coefficient((2, 1), (2, 1), nu) for nu in partitions(6)}
+    assert {nu: c for nu, c in full.items() if c} == {(4, 2): 1, (4, 1, 1): 1, (3, 3): 1, (3, 2, 1): 2, (3, 1, 1, 1): 1,
+                                                      (2, 2, 2): 1, (2, 2, 1, 1): 1}
+    assert S(3, 2, 1, 4) == X(2, 1, 0, 0) and S(2, 1, 4, 3) == poly_mul(X(1, 0, 0, 0), S(1, 2, 4, 3))
+    assert length((3, 1, 4, 2)) == 3 == sum(r.count("*") for r in flag_cell_pattern((3, 1, 4, 2)))
+    assert sum(c * 3 ** k for k, c in enumerate(q_factorial(3))) == 52 == (1 + 3) * (1 + 3 + 9)
+    assert bruhat_leq_tableau((2, 4, 1, 3), (3, 4, 1, 2)) and not bruhat_leq((2, 3, 1), (3, 1, 2))
+    for w, l in G.items():
+        sl = schur_poly(tuple(x for x in l if x), 2) if any(l) else {(0, 0): 1}
+        assert S(*w) == {e + (0, 0): c for e, c in sl.items()}
+    print("第 9–10 章（part7.tex、part8.tex）的數字全部正確")
+
+
+def _mat_tex(pattern, star=r"\textcolor{cA}{\ast}", one=r"\mathbf{1}", small=False):
+    body = r"\\".join("&".join({"*": star, "1": one}.get(s, "0") for s in row) for row in pattern)
+    if small:
+        return r"\left(\begin{smallmatrix}" + body + r"\end{smallmatrix}\right)"
+    return r"\begin{pmatrix}" + body + r"\end{pmatrix}"
+
+
+def _ydiag(lam):
+    lam = [x for x in lam if x]
+    return r"$\varnothing$" if not lam else r"{\ytableausetup{smalltableaux}\ydiagram{" + ",".join(map(str, lam)) + "}}"
+
+
+def fig_grass_cells() -> str:
+    from utils.schubert import grass_cell_pattern
+    box = [(0, 0), (1, 0), (2, 0), (1, 1), (2, 1), (2, 2)]
+    cols = []
+    for lam in box:
+        pat = grass_cell_pattern(lam, 2, 2)
+        k = sum(r.count("*") for r in pat)
+        cols.append((lam, pat, k))
+    head = " & ".join(_ydiag(l) for l, _, _ in cols)
+    mats = " & ".join("$" + _mat_tex(p, small=True) + "$" for _, p, _ in cols)
+    dims = " & ".join(f"${k}$" for _, _, k in cols)
+    qs = " & ".join(f"$q^{{{k}}}$" if k > 1 else ("$q$" if k == 1 else "$1$") for _, _, k in cols)
+    return ("\\begin{tabular}{@{}l" + "c" * 6 + "@{}}\n\\toprule\n$\\lambda$ & " + head + "\\\\\n\\midrule\n"
+            "列梯形矩陣 & " + mats + "\\\\[4pt]\n星號數＝維數 & " + dims + "\\\\\n$\\mathbb F_q$ 上的點數 & " + qs
+            + "\\\\\n\\bottomrule\n\\end{tabular}\n")
+
+
+def fig_flag_cells() -> str:
+    from utils.schubert import flag_cell_pattern, length, perm_str
+    ws = [(1, 2, 3), (2, 1, 3), (1, 3, 2), (2, 3, 1), (3, 1, 2), (3, 2, 1)]
+    head = " & ".join(f"${perm_str(w)}$" for w in ws)
+    mats = " & ".join("$" + _mat_tex(flag_cell_pattern(w)) + "$" for w in ws)
+    lens = " & ".join(f"${length(w)}$" for w in ws)
+    return ("\\begin{tabular}{@{}l" + "c" * 6 + "@{}}\n\\toprule\n$w$ & " + head + "\\\\\n\\midrule\n"
+            "胞腔 $X^\\circ_w$ & " + mats + "\\\\[4pt]\n$\\ell(w)$＝星號數 & " + lens + "\\\\\n\\bottomrule\n\\end{tabular}\n")
+
+
+def fig_schubert_s4() -> str:
+    from utils.schubert import length, perm_str, perms, poly_str, schubert_poly
+    ws = sorted(perms(4), key=lambda w: (length(w), w))
+    assert all(e[3] == 0 for w in ws for e in schubert_poly(w))
+    cells = [f"${perm_str(w)}$ & ${length(w)}$ & ${poly_str({e[:3]: c for e, c in schubert_poly(w).items()})}$" for w in ws]
+    half = len(cells) // 2
+    rows = [cells[i] + " & " + cells[i + half] for i in range(half)]
+    return ("{\\small\\begin{tabular}{@{}ccl@{\\qquad}ccl@{}}\n"
+            + "\\toprule\n$w$ & $\\ell$ & $\\mathfrak S_w$ & $w$ & $\\ell$ & $\\mathfrak S_w$\\\\\n\\midrule\n"
+            + "\\\\\n".join(rows) + "\\\\\n\\bottomrule\n\\end{tabular}}\n")
+
+
+def fig_hasse_s3() -> str:
+    from utils.schubert import bruhat_covers, perm_str, poly_str, schubert_poly
+    pos = {(3, 2, 1): (0, 3), (2, 3, 1): (-1.6, 2), (3, 1, 2): (1.6, 2), (2, 1, 3): (-1.6, 1), (1, 3, 2): (1.6, 1),
+           (1, 2, 3): (0, 0)}
+    out = ["\\begin{tikzpicture}[xscale=1.5,yscale=1.75]"]
+    for w, (x, y) in pos.items():
+        out.append(f"\\node[align=center,inner sep=1pt] ({perm_str(w)}) at ({x},{y}) "
+                   f"{{\\footnotesize ${perm_str(w)}$\\\\ $\\scriptstyle {poly_str(schubert_poly(w))}$}};")
+    for u, v in bruhat_covers(3):
+        out.append(f"\\draw[gray,shorten <=2pt,shorten >=2pt] ({perm_str(u)}.north) -- ({perm_str(v)}.south);")
+    out.append("\\end{tikzpicture}")
+    return "\n".join(out) + "\n"
+
+
+def _pipe_tikz(D, m, s=0.42):
+    from utils.schubert import pipe_exits
+    D = set(D)
+    w = pipe_exits(D, m)
+    winv = {c: i + 1 for i, c in enumerate(w)}
+    out = [f"\\begin{{tikzpicture}}[scale={s},line width=0.9pt]"]
+    for i in range(1, m + 1):
+        for j in range(1, m + 2 - i):
+            x0, y0 = j - 1, -(i - 1)
+            out.append(f"\\draw[gray!40,line width=0.3pt] ({x0},{y0}) rectangle ({x0 + 1},{y0 - 1});")
+            if (i, j) in D and i + j <= m:
+                out.append(f"\\draw[cB] ({x0},{y0 - 0.5}) -- ({x0 + 1},{y0 - 0.5}); \\draw[cB] ({x0 + 0.5},{y0}) -- ({x0 + 0.5},{y0 - 1});")
+            else:
+                out.append(f"\\draw[cA] ({x0},{y0 - 0.5}) arc[start angle=-90,end angle=0,radius=0.5];")
+                if i + j <= m:
+                    out.append(f"\\draw[cA] ({x0 + 1},{y0 - 0.5}) arc[start angle=90,end angle=180,radius=0.5];")
+        out.append(f"\\node[left] at (0,{-(i - 1) - 0.5}) {{\\tiny {i}}};")
+    for c in range(1, m + 1):
+        out.append(f"\\node[above] at ({c - 0.5},0) {{\\tiny {winv[c]}}};")
+    out.append("\\end{tikzpicture}")
+    return "\n".join(out)
+
+
+def fig_pipes_132() -> str:
+    from utils.schubert import pipe_dreams
+    return "\\quad ".join(_pipe_tikz(D, 3, 0.55) for D in sorted(pipe_dreams((1, 3, 2)))) + "\n"
+
+
+def fig_pipes_21543() -> str:
+    from utils.schubert import pipe_dreams, pipe_weight
+    two = [D for D in pipe_dreams((2, 1, 5, 4, 3)) if pipe_weight(D, 5) == (2, 1, 1, 0, 0)]
+    assert len(two) == 2
+    return "\\qquad ".join(_pipe_tikz(D, 5, 0.42) for D in two) + "\n"
+
+
+FIGURES += [
+    ("FulGrassCells", fig_grass_cells),
+    ("FulFlagCells", fig_flag_cells),
+    ("FulSchubertSfour", fig_schubert_s4),
+    ("FulHasseSthree", fig_hasse_s3),
+    ("FulPipesOTT", fig_pipes_132),
+    ("FulPipesTOFFT", fig_pipes_21543),
+]
+
+
 def main():
     check_numbers()
     check_numbers_ch56()
     check_numbers_ch7()
     check_numbers_ch8()
+    check_numbers_ch910()
     parts = ["% figs.tex —— 由 fulton/make_figs.py 產生，請勿手動修改。\n"
              "% 重新產生：python fulton/make_figs.py（附錄 B，動畫 F09–F19）\n"]
     for name, func in FIGURES:

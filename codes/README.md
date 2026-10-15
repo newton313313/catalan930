@@ -28,7 +28,7 @@
 10. **Raney (1960) 論文導讀（場景 N01–N12，獨立的一組）**：前序記法與字、秩、三種讀法、Raney 的循環引理證明、雙重計數、用循環引理製造隨機例子、切開與第一個符號、L*、Lagrange 反演、三項式與 Problem 4983、卷積、總結。依 `../notes/raney1960_導讀.pdf`，分鏡 `../notes/raney/manim_plan.md`。
 11. **Fulton《Young Tableaux》第 9–10 章（場景 F46–F55，獨立的一組）**：Plücker 座標、旗流形的座標環、Grassmannian 與旗流形的 Schubert 胞腔、四條線問題（Schubert 計算）、差商、Schubert 多項式、pipe dream、Bruhat 序、Grassmann 置換＝Schur 多項式。計畫表 `../notes/fulton_plan_ch9-10.md`。
 
-共 109 個可以單獨執行的場景，外加十三種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（25 頁，第 1–8 節對應 F01–F45）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（33 頁，Raney (1960) 論文導讀，動畫 N01–N12）。
+共 109 個可以單獨執行的場景，外加十三種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（37 頁，第 1–10 節對應 F01–F55）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（33 頁，Raney (1960) 論文導讀，動畫 N01–N12）。
 
 ## 注意：這是 ManimGL，不是 Manim Community
 
@@ -483,7 +483,7 @@ catalan930/
 │   └── renders/              輸出的 1080p 影片（123 支；不要刪除或覆寫）
 ├── notes/                    講義與計畫表（xelatex，在 notes/ 裡編譯兩次）
 │   ├── chu1987_導讀.tex/.pdf      Chu 1987＋卡塔蘭模組＋附錄 A（MIT 補充），40 頁；圖：make_catalan_figs.py、make_mit_figs.py（→ mit/）
-│   ├── young_tableaux_導讀.tex/.pdf Fulton 第 1–8 章的講義；內文 fulton/part1..6.tex，圖與數字檢查 fulton/make_figs.py（→ fulton/figs.tex）
+│   ├── young_tableaux_導讀.tex/.pdf Fulton 第 1–10 章的講義；內文 fulton/part1..8.tex，圖與數字檢查 fulton/make_figs.py（→ fulton/figs.tex）
 │   ├── raney1960_導讀.tex/.pdf    Raney (1960) 論文導讀；內文 raney/part1..6.tex，圖與數字檢查 raney/make_figs.py（→ raney/figs.tex）
 │   ├── fulton_plan*.md            各章的計畫表（ch2-4、ch5-6、ch7、ch8、ch9-10；ch7-8 已被取代）
 │   └── mit_plan.md、note1012.txt…  其他計畫與原始筆記

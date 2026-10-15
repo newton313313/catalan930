@@ -168,3 +168,5 @@ Fulton 慣例：$Gr$ 的子空間 $V=\ker A$（$A$ 是 $d\times m$ 矩陣），P
 | F53 | `sceneF53_pipe_dreams.py` | `SceneF53PipeDreams` | B |
 | F54 | `sceneF54_bruhat.py` | `SceneF54Bruhat` | B |
 | F55 | `sceneF55_grassmannian_schur.py` | `SceneF55GrassmannianSchur` | B |
+
+> 完成（2026-10-16）：F46–F55 與 `FultonDemo6`（23 分 24 秒）。講義第 9–10 節：`notes/young_tableaux_導讀.tex`（內文 `notes/fulton/part7.tex`、`part8.tex`；數字由 `fulton/make_figs.py` 的 `check_numbers_ch910()` 核對），寫給初學者、例子很多。

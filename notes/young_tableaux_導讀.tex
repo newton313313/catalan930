@@ -1,6 +1,6 @@
 % !TEX program = xelatex
 % 編譯方式： xelatex young_tableaux_導讀.tex   （在 notes/ 裡執行，跑兩次以產生目錄與交互參照）
-% 內文在 fulton/part1..6.tex；圖與表由 fulton/make_figs.py 產生（fulton/figs.tex，含數字檢查）。
+% 內文在 fulton/part1..8.tex；圖與表由 fulton/make_figs.py 產生（fulton/figs.tex，含數字檢查）。
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[margin=2.2cm]{geometry}
@@ -30,7 +30,7 @@
 \usepackage{ytableau}
 \ytableausetup{boxsize=1.25em,aligntableaux=center}
 
-% ---------- 顏色（與 manim 動畫 F01–F45 一致） ----------
+% ---------- 顏色（與 manim 動畫 F01–F55 一致） ----------
 \colorlet{cA}{blue!75!black}
 \colorlet{cB}{orange!90!black}
 \colorlet{cC}{green!50!black}
@@ -54,7 +54,7 @@
 
 \begin{center}
 {\Large\bfseries Young 表導讀}\\[4pt]
-W.~Fulton《Young Tableaux》第 1--8 章（配合 manim 動畫 F01--F45）\\[8pt]
+W.~Fulton《Young Tableaux》第 1--10 章（配合 manim 動畫 F01--F55）\\[8pt]
 {\small 原文：William Fulton, \emph{Young Tableaux: With Applications to Representation Theory and Geometry},\\
 London Mathematical Society Student Texts 35, Cambridge University Press, 1997.}
 \end{center}
@@ -70,6 +70,7 @@ London Mathematical Society Student Texts 35, Cambridge University Press, 1997.}
 \item \textbf{對稱函數}（第 6 章）：五組基底、Jacobi–Trudi、內積與 $\omega$；換基底的係數 $\chi^\lambda_\mu$ 就是第 7 章 $S_n$ 的特徵標。
 \item \textbf{對稱群的表示}（第 7 章）：tabloid 的行交錯和 $v_T$ 張成不可約的 Specht 模 $S^\lambda$，標準表是基底；$R\cong\Lambda$ 把 Young、LR、Pieri、$\omega$ 翻譯成表示論。
 \item \textbf{一般線性群}（第 8 章）：數字換成向量、行換成楔積，同一條交換關係給出 Schur 模 $E^\lambda$；基底是半標準表、特徵標是 $s_\lambda$，$E^{\otimes n}\cong\bigoplus E^\lambda\otimes S^\lambda$。
+\item \textbf{旗流形}（第 9--10 章）：子空間用 Plücker 座標記錄；$Gr$、$Fl$ 切成胞腔（星號＝維數），交點數＝LR 係數；差商從 $x_1^{m-1}\cdots x_{m-1}$ 推出 Schubert 多項式，推廣 Schur 多項式。
 \end{enumerate}
 \end{keybox}
 
@@ -90,12 +91,14 @@ London Mathematical Society Student Texts 35, Cambridge University Press, 1997.}
 3 & 遞增子序列、主定理的證明 & F14--F15 & 6 & 對稱多項式 & F25--F27\\
  & & & 7 & 對稱群的表示 & F28--F41\\
  & & & 8 & 一般線性群的表示 & F42--F45\\
+ & & & 9 & 旗流形與 Schubert 計算 & F46--F49\\
+ & & & 10 & Schubert 多項式 & F50--F55\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \noindent 以〔Fulton p.18〕等標示書上的頁碼。所有例子都用書上的資料，內文寫到的每一個數字都由程式（\texttt{codes/utils/tableaux.py}）重算、
-圖由 \texttt{fulton/make\_figs.py} 產生並先做數字檢查。連續播放：\texttt{FultonDemo}（F01--F08）、\texttt{FultonDemo2}（F09--F19）、\texttt{FultonDemo3}（F20--F27）、\texttt{FultonDemo4}（F28--F41；第 7 章的數字另由 \texttt{codes/utils/rep\_data.py} 核對）、\texttt{FultonDemo5}（F42--F45）。
+圖由 \texttt{fulton/make\_figs.py} 產生並先做數字檢查。連續播放：\texttt{FultonDemo}（F01--F08）、\texttt{FultonDemo2}（F09--F19）、\texttt{FultonDemo3}（F20--F27）、\texttt{FultonDemo4}（F28--F41；第 7 章的數字另由 \texttt{codes/utils/rep\_data.py} 核對）、\texttt{FultonDemo5}（F42--F45）、\texttt{FultonDemo6}（F46--F55；第 9--10 章的數字另由 \texttt{codes/utils/schubert.py} 核對）。
 
 \input{fulton/part1}
 \input{fulton/part2}
@@ -103,5 +106,7 @@ London Mathematical Society Student Texts 35, Cambridge University Press, 1997.}
 \input{fulton/part4}
 \input{fulton/part5}
 \input{fulton/part6}
+\input{fulton/part7}
+\input{fulton/part8}
 
 \end{document}

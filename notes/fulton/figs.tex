@@ -128,3 +128,210 @@ $A$:\ \begin{tikzpicture}[baseline=(current bounding box.center)]
 
 \newcommand{\FulHook}{%
 $h(i,j)=\begin{ytableau}9 & 8 & 7 & 5 & 4 & 1 \\ 7 & 6 & 5 & 3 & 2 \\ 6 & 5 & 4 & 2 & 1 \\ 3 & 2 & 1\end{ytableau}\qquad 5+j-i=\begin{ytableau}*(cB!35) 5 & 6 & 7 & 8 & 9 & 10 \\ 4 & *(cB!35) 5 & 6 & 7 & 8 \\ 3 & 4 & *(cB!35) 5 & 6 & 7 \\ 2 & 3 & 4\end{ytableau}$}
+
+\newcommand{\FulGrassCells}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+$\lambda$ & $\varnothing$ & {\ytableausetup{smalltableaux}\ydiagram{1}} & {\ytableausetup{smalltableaux}\ydiagram{2}} & {\ytableausetup{smalltableaux}\ydiagram{1,1}} & {\ytableausetup{smalltableaux}\ydiagram{2,1}} & {\ytableausetup{smalltableaux}\ydiagram{2,2}}\\
+\midrule
+列梯形矩陣 & $\left(\begin{smallmatrix}\textcolor{cA}{\ast}&\textcolor{cA}{\ast}&\mathbf{1}&0\\\textcolor{cA}{\ast}&\textcolor{cA}{\ast}&0&\mathbf{1}\end{smallmatrix}\right)$ & $\left(\begin{smallmatrix}\textcolor{cA}{\ast}&\mathbf{1}&0&0\\\textcolor{cA}{\ast}&0&\textcolor{cA}{\ast}&\mathbf{1}\end{smallmatrix}\right)$ & $\left(\begin{smallmatrix}\mathbf{1}&0&0&0\\0&\textcolor{cA}{\ast}&\textcolor{cA}{\ast}&\mathbf{1}\end{smallmatrix}\right)$ & $\left(\begin{smallmatrix}\textcolor{cA}{\ast}&\mathbf{1}&0&0\\\textcolor{cA}{\ast}&0&\mathbf{1}&0\end{smallmatrix}\right)$ & $\left(\begin{smallmatrix}\mathbf{1}&0&0&0\\0&\textcolor{cA}{\ast}&\mathbf{1}&0\end{smallmatrix}\right)$ & $\left(\begin{smallmatrix}\mathbf{1}&0&0&0\\0&\mathbf{1}&0&0\end{smallmatrix}\right)$\\[4pt]
+星號數＝維數 & $4$ & $3$ & $2$ & $2$ & $1$ & $0$\\
+$\mathbb F_q$ 上的點數 & $q^{4}$ & $q^{3}$ & $q^{2}$ & $q^{2}$ & $q$ & $1$\\
+\bottomrule
+\end{tabular}
+}
+
+\newcommand{\FulFlagCells}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+$w$ & $123$ & $213$ & $132$ & $231$ & $312$ & $321$\\
+\midrule
+胞腔 $X^\circ_w$ & $\begin{pmatrix}\mathbf{1}&0&0\\0&\mathbf{1}&0\\0&0&\mathbf{1}\end{pmatrix}$ & $\begin{pmatrix}\textcolor{cA}{\ast}&\mathbf{1}&0\\\mathbf{1}&0&0\\0&0&\mathbf{1}\end{pmatrix}$ & $\begin{pmatrix}\mathbf{1}&0&0\\0&\textcolor{cA}{\ast}&\mathbf{1}\\0&\mathbf{1}&0\end{pmatrix}$ & $\begin{pmatrix}\textcolor{cA}{\ast}&\mathbf{1}&0\\\textcolor{cA}{\ast}&0&\mathbf{1}\\\mathbf{1}&0&0\end{pmatrix}$ & $\begin{pmatrix}\textcolor{cA}{\ast}&\textcolor{cA}{\ast}&\mathbf{1}\\\mathbf{1}&0&0\\0&\mathbf{1}&0\end{pmatrix}$ & $\begin{pmatrix}\textcolor{cA}{\ast}&\textcolor{cA}{\ast}&\mathbf{1}\\\textcolor{cA}{\ast}&\mathbf{1}&0\\\mathbf{1}&0&0\end{pmatrix}$\\[4pt]
+$\ell(w)$＝星號數 & $0$ & $1$ & $1$ & $2$ & $2$ & $3$\\
+\bottomrule
+\end{tabular}
+}
+
+\newcommand{\FulSchubertSfour}{%
+{\small\begin{tabular}{@{}ccl@{\qquad}ccl@{}}
+\toprule
+$w$ & $\ell$ & $\mathfrak S_w$ & $w$ & $\ell$ & $\mathfrak S_w$\\
+\midrule
+$1234$ & $0$ & $1$ & $3142$ & $3$ & $x_1^{2}x_2+x_1^{2}x_3$\\
+$1243$ & $1$ & $x_1+x_2+x_3$ & $3214$ & $3$ & $x_1^{2}x_2$\\
+$1324$ & $1$ & $x_1+x_2$ & $4123$ & $3$ & $x_1^{3}$\\
+$2134$ & $1$ & $x_1$ & $2431$ & $4$ & $x_1^{2}x_2x_3+x_1x_2^{2}x_3$\\
+$1342$ & $2$ & $x_1x_2+x_1x_3+x_2x_3$ & $3241$ & $4$ & $x_1^{2}x_2x_3$\\
+$1423$ & $2$ & $x_1^{2}+x_1x_2+x_2^{2}$ & $3412$ & $4$ & $x_1^{2}x_2^{2}$\\
+$2143$ & $2$ & $x_1^{2}+x_1x_2+x_1x_3$ & $4132$ & $4$ & $x_1^{3}x_2+x_1^{3}x_3$\\
+$2314$ & $2$ & $x_1x_2$ & $4213$ & $4$ & $x_1^{3}x_2$\\
+$3124$ & $2$ & $x_1^{2}$ & $3421$ & $5$ & $x_1^{2}x_2^{2}x_3$\\
+$1432$ & $3$ & $x_1^{2}x_2+x_1^{2}x_3+x_1x_2^{2}+x_1x_2x_3+x_2^{2}x_3$ & $4231$ & $5$ & $x_1^{3}x_2x_3$\\
+$2341$ & $3$ & $x_1x_2x_3$ & $4312$ & $5$ & $x_1^{3}x_2^{2}$\\
+$2413$ & $3$ & $x_1^{2}x_2+x_1x_2^{2}$ & $4321$ & $6$ & $x_1^{3}x_2^{2}x_3$\\
+\bottomrule
+\end{tabular}}
+}
+
+\newcommand{\FulHasseSthree}{%
+\begin{tikzpicture}[xscale=1.5,yscale=1.75]
+\node[align=center,inner sep=1pt] (321) at (0,3) {\footnotesize $321$\\ $\scriptstyle x_1^{2}x_2$};
+\node[align=center,inner sep=1pt] (231) at (-1.6,2) {\footnotesize $231$\\ $\scriptstyle x_1x_2$};
+\node[align=center,inner sep=1pt] (312) at (1.6,2) {\footnotesize $312$\\ $\scriptstyle x_1^{2}$};
+\node[align=center,inner sep=1pt] (213) at (-1.6,1) {\footnotesize $213$\\ $\scriptstyle x_1$};
+\node[align=center,inner sep=1pt] (132) at (1.6,1) {\footnotesize $132$\\ $\scriptstyle x_1+x_2$};
+\node[align=center,inner sep=1pt] (123) at (0,0) {\footnotesize $123$\\ $\scriptstyle 1$};
+\draw[gray,shorten <=2pt,shorten >=2pt] (123.north) -- (132.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (123.north) -- (213.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (132.north) -- (231.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (132.north) -- (312.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (213.north) -- (231.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (213.north) -- (312.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (231.north) -- (321.south);
+\draw[gray,shorten <=2pt,shorten >=2pt] (312.north) -- (321.south);
+\end{tikzpicture}
+}
+
+\newcommand{\FulPipesOTT}{%
+\begin{tikzpicture}[scale=0.55,line width=0.9pt]
+\draw[gray!40,line width=0.3pt] (0,0) rectangle (1,-1);
+\draw[cA] (0,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,0) rectangle (2,-1);
+\draw[cB] (1,-0.5) -- (2,-0.5); \draw[cB] (1.5,0) -- (1.5,-1);
+\draw[gray!40,line width=0.3pt] (2,0) rectangle (3,-1);
+\draw[cA] (2,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-0.5) {\tiny 1};
+\draw[gray!40,line width=0.3pt] (0,-1) rectangle (1,-2);
+\draw[cA] (0,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-1.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,-1) rectangle (2,-2);
+\draw[cA] (1,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-1.5) {\tiny 2};
+\draw[gray!40,line width=0.3pt] (0,-2) rectangle (1,-3);
+\draw[cA] (0,-2.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-2.5) {\tiny 3};
+\node[above] at (0.5,0) {\tiny 1};
+\node[above] at (1.5,0) {\tiny 3};
+\node[above] at (2.5,0) {\tiny 2};
+\end{tikzpicture}\quad \begin{tikzpicture}[scale=0.55,line width=0.9pt]
+\draw[gray!40,line width=0.3pt] (0,0) rectangle (1,-1);
+\draw[cA] (0,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,0) rectangle (2,-1);
+\draw[cA] (1,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (2,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (2,0) rectangle (3,-1);
+\draw[cA] (2,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-0.5) {\tiny 1};
+\draw[gray!40,line width=0.3pt] (0,-1) rectangle (1,-2);
+\draw[cB] (0,-1.5) -- (1,-1.5); \draw[cB] (0.5,-1) -- (0.5,-2);
+\draw[gray!40,line width=0.3pt] (1,-1) rectangle (2,-2);
+\draw[cA] (1,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-1.5) {\tiny 2};
+\draw[gray!40,line width=0.3pt] (0,-2) rectangle (1,-3);
+\draw[cA] (0,-2.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-2.5) {\tiny 3};
+\node[above] at (0.5,0) {\tiny 1};
+\node[above] at (1.5,0) {\tiny 3};
+\node[above] at (2.5,0) {\tiny 2};
+\end{tikzpicture}
+}
+
+\newcommand{\FulPipesTOFFT}{%
+\begin{tikzpicture}[scale=0.42,line width=0.9pt]
+\draw[gray!40,line width=0.3pt] (0,0) rectangle (1,-1);
+\draw[cB] (0,-0.5) -- (1,-0.5); \draw[cB] (0.5,0) -- (0.5,-1);
+\draw[gray!40,line width=0.3pt] (1,0) rectangle (2,-1);
+\draw[cA] (1,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (2,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (2,0) rectangle (3,-1);
+\draw[cB] (2,-0.5) -- (3,-0.5); \draw[cB] (2.5,0) -- (2.5,-1);
+\draw[gray!40,line width=0.3pt] (3,0) rectangle (4,-1);
+\draw[cA] (3,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (4,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (4,0) rectangle (5,-1);
+\draw[cA] (4,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-0.5) {\tiny 1};
+\draw[gray!40,line width=0.3pt] (0,-1) rectangle (1,-2);
+\draw[cA] (0,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-1.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,-1) rectangle (2,-2);
+\draw[cA] (1,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (2,-1.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (2,-1) rectangle (3,-2);
+\draw[cB] (2,-1.5) -- (3,-1.5); \draw[cB] (2.5,-1) -- (2.5,-2);
+\draw[gray!40,line width=0.3pt] (3,-1) rectangle (4,-2);
+\draw[cA] (3,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-1.5) {\tiny 2};
+\draw[gray!40,line width=0.3pt] (0,-2) rectangle (1,-3);
+\draw[cB] (0,-2.5) -- (1,-2.5); \draw[cB] (0.5,-2) -- (0.5,-3);
+\draw[gray!40,line width=0.3pt] (1,-2) rectangle (2,-3);
+\draw[cA] (1,-2.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (2,-2.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (2,-2) rectangle (3,-3);
+\draw[cA] (2,-2.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-2.5) {\tiny 3};
+\draw[gray!40,line width=0.3pt] (0,-3) rectangle (1,-4);
+\draw[cA] (0,-3.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-3.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,-3) rectangle (2,-4);
+\draw[cA] (1,-3.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-3.5) {\tiny 4};
+\draw[gray!40,line width=0.3pt] (0,-4) rectangle (1,-5);
+\draw[cA] (0,-4.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-4.5) {\tiny 5};
+\node[above] at (0.5,0) {\tiny 2};
+\node[above] at (1.5,0) {\tiny 1};
+\node[above] at (2.5,0) {\tiny 5};
+\node[above] at (3.5,0) {\tiny 4};
+\node[above] at (4.5,0) {\tiny 3};
+\end{tikzpicture}\qquad \begin{tikzpicture}[scale=0.42,line width=0.9pt]
+\draw[gray!40,line width=0.3pt] (0,0) rectangle (1,-1);
+\draw[cB] (0,-0.5) -- (1,-0.5); \draw[cB] (0.5,0) -- (0.5,-1);
+\draw[gray!40,line width=0.3pt] (1,0) rectangle (2,-1);
+\draw[cA] (1,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (2,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (2,0) rectangle (3,-1);
+\draw[cA] (2,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (3,-0.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (3,0) rectangle (4,-1);
+\draw[cB] (3,-0.5) -- (4,-0.5); \draw[cB] (3.5,0) -- (3.5,-1);
+\draw[gray!40,line width=0.3pt] (4,0) rectangle (5,-1);
+\draw[cA] (4,-0.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-0.5) {\tiny 1};
+\draw[gray!40,line width=0.3pt] (0,-1) rectangle (1,-2);
+\draw[cA] (0,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-1.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,-1) rectangle (2,-2);
+\draw[cB] (1,-1.5) -- (2,-1.5); \draw[cB] (1.5,-1) -- (1.5,-2);
+\draw[gray!40,line width=0.3pt] (2,-1) rectangle (3,-2);
+\draw[cA] (2,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (3,-1.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (3,-1) rectangle (4,-2);
+\draw[cA] (3,-1.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-1.5) {\tiny 2};
+\draw[gray!40,line width=0.3pt] (0,-2) rectangle (1,-3);
+\draw[cA] (0,-2.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-2.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,-2) rectangle (2,-3);
+\draw[cB] (1,-2.5) -- (2,-2.5); \draw[cB] (1.5,-2) -- (1.5,-3);
+\draw[gray!40,line width=0.3pt] (2,-2) rectangle (3,-3);
+\draw[cA] (2,-2.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-2.5) {\tiny 3};
+\draw[gray!40,line width=0.3pt] (0,-3) rectangle (1,-4);
+\draw[cA] (0,-3.5) arc[start angle=-90,end angle=0,radius=0.5];
+\draw[cA] (1,-3.5) arc[start angle=90,end angle=180,radius=0.5];
+\draw[gray!40,line width=0.3pt] (1,-3) rectangle (2,-4);
+\draw[cA] (1,-3.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-3.5) {\tiny 4};
+\draw[gray!40,line width=0.3pt] (0,-4) rectangle (1,-5);
+\draw[cA] (0,-4.5) arc[start angle=-90,end angle=0,radius=0.5];
+\node[left] at (0,-4.5) {\tiny 5};
+\node[above] at (0.5,0) {\tiny 2};
+\node[above] at (1.5,0) {\tiny 1};
+\node[above] at (2.5,0) {\tiny 5};
+\node[above] at (3.5,0) {\tiny 4};
+\node[above] at (4.5,0) {\tiny 3};
+\end{tikzpicture}
+}

@@ -1,0 +1,251 @@
+% Young 表講義第 7 段：第 9 章 旗流形（動畫 F46–F49）
+% 內文的數字由 fulton/make_figs.py 的 check_numbers_ch910() 核對（codes/utils/schubert.py、tableaux.py 現算）；
+% 表 \FulGrassCells 由程式產生。
+
+\section{第 9 章：旗流形與 Schubert 計算（動畫 F46--F49）}\label{sec:f-ch9}
+
+\begin{keybox}[這一章在做什麼（先看這裡）]
+前八章的主角是「表」與「表示」。第 9 章換一個舞台：\textbf{所有子空間組成的空間}。例如 $\mathbb C^4$ 裡所有 2 維子空間組成 $Gr(2,4)$。
+我們要做四件事，每件都只用到大一的線性代數：
+\begin{enumerate}[nosep]
+\item \textbf{給子空間發身分證}：用一串數字（Plücker 座標）記錄一個子空間；這串數字要滿足一條\textbf{二次方程}——就是第 8 章那條。
+\item \textbf{旗}：一串套在一起的子空間（點在線上、線在面上）。它們也用二次方程描述。
+\item \textbf{切格子}：把 $Gr(2,4)$ 切成一塊塊「平地」$\mathbb C^k$，每塊對應一個放在 $2\times2$ 方框裡的 Young 圖。
+\item \textbf{數交點}：「空間中有幾條直線同時和四條給定的直線相交？」答案（2）可以用 Young 圖的規則算出來，規則正是第 5 章的 LR 規則。
+\end{enumerate}
+\end{keybox}
+
+% ------------------------------------------------------------------
+\subsection{暖身：射影空間}\label{sec:f-proj}
+
+\textbf{定義}（Fulton 第三部分的導言，\fulref{p.127}）。$\mathbb P^n$ ＝ $\mathbb C^{n+1}$ 裡\textbf{所有過原點的直線}。一條直線由它上面任一個非零向量決定，
+而 $v$ 與 $2v$、$-v$、$\tfrac13v$ 決定同一條直線，所以我們寫 $[x_0:x_1:\cdots:x_n]$，並且規定
+\[
+[x_0:\cdots:x_n]=[cx_0:\cdots:cx_n]\qquad(c\ne0).
+\]
+這叫\textbf{齊次座標}：只有「比例」有意義。
+
+\textbf{例 9.1}（$\mathbb P^1$）。$[x_0:x_1]$ 中若 $x_0\ne0$，可以除掉它變成 $[1:t]$，$t=x_1/x_0$ 是任意複數；剩下的只有 $[0:1]$。
+所以 $\mathbb P^1=\mathbb C\cup\{\text{一個點}\}$——一條直線加上「無窮遠點」。
+
+\textbf{例 9.2}（$\mathbb P^2$ 的切法）。$[x_0:x_1:x_2]$：$x_2\ne0$ 時寫成 $[a:b:1]$（一個平面 $\mathbb C^2$）；否則 $x_1\ne0$ 時寫成 $[a:1:0]$（一條線 $\mathbb C^1$）；
+否則只剩 $[1:0:0]$（一個點）。所以 $\mathbb P^2=\mathbb C^2\sqcup\mathbb C^1\sqcup\mathbb C^0$。\textbf{這種「切成平地」的想法是整章的主線。}
+
+\textbf{例 9.3}（在有限體上數點）。把 $\mathbb C$ 換成只有兩個元素 $\{0,1\}$ 的 $\mathbb F_2$（$1+1=0$）。$\mathbb C^k$ 換成 $\mathbb F_2^k$ 就有 $2^k$ 個點，
+所以 $\mathbb P^2(\mathbb F_2)$ 有 $2^2+2^1+2^0=7$ 個點。直接數也對：$\mathbb F_2^3$ 有 $8$ 個向量，去掉零向量剩 7 個，而 $\mathbb F_2$ 裡唯一的非零數是 1，
+所以每條直線上恰有一個非零向量——7 條直線，7 個點。同理 $\mathbb P^1(\mathbb F_2)$ 有 3 點、$\mathbb P^3(\mathbb F_2)$ 有 $15$ 點。一般地 $\mathbb P^n(\mathbb F_q)$ 有 $1+q+\cdots+q^n$ 個點。
+
+% ------------------------------------------------------------------
+\subsection{子空間的身分證：Plücker 座標（F46）}\label{sec:f-plucker}
+
+\textbf{問題}：$\mathbb C^4$ 裡的一個 2 維子空間 $V$ 要怎麼記錄？最直接的方法是寫兩個基底向量，排成 $2\times4$ 矩陣的兩列：
+\[
+A=\begin{pmatrix}1&2&0&1\\0&1&3&2\end{pmatrix},\qquad V=\text{$A$ 的兩列張成的平面}.
+\]
+麻煩是基底不唯一：把列做任何可逆的列運算（例如第一列加上第二列），得到的是\emph{同一個} $V$。我們想要一組「不管選哪組基底都差不多」的數字。
+
+\textbf{做法}：取 $A$ 的任兩行（column）$i<j$，算 $2\times2$ 行列式 $p_{ij}$。一共 $\binom42=6$ 個：
+\[
+p_{12}=\begin{vmatrix}1&2\\0&1\end{vmatrix}=1,\quad p_{13}=\begin{vmatrix}1&0\\0&3\end{vmatrix}=3,\quad p_{14}=2,\quad
+p_{23}=\begin{vmatrix}2&0\\1&3\end{vmatrix}=6,\quad p_{24}=3,\quad p_{34}=\begin{vmatrix}0&1\\3&2\end{vmatrix}=-3 .
+\]
+
+\textbf{例 9.4}（換基底只會整體乘一個數）。用 $g=\begin{pmatrix}1&1\\0&2\end{pmatrix}$（第一列加上第二列、第二列乘 2）：
+\[
+gA=\begin{pmatrix}1&3&3&3\\0&2&6&4\end{pmatrix},\qquad (p_{12},\dots,p_{34})=(2,6,4,12,6,-6) .
+\]
+六個數\textbf{全部乘了} $\det g=2$。這是行列式的乘法公式：每個 $2\times2$ 子式都變成 $\det g$ 乘原來的子式。
+所以 $[p_{12}:p_{13}:p_{14}:p_{23}:p_{24}:p_{34}]$ 是 $\mathbb P^5$ 的一個\emph{點}，只跟 $V$ 有關——這就是 $V$ 的 \textbf{Plücker 座標}。
+
+\textbf{例 9.5}（$\mathbb C^3$ 裡的平面：Plücker 座標＝法向量）。$V$ 由 $u=(1,0,1)$、$v=(0,1,2)$ 張成：$p_{12}=1$、$p_{13}=2$、$p_{23}=-1$。
+而外積 $u\times v=(-1,-2,1)=(p_{23},-p_{13},p_{12})$。所以在 $\mathbb C^3$ 裡，Plücker 座標就是大家熟悉的\textbf{法向量}（差一個符號的排列）。
+
+\textbf{不是每 6 個數都行。}$\mathbb P^5$ 是 5 維的，但 $V$ 只有 4 個自由度（下一小節會看到）。多出來的一個條件是
+\[
+\boxed{\;p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0\;}\qquad\text{（Plücker 關係，Lemma 1，\fulref{p.132}）}.
+\]
+\textbf{代進去驗算}：$A$ 的六個數給 $1\cdot(-3)-3\cdot3+2\cdot6=-3-9+12=0$。而 $[1:0:0:0:0:1]$ 給 $1\cdot1-0+0=1\ne0$，所以它不是任何平面的座標。
+
+\textbf{為什麼成立（一行證明）}。令 $a,b$ 是 $A$ 的兩列，看 $4\times4$ 矩陣 $\left(\begin{smallmatrix}a\\b\\a\\b\end{smallmatrix}\right)$（四列依序是 $a,b,a,b$）。它有兩列重複，行列式是 0。
+另一方面，沿前兩列做 Laplace 展開，正好得到 $2(p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23})$。所以那個括號是 0。（程式另外用一個隨機矩陣核對過這個展開。）
+
+\textbf{反過來也對：滿足關係的點都來自某個平面}（Lemma 1 的證明，\fulref{p.133}）。
+\textbf{例 9.6}（練習 2，\fulref{p.134}）。給 $(x_{12},x_{13},x_{14},x_{23},x_{24},x_{34})=(1,2,1,1,2,3)$。先驗：$1\cdot3-2\cdot2+1\cdot1=0$，可以。
+規則：選一個不是 0 的座標，這裡 $x_{12}=1$。下標可以交換但要變號（$x_{21}=-x_{12}$），重複下標是 0（$x_{11}=0$）。矩陣的第一列是「把 $12$ 的 1 換成 $t$」：
+$(x_{12},x_{22},x_{32},x_{42})=(1,0,-1,-2)$；第二列是「把 2 換成 $t$」：$(x_{11},x_{12},x_{13},x_{14})=(0,1,2,1)$。
+\[
+B=\begin{pmatrix}1&0&-1&-2\\0&1&2&1\end{pmatrix},\qquad \text{它的六個子式：}1,2,1,1,2,3\ \checkmark
+\]
+（Fulton 的寫法是 $V=\ker B$：$B$ 的核由 $(1,-2,1,0)$ 與 $(2,-1,0,1)$ 張成。「列張成」與「核」只差一個對偶，本講義兩種都會用，數字都一樣。）
+
+\begin{thmbox}[Lemma 1 \fulref{p.132}]
+一般地，$\mathbb C^m$ 的 $d$ 維子空間 $\leftrightarrow$ $\mathbb P^{\binom md-1}$ 中滿足所有\textbf{二次} Plücker 關係的點；而且這些關係生成所有在 $Gr$ 上為零的多項式。
+這些關係就是第 8 章 \S\ref{sec:f-quadratic} 的「交換關係」。
+\end{thmbox}
+
+% ------------------------------------------------------------------
+\subsection{旗：點在線上（F47）}\label{sec:f-flags}
+
+\textbf{旗}（flag）就是一串套在一起的子空間，例如 $\mathbb C^3$ 裡的 $E_1\subset E_2$（1 維在 2 維裡面）。換成射影空間的語言：$E_1$ 是 $\mathbb P^2$ 的一個點，$E_2$ 是一條線，
+旗＝「\textbf{一個點，加上過這個點的一條線}」。所有這種旗組成\textbf{旗流形} $Fl(\mathbb C^3)$。維數是 $2+1=3$：點有 2 個自由度，過它的線還有 1 個。
+
+\textbf{「點在線上」怎麼寫成方程？}點有座標 $x=(x_1,x_2,x_3)$；線（2 維子空間）有 Plücker 座標 $y_{12},y_{13},y_{23}$。條件是一條\textbf{雙線性}方程
+\[
+x_1y_{23}-x_2y_{13}+x_3y_{12}=0 \qquad\text{（Lemma 2，\fulref{p.134}）}.
+\]
+（它就是 $3\times3$ 行列式 $\det(x;\text{線的兩個基底})=0$ 沿第一列展開——三個向量共面。）
+
+\textbf{例 9.7}。線由 $v_1=(1,2,3)$、$v_2=(0,1,1)$ 張成：$y_{12}=1$、$y_{13}=1$、$y_{23}=2\cdot1-3\cdot1=-1$。
+\begin{itemize}[nosep]
+\item 點 $x=v_1$：$1\cdot(-1)-2\cdot1+3\cdot1=0$ $\checkmark$（點在線上）；點 $x=v_2$：$0-1+1=0$ $\checkmark$。
+\item 點 $x=(1,0,0)$：$1\cdot(-1)-0+0=-1\ne0$，不在線上。
+\end{itemize}
+
+\begin{thmbox}[命題 1 \fulref{p.135}]
+任何旗流形（一串子空間）都可以放進幾個射影空間的乘積裡，切出它的方程全是這種二次方程；例如 $Fl(\mathbb C^3)\subset\mathbb P^2\times\mathbb P^2$ 由上面那一條方程切出。
+\end{thmbox}
+
+\textbf{座標環與數維數遊戲}（\fulref{p.136}）。$Fl(\mathbb C^3)$ 上的「多項式函數」是 $x_i$ 與 $y_{jk}$ 的多項式，再把上面那條關係當成 0。看「$x$ 的次數 $a$、$y$ 的次數 $b$」的部分有幾維：
+\begin{itemize}[nosep]
+\item $(a,b)=(1,1)$：單項式 $x_iy_{jk}$ 有 $3\times3=9$ 個，扣掉 1 條關係，剩 $\mathbf 8$。
+\item $(2,1)$：$x$ 的二次單項式 6 個、$y$ 的一次 3 個，共 18 個；關係乘上 $x$ 的一次單項式（3 個）都要扣掉，剩 $18-3=\mathbf{15}$。
+\item $(2,2)$：$6\times6-3\times3=\mathbf{27}$；$(1,0)$、$(0,1)$：3；$(2,0)$：6。
+\end{itemize}
+一般公式 $\binom{a+2}2\binom{b+2}2-\binom{a+1}2\binom{b+1}2$。神奇的是：這些數 $3,3,6,8,15,15,27$ 正好是第 8 章的 $\dim E^{(a+b,b)}$（$m=3$）。
+例如 $8=\dim E^{(2,1)}$（\S\ref{sec:f-weights} 的 8 個半標準表）。也就是說
+\[
+\text{$Fl(\mathbb C^3)$ 的座標環}=\bigoplus_{a,b\ge0}E^{(a+b,\,b)},
+\]
+\textbf{一個環把 $GL_3$ 的（至多 2 列的）不可約表示每個裝一次。}
+
+\begin{notebox}[兩句背景（\S9.2--9.3，可跳過）]
+\textbf{不變量}（命題 2，\fulref{p.138}）：$2\times m$ 矩陣的多項式中，在 $A\mapsto gA$（$g\in SL_2$，$\det g=1$）下不變的，恰好是 $2\times2$ 子式的多項式——
+因為 $\det(gA)=\det g\det A=\det A$。\textbf{Borel–Weil}（\S9.3）：第 8 章的 $E^\lambda$ 可以看成旗流形上某個「線叢」的截面，而旗流形本身就是最高權重向量 $[e_{U(\lambda)}]$ 在 $\mathbb P(E^\lambda)$ 裡的軌道。
+\end{notebox}
+
+% ------------------------------------------------------------------
+\subsection{數星星：Grassmannian 的 Schubert 胞腔（F48）}\label{sec:f-grasscells}
+
+\textbf{記號}（\S9.4，\fulref{p.145--147}）。$Gr(r,m)$＝$\mathbb C^m$ 的 $r$ 維子空間；令 $n=m-r$。主角是 $Gr(2,4)$（$r=n=2$）。
+固定一串座標子空間 $F_k=\langle e_1,\dots,e_k\rangle$（前 $k$ 個座標向量張成）：$F_1\subset F_2\subset F_3\subset\mathbb C^4$。
+
+\textbf{列梯形矩陣}。每個 $V$ 都有\emph{唯一}一個 $r\times m$ 矩陣，它的列張成 $V$，而且：每一列\textbf{最後一個}非零數是 1（叫樞紐），樞紐所在的行其他位置都是 0，
+樞紐由上而下往右移。（這是大一的「簡化列梯形」，只是從右邊做起。）其餘的位置可以是任何數，記成 $\ast$。
+\textbf{Fulton 的規則}：若第 $i$ 列的樞紐在第 $n+i-\lambda_i$ 行，就得到一個放在 $r\times n$ 方框裡的 Young 圖 $\lambda=(\lambda_1\ge\lambda_2)$；第 $i$ 列有 $n-\lambda_i$ 個星號。
+
+\textbf{例 9.8}（逐步做一次）。$V$＝例 9.4 的 $A$ 的列空間。從最右邊一行開始消：
+\[
+\begin{pmatrix}1&2&0&1\\0&1&3&2\end{pmatrix}\ \leadsto\ \begin{pmatrix}-\tfrac23&-1&1&0\\1&2&0&1\end{pmatrix}.
+\]
+樞紐在第 3、4 行：$\lambda_1=2+1-3=0$、$\lambda_2=2+2-4=0$，$\lambda=\varnothing$，4 個星號。\textbf{一般的平面都在這個最大的胞腔裡。}
+
+\textbf{例 9.9}（其他幾個）。
+\begin{itemize}[nosep]
+\item $V=\langle(3,1,0,0),(1,0,2,1)\rangle$：樞紐在第 2、4 行 → $\lambda=(1,0)$。注意 $(3,1,0,0)\in F_2$：$V$ 和 $F_2$ 相交。
+\item $V=\langle e_1,(0,1,1,1)\rangle$：樞紐在第 1、4 行 → $\lambda=(2,0)$。$V$ 包含 $e_1$，也就是 $V\supset F_1$。
+\item $V=\langle(1,0,1,0),(0,1,0,0)\rangle$：樞紐在第 2、3 行 → $\lambda=(1,1)$。兩個向量第 4 個座標都是 0：$V\subset F_3$。
+\item $V=\langle e_1,e_2\rangle=F_2$：樞紐在第 1、2 行 → $\lambda=(2,2)$，沒有星號，只有這一個點。
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\FulGrassCells
+\caption{$Gr(2,4)$ 的六個 Schubert 胞腔 $\Omega^\circ_\lambda$（程式產生）。每個胞腔是 $\mathbb C^{\#\ast}$，星號數 $=4-|\lambda|$。}
+\label{tab:f-grasscells}
+\end{table}
+
+\textbf{結論}：$Gr(2,4)=\mathbb C^4\sqcup\mathbb C^3\sqcup\mathbb C^2\sqcup\mathbb C^2\sqcup\mathbb C^1\sqcup\mathbb C^0$，維數 4（一般地 $\dim Gr(r,m)=rn$）。
+
+\textbf{數點}。把各胞腔的點數加起來：
+\[
+\#Gr(2,4)(\mathbb F_q)=1+q+2q^2+q^3+q^4=\binom42_q\quad(\text{$q$-二項式係數}).
+\]
+$q=1$ 時是 $6=\binom42$；$q=2$ 時是 $1+2+8+8+16=35$。\textbf{用最笨的方法驗證}：$\mathbb F_2^4$ 有 15 個非零向量，有序地選兩個線性獨立的向量有 $15\times14$ 種；
+每個 2 維子空間（$3$ 個非零向量）被數了 $3\times2$ 次。所以有 $\dfrac{15\times14}{3\times2}=35$ 個 $\checkmark$（程式也用暴力枚舉數過）。
+同理 $Gr(1,3)=\mathbb P^2$ 的胞腔給 $1+q+q^2$（例 9.2、9.3），$Gr(2,5)$ 給 $1+q+2q^2+2q^3+2q^4+q^5+q^6$，$q=2$ 時 $155=\frac{31\times30}{3\times2}$。
+
+\textbf{Schubert 簇}（\fulref{p.146}）。胞腔的閉包叫 Schubert 簇：
+\[
+\Omega_\lambda=\{V:\ \dim(V\cap F_{n+i-\lambda_i})\ge i,\ i=1,\dots,r\},\qquad \text{餘維數 }|\lambda| .
+\]
+它包含所有 $\mu\supseteq\lambda$ 的胞腔（練習 13，\fulref{p.147}）。把 $Gr(2,4)$ 想成 $\mathbb P^3$ 裡的\textbf{直線}（2 維子空間 $\leftrightarrow$ 直線），固定的旗 $\leftrightarrow$ 一個點 $P\in$ 一條線 $\ell\subset$ 一個平面 $H$：
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$\lambda$ & 條件 & 用 $\mathbb P^3$ 的話說（$P=F_1$、$\ell=F_2$、$H=F_3$）\\
+\midrule
+$(1)$ & $\dim(V\cap F_2)\ge1$ & 和 $\ell$ 相交的直線（餘維 1）\\
+$(2)$ & $V\supset F_1$ & 過點 $P$ 的直線\\
+$(1,1)$ & $V\subset F_3$ & 落在平面 $H$ 裡的直線\\
+$(2,1)$ & $V\supset F_1$ 且 $V\subset F_3$ & 在 $H$ 裡、過 $P$ 的直線\\
+$(2,2)$ & $V=F_2$ & 只有 $\ell$ 本身\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ------------------------------------------------------------------
+\subsection{數交點：四條線問題與 Schubert 計算（F49）}\label{sec:f-fourlines}
+
+\textbf{謎題}：$\mathbb P^3$（三維空間）裡給四條「一般位置」的直線，有幾條直線\emph{同時}和四條都相交？
+
+\textbf{翻譯}。「和一條線相交」是 $\Omega_1$，餘維 1；四個條件在 4 維的 $Gr(2,4)$ 裡應該切出有限多點。
+每個 $\Omega_\lambda$ 給一個「類」$\sigma_\lambda$——你可以把它想成一個可以相加、相乘的符號，\textbf{乘積的係數數的是交點個數}。答案就是 $\sigma_1^4$ 裡 $\sigma_{22}$（一個點）的係數。
+
+\textbf{乘法規則 1：Pieri}（式 (9)，\fulref{p.146}）。$\sigma_1\cdot\sigma_\lambda$＝把 $\lambda$ 加一格的所有方法，但\textbf{只留放得進 $2\times2$ 方框的}：
+\[
+\sigma_1\sigma_1=\sigma_2+\sigma_{11},\qquad \sigma_1\sigma_2=\sigma_{21},\qquad \sigma_1\sigma_{11}=\sigma_{21},\qquad \sigma_1\sigma_{21}=\sigma_{22}.
+\]
+（$\sigma_1\sigma_2$ 本來還有 $\sigma_3$，但 $(3)$ 有 3 格放不進方框，丟掉。）
+
+\textbf{第一條有幾何意義}：和兩條線 $\ell_1,\ell_2$ 都相交的直線。把 $\ell_2$ 移動到和 $\ell_1$ 交於一點 $Q$（兩線張成一個平面 $K$），這時和兩條都相交的直線\emph{要嘛過 $Q$、要嘛落在 $K$ 裡}——
+正好是 $\sigma_2+\sigma_{11}$。
+
+\textbf{算 $\sigma_1^4$}：
+\[
+\sigma_1^2=\sigma_2+\sigma_{11},\quad \sigma_1^3=\sigma_{21}+\sigma_{21}=2\sigma_{21},\quad \sigma_1^4=2\sigma_{22}.
+\]
+\textbf{答案：2 條。}換個角度：從 $\varnothing$ 一格一格長到 $(2,2)$、每一步都留在方框裡，有兩條路：
+$\varnothing\to\yts{{}}\to\yts{{}{}}\to\yts{{}{},{}}\to\yts{{}{},{}{}}$ 與 $\varnothing\to\yts{{}}\to\yts{{},{}}\to\yts{{}{},{}}\to\yts{{}{},{}{}}$。
+把「第幾步加的格子」填進去，就是 $(2,2)$ 的兩個標準表 $\yts{12,34}$、$\yts{13,24}$。
+（古典的看法：三條兩兩不交的直線決定一個二次曲面，和三條都相交的直線恰好鋪滿它；第四條線穿過這個曲面兩次，每個穿過點上有一條——2 條。）
+
+\textbf{乘法規則 2：對偶}（Lemma 3、式 (11)，\fulref{p.148--149}）。$|\lambda|+|\mu|=4$ 時，$\sigma_\lambda\sigma_\mu=\sigma_{22}$（交於一點）恰好當「$\mu$ 轉 180° 放到方框右下角，和左上角的 $\lambda$ 剛好拼滿」，否則是 0。
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+乘積 & 結果 & 幾何（驗算）\\
+\midrule
+$\sigma_2\sigma_2$ & $\sigma_{22}$ & 過兩個點的直線：1 條\\
+$\sigma_{11}\sigma_{11}$ & $\sigma_{22}$ & 落在兩個平面裡的直線：1 條（兩平面的交線）\\
+$\sigma_2\sigma_{11}$ & $0$ & 過一點 $P$、又落在一個不含 $P$ 的平面裡：沒有\\
+$\sigma_1\sigma_{21}$ & $\sigma_{22}$ & 在平面 $H$ 裡過點 $P$ 的直線中，和另一條線相交的：1 條\\
+$\sigma_1^2\sigma_2$ & $\sigma_{22}$ & 過一點、又和兩條線相交：1 條\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{keybox}[Schubert 計算＝Schur 函數的乘法，只留方框裡的項（\fulref{p.152}）]
+$\sigma_\lambda\sigma_\mu=\sum_\nu c^\nu_{\lambda\mu}\,\sigma_\nu$，$c^\nu_{\lambda\mu}$ 是第 5 章的 \textbf{LR 係數}，$\nu$ 只取放得進 $r\times n$ 方框的。
+另外 Giambelli 公式（式 (10)）把任何 $\sigma_\lambda$ 寫成 $\sigma_k$ 的行列式，例如 $\sigma_{11}=\sigma_1^2-\sigma_2$。
+\end{keybox}
+
+\textbf{更多例子}。
+\begin{itemize}[nosep]
+\item $Gr(2,5)$（$\mathbb P^4$ 裡的直線，方框 $2\times3$）：和 6 個一般的平面都相交的直線有 $f^{(3,3)}=5$ 條。練習 17 的公式：$\dfrac{6!\cdot1!}{4!\cdot3!}=\dfrac{720}{144}=5$。
+\item $Gr(3,6)$（方框 $3\times3$）：9 個條件給 $f^{(3,3,3)}=42$。
+\item LR 在方框裡：第 5 章算過 $s_{21}^2=s_{42}+s_{411}+s_{33}+2s_{321}+s_{3111}+s_{222}+s_{2211}$。在 $Gr(3,6)$ 裡 $(4,2)$、$(4,1,1)$（4 行）與 $(3,1,1,1)$、$(2,2,1,1)$（4 列）放不進去，
+      所以 $\sigma_{21}^2=\sigma_{33}+2\sigma_{321}+\sigma_{222}$——係數 2 就是 $c^{321}_{21,21}$。
+\end{itemize}
+
+\begin{notebox}[練習（答案在後面）]
+\begin{enumerate}[nosep]
+\item 平面 $\langle(1,1,0,0),(0,0,1,1)\rangle$ 的 Plücker 座標是多少？驗證 Plücker 關係。
+\item $\langle e_2,e_4\rangle$ 在哪一個胞腔？
+\item $\mathbb F_2^4$ 有幾個 3 維子空間？
+\item 用 Pieri 算 $\sigma_1^2\sigma_{11}$ 在 $Gr(2,4)$ 裡是多少，並說出幾何意義。
+\end{enumerate}
+\textbf{答案}：1. $(p_{12},\dots,p_{34})=(0,1,1,1,1,0)$，$0\cdot0-1\cdot1+1\cdot1=0$。
+2. 樞紐在第 2、4 行，$\lambda=(1,0)$。
+3. 15（和 1 維子空間一樣多：每個 3 維子空間是某個非零線性函數的核）。
+4. $\sigma_1\sigma_{11}=\sigma_{21}$，再乘 $\sigma_1$ 得 $\sigma_{22}$：落在平面裡、又和兩條線相交的直線有 1 條（連接兩條線與平面的兩個交點）。
+\end{notebox}

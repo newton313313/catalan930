@@ -1,0 +1,280 @@
+% Young 表講義第 8 段：第 10 章 Schubert 簇與 Schubert 多項式（動畫 F50–F55）
+% 內文的數字由 fulton/make_figs.py 的 check_numbers_ch910() 核對；表 \FulFlagCells、\FulSchubertSfour 與圖 \FulHasseSthree、
+% \FulPipesOTT、\FulPipesTOFFT 由程式產生。
+
+\section{第 10 章：Schubert 簇與 Schubert 多項式（動畫 F50--F55）}\label{sec:f-ch10}
+
+\begin{keybox}[這一章在做什麼（先看這裡）]
+第 9 章切的是 $Gr$（只記一個子空間）。這一章切\textbf{完全旗流形} $Fl(m)$（記住一整串 $E_1\subset E_2\subset\cdots\subset E_{m-1}$）。
+\begin{enumerate}[nosep]
+\item 格子不再由 Young 圖標記，而是由\textbf{置換} $w\in S_m$ 標記；格子的維數＝$w$ 的\textbf{逆序數} $\ell(w)$。
+\item 每個格子給一個類 $\sigma_w$；它們活在一個很具體的環裡：$x_1,\dots,x_m$ 的多項式，但\textbf{對稱多項式都當成 0}。
+\item 有一台「機器」$\partial_i$（差商），把 $\sigma_w$ 一個一個往下推；從最頂端出發，就得到每個 $w$ 的\textbf{Schubert 多項式} $\mathfrak S_w$。
+\item 比大小的規則（Bruhat 序）只要排序；而只在一個位置下降的置換，它的 Schubert 多項式就是 Schur 多項式——回到第 9 章。
+\end{enumerate}
+\end{keybox}
+
+% ------------------------------------------------------------------
+\subsection{完全旗流形與不動點（F50）}\label{sec:f-fixed}
+
+$Fl(m)$＝所有完全旗 $E_1\subset E_2\subset\cdots\subset E_{m-1}\subset\mathbb C^m$（$\dim E_k=k$）。小例子：
+$Fl(2)$＝$\mathbb C^2$ 裡的直線＝$\mathbb P^1$；$Fl(3)$＝（$\mathbb P^2$ 的點，過它的線），就是 \S\ref{sec:f-flags} 的旗流形，維數 3。一般 $\dim Fl(m)=\binom m2$。
+
+\textbf{不動點}（\S10.1，Lemma 2，\fulref{p.156}）。對角矩陣 $t=\operatorname{diag}(t_1,t_2,t_3)$ 把每個座標軸拉長，但不改變座標軸本身。哪些旗完全不動？
+答案：由座標向量組成的旗。在 $\mathbb P^2$ 裡畫座標三角形（頂點 $e_1,e_2,e_3$）：不動的旗＝（一個頂點，過它的一條邊）：
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+\coordinate (A) at (0,1.5); \coordinate (B) at (-1.3,0); \coordinate (C) at (1.3,0);
+\draw[gray] (A)--(B)--(C)--cycle;
+\fill (A) circle (1.6pt) node[above] {\small $e_1$}; \fill (B) circle (1.6pt) node[left] {\small $e_2$}; \fill (C) circle (1.6pt) node[right] {\small $e_3$};
+\draw[cB,very thick] (B)--(C); \fill[cB] (B) circle (2.4pt);
+\node[align=left,anchor=west] at (2.0,0.75) {\small 例：點 $e_2$、線 $\langle e_2,e_3\rangle$ $\leftrightarrow$ $w=2\,3\,1$\\[2pt]
+\small （第 $k$ 個子空間由 $e_{w(1)},\dots,e_{w(k)}$ 張成）\\[2pt] \small 3 個頂點 × 每點 2 條邊 $=6=3!$};
+\end{tikzpicture}
+\end{center}
+所以不動的旗恰好 $m!$ 個，一個置換 $w$ 對應一個，記作 $x(w)$：$E_k=\langle e_{w(1)},\dots,e_{w(k)}\rangle$。
+
+% ------------------------------------------------------------------
+\subsection{旗流形的胞腔：星號數＝逆序數（F50）}\label{sec:f-flagcells}
+
+\textbf{逆序}：$w$ 的一對位置 $i<j$ 若 $w(i)>w(j)$ 就叫一個逆序，個數記作 $\ell(w)$（「長度」）。
+\textbf{例 10.1}：$w=231$（$w(1)=2,w(2)=3,w(3)=1$）。三對位置：$(1,2)$：$2<3$ 不是；$(1,3)$：$2>1$ 是；$(2,3)$：$3>1$ 是。$\ell(231)=2$。
+
+\textbf{列梯形矩陣}（\S10.2，\fulref{p.157}）。每個旗都可以寫成一個 $m\times m$ 矩陣的前幾列（$E_k$＝前 $k$ 列張成），而且唯一地化成：
+第 $p$ 列在第 $w(p)$ 行放 1，\textbf{1 的右邊全是 0，每個 1 的下方全是 0}，其餘是星號。這個 $w$ 告訴你旗落在哪個胞腔 $X^\circ_w$。
+\textbf{例 10.2}（$w=231$ 逐格填）：第 1 列 1 在第 2 行，左邊第 1 行還沒被「下方要 0」限制 → $\ast$；第 2 列 1 在第 3 行，第 1 行 $\ast$、第 2 行在第 1 列的 1 下方 → 0；
+第 3 列 1 在第 1 行。共 2 顆星＝$\ell(231)$。
+
+\begin{table}[H]
+\centering
+\FulFlagCells
+\caption{$Fl(3)$ 的六個胞腔（程式產生）。$X^\circ_w\cong\mathbb C^{\ell(w)}$；星號全填 0 就是不動點 $x(w)$。}
+\label{tab:f-flagcells}
+\end{table}
+
+\textbf{為什麼星號數＝逆序數}：第 $p$ 列的星號在「比 $w(p)$ 小、而且還沒被上面的 1 佔走的行」，個數＝後面比 $w(p)$ 小的值的個數。
+\textbf{例 10.3}（書上的例子）：$w=426135$。各列星號 $3,1,3,0,0,0$，共 7 個；逆序：$4$ 後面比它小的有 $2,1,3$（3 個），$2$ 後面有 $1$（1 個），$6$ 後面有 $1,3,5$（3 個）——也是 7。
+
+\textbf{數點}。胞腔維數的分布是 $S_m$ 裡各長度的置換個數：$m=3$ 是 $1,2,2,1$，$m=4$ 是 $1,3,5,6,5,3,1$。所以
+\[
+\#Fl(3)(\mathbb F_q)=1+2q+2q^2+q^3=(1+q)(1+q+q^2),\qquad q=2:\ 1+4+8+8=21 .
+\]
+\textbf{笨方法驗證}：$\mathbb P^2(\mathbb F_2)$ 有 7 個點，每點在 3 條線上（Fano 平面），$7\times3=21$ $\checkmark$。$m=4$：$1+6+20+48+80+96+64=315=15\times7\times3$
+（先選 $E_1$：15 種；再選 $E_2\supset E_1$：7 種；再選 $E_3\supset E_2$：3 種）$\checkmark$。
+
+\textbf{Schubert 簇與類}（\fulref{p.159--161}）。$X_w$＝$X^\circ_w$ 的閉包（維數 $\ell(w)$）。另一個方向的 $\Omega_w$（餘維 $\ell(w)$），類 $\sigma_w=[\Omega_w]=[X_{w_0w}]$，
+其中 $w_0=m\,(m{-}1)\cdots1$ 是最長的置換。對偶性（式 (2)）：$\sigma_u$ 與 $\sigma_{w_0v}$ 的交點數是 $\delta_{uv}$。
+
+% ------------------------------------------------------------------
+\subsection{上同調環：對稱多項式都當成 0（F51）}\label{sec:f-borel}
+
+\begin{thmbox}[命題 3 \fulref{p.161--162}]
+$H^*(Fl(m))=\mathbb Z[x_1,\dots,x_m]\,/\,(e_1,\dots,e_m)$，$e_k$ 是第 6 章的基本對稱多項式。基底：$x_1^{i_1}\cdots x_{m-1}^{i_{m-1}}$，$i_j\le m-j$（共 $m!$ 個）。
+\end{thmbox}
+不懂拓撲沒關係：你只要把它當成「一個多項式環，其中 $e_1=e_2=\cdots=e_m=0$」來計算。
+
+\textbf{例 10.4}（$m=2$）。$x_1+x_2=0$、$x_1x_2=0$。所以 $x_2=-x_1$，$x_1^2=-x_1x_2=0$。基底 $1,x_1$——兩個，對應 $Fl(2)=\mathbb P^1$ 的兩個胞腔（一個點、一條線）。
+
+\textbf{例 10.5}（$m=3$）。基底 $1,\ x_1,x_2,\ x_1^2,x_1x_2,\ x_1^2x_2$：次數 $0,1,1,2,2,3$，個數 $1,2,2,1$，正好是表~\ref{tab:f-flagcells} 的胞腔維數分布。其他單項式怎麼化？
+\begin{itemize}[nosep]
+\item $x_3=e_1-x_1-x_2=-x_1-x_2$。
+\item $x_2^2=-x_1^2-x_1x_2$：因為 $x_1^2+x_1x_2+x_2^2=e_1(x_1+x_2)-e_2$（展開就驗得出來）$=0$。
+\item $x_1^3=0$：因為 $x_1^3=e_1x_1^2-e_2x_1+e_3$（$x_1$ 是 $t^3-e_1t^2+e_2t-e_3=\prod(t-x_i)$ 的根）$=0$。
+\end{itemize}
+
+% ------------------------------------------------------------------
+\subsection{吃多項式的機器：差商 $\partial_i$（F51）}\label{sec:f-dd}
+
+\textbf{定義}（\S10.3，\fulref{p.165}）。$s_if$＝把 $f$ 裡的 $x_i$ 與 $x_{i+1}$ 對調。
+\[
+\partial_if=\frac{f-s_if}{x_i-x_{i+1}} .
+\]
+\textbf{一定除得盡}：分子 $g=f-s_if$ 滿足 $s_ig=-g$；令 $x_i=x_{i+1}$ 時 $g=0$，所以 $g$ 有因式 $x_i-x_{i+1}$。
+
+\textbf{例 10.6}（一張輸入輸出表；$\partial_1$ 只看 $x_1,x_2$）：
+\begin{center}
+\begin{tabular}{@{}lll@{\qquad}lll@{}}
+\toprule
+$f$ & $f-s_1f$ & $\partial_1f$ & $f$ & $f-s_1f$ & $\partial_1f$\\
+\midrule
+$x_1$ & $x_1-x_2$ & $1$ & $x_1^2$ & $x_1^2-x_2^2$ & $x_1+x_2$\\
+$x_2$ & $x_2-x_1$ & $-1$ & $x_1^3$ & $x_1^3-x_2^3$ & $x_1^2+x_1x_2+x_2^2$\\
+$x_1x_2$ & $0$ & $0$ & $x_1^2x_2$ & $x_1^2x_2-x_1x_2^2$ & $x_1x_2$\\
+$x_3$ & $0$ & $0$ & $x_1^2x_3$ & $(x_1^2-x_2^2)x_3$ & $(x_1+x_2)x_3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+規律：對 $x_i,x_{i+1}$ 對稱的東西（如 $x_1x_2$、$x_3$）被吃成 0，也可以當常數提出去；每吃一次次數少 1。$\partial_2$ 同理，例如 $\partial_2(x_1^2x_2)=x_1^2$、$\partial_2(x_2^2x_3)=x_2x_3$、$\partial_2(x_2x_3)=0$。
+
+\textbf{三條規則}。
+\begin{enumerate}[nosep]
+\item $\partial_i\partial_i=0$：$\partial_if$ 已經對 $x_i,x_{i+1}$ 對稱，再吃就是 0。例：$x_1^3\to x_1^2+x_1x_2+x_2^2\to0$。
+\item 辮關係 $\partial_1\partial_2\partial_1=\partial_2\partial_1\partial_2$。例：$x_1^2x_2\xrightarrow{\partial_1}x_1x_2\xrightarrow{\partial_2}x_1\xrightarrow{\partial_1}1$，
+      而 $x_1^2x_2\xrightarrow{\partial_2}x_1^2\xrightarrow{\partial_1}x_1+x_2\xrightarrow{\partial_2}1$。
+\item Leibniz：$\partial_i(fg)=(\partial_if)\,g+(s_if)\,(\partial_ig)$。例：$\partial_1(x_1\cdot x_1)=1\cdot x_1+x_2\cdot1=x_1+x_2$ $\checkmark$。
+\end{enumerate}
+
+\textbf{和幾何的關係}（命題 4，\fulref{p.167}；Lemma 9）：$w(i)>w(i+1)$ 時 $\partial_i\sigma_w=\sigma_{ws_i}$，否則 $\partial_i\sigma_w=0$（$ws_i$＝把 $w$ 的第 $i$、$i+1$ 個位置對調）。
+這台機器把 Schubert 類一格一格往下推。
+
+% ------------------------------------------------------------------
+\subsection{Schubert 多項式：從最頂端流下來（F52）}\label{sec:f-schubpoly}
+
+\begin{thmbox}[Lemma 10 與命題 5 \fulref{p.170--171}]
+$\mathfrak S_{w_0}=x_1^{m-1}x_2^{m-2}\cdots x_{m-1}$；而 $w(i)>w(i+1)$ 時 $\mathfrak S_{ws_i}=\partial_i\mathfrak S_w$。結果與走哪條路無關，也與 $m$ 無關。
+\end{thmbox}
+
+\textbf{例 10.7}（$S_3$ 全部）。從 $\mathfrak S_{321}=x_1^2x_2$ 出發：
+$\mathfrak S_{231}=\partial_1(x_1^2x_2)=x_1x_2$、$\mathfrak S_{312}=\partial_2(x_1^2x_2)=x_1^2$、$\mathfrak S_{213}=\partial_2(x_1x_2)=x_1$、$\mathfrak S_{132}=\partial_1(x_1^2)=x_1+x_2$、$\mathfrak S_{123}=1$。
+\begin{center}
+\FulHasseSthree
+\end{center}
+（圖：$S_3$ 的 Bruhat 序，每個置換下面是它的 Schubert 多項式；程式產生。左右兩條路到 $123$ 都得 1。）
+
+\textbf{例 10.8}（書上的長途旅行，\fulref{p.172}）。$w=41352$ 從 $w_0=54321$ 走五步：
+\[
+\begin{array}{lll}
+54321 & & x_1^4x_2^3x_3^2x_4\\
+45321 & \partial_1 & x_1^3x_2^3x_3^2x_4\\
+45312 & \partial_4 & x_1^3x_2^3x_3^2\\
+45132 & \partial_3 & x_1^3x_2^3x_3+x_1^3x_2^3x_4\\
+41532 & \partial_2 & x_1^3x_2^2x_3+x_1^3x_2^2x_4+x_1^3x_2x_3^2+x_1^3x_2x_3x_4+x_1^3x_3^2x_4\\
+41352 & \partial_3 & x_1^3x_2x_3+x_1^3x_2x_4+x_1^3x_3x_4=x_1^3\,e_2(x_2,x_3,x_4)
+\end{array}
+\]
+每步交換相鄰兩個「前大後小」的數字，多項式就做一次對應的 $\partial$。
+
+\begin{table}[H]
+\centering
+\FulSchubertSfour
+\caption{$S_4$ 的 24 個 Schubert 多項式（依長度排列；程式產生）。注意係數全是非負整數。}
+\label{tab:f-schubert-s4}
+\end{table}
+
+\textbf{從表裡讀出的規律}。
+\begin{itemize}[nosep]
+\item 簡單對換 $s_i$：$\mathfrak S_{2134}=x_1$、$\mathfrak S_{1324}=x_1+x_2$、$\mathfrak S_{1243}=x_1+x_2+x_3$——前 $i$ 個變數的和。
+\item 支配型（練習 6）：$w(1)>\cdots>w(d)$、之後遞增時 $\mathfrak S_w=x_1^{w(1)-1}\cdots x_d^{w(d)-1}$，例如 $\mathfrak S_{3124}=x_1^2$、$\mathfrak S_{4213}=x_1^3x_2$、$\mathfrak S_{3214}=x_1^2x_2$。
+\item 穩定：$\mathfrak S_{1324}=\mathfrak S_{13245}=x_1+x_2$，加一個「不動的尾巴」不改變多項式。
+\item 基底（命題 6）：下降都在 $k$ 以內的 $\mathfrak S_w$ 組成 $\mathbb Z[x_1,\dots,x_k]$ 的基底。
+\item 乘法（Monk 公式的例子）：$x_1\cdot x_1=\mathfrak S_{312}$；$(x_1+x_2)^2=\mathfrak S_{2314}+\mathfrak S_{1423}=x_1x_2+(x_1^2+x_1x_2+x_2^2)$——
+      對照第 9 章的 $\sigma_1^2=\sigma_{11}+\sigma_2$（\S\ref{sec:f-schurweyl-gr} 會解釋為什麼一樣）。
+\end{itemize}
+
+% ------------------------------------------------------------------
+\subsection{係數是在數什麼：pipe dream（F53，書外的延伸）}\label{sec:f-pipes}
+
+書上 p.172 說：Schubert 多項式的係數都是非負整數，Billey–Jockusch–Stanley（1993）給了組合公式。\textbf{練習 5}：$\mathfrak S_{21543}$ 有 13 項，其中 $x_1^2x_2x_3$ 的係數是 2。這個 2 數的是什麼？
+
+\textbf{規則}。在 $m\times m$ 的階梯格子（第 $i$ 列有 $m+1-i$ 格）每格放「十字」或「一對彎管」（最外緣的半格只能是彎管）。
+第 $i$ 條水管從左邊第 $i$ 列流進來，只往右或往上走（十字直走、彎管轉彎），從頂端流出。要求：
+\begin{itemize}[nosep]
+\item 第 $i$ 條水管從頂端第 $w(i)$ 行流出；
+\item \textbf{任兩條水管最多交叉一次}（「縮減」）。
+\end{itemize}
+權重 $x^D$＝每一列十字的個數：第 1 列有 $a_1$ 個十字就乘 $x_1^{a_1}$，依此類推。\textbf{定理}：$\mathfrak S_w=\sum_Dx^D$（對所有這種圖 $D$ 求和）。
+
+\textbf{例 10.9}（$w=132$）。要讓 2、3 號水管交換位置，只需要一個十字，可以放在第 1 列第 2 格（權重 $x_1$）或第 2 列第 1 格（權重 $x_2$）：
+\begin{center}
+\FulPipesOTT
+\end{center}
+加起來 $x_1+x_2=\mathfrak S_{132}$ $\checkmark$。（左邊數字是流進的列，頂端數字是從那一行流出的水管編號；彎管藍色、十字橘色。）
+
+\textbf{例 10.10}（練習 5 的 2）。$w=21543$ 一共 14 張圖（$=\mathfrak S_{21543}$ 所有係數的和），其中恰有兩張每列十字數是 $2,1,1,0,0$：
+\begin{center}
+\FulPipesTOFFT
+\end{center}
+所以 $x_1^2x_2x_3$ 的係數是 2。\textbf{係數＝圖的張數，所以一定是非負整數。}$w_0=321$ 只有一張圖（三個十字），權重 $x_1^2x_2$ $\checkmark$。
+
+% ------------------------------------------------------------------
+\subsection{排序遊戲：Bruhat 序（F54）}\label{sec:f-bruhat}
+
+\textbf{問題}：胞腔 $X^\circ_u$ 什麼時候落在 $X_v$ 裡（在 $X^\circ_v$ 的邊界上）？答案叫 Bruhat 序 $u\le v$（命題 7，\fulref{p.175}）。有兩種判法。
+
+\textbf{判法一：秩矩陣}（\fulref{p.173}）。$r_w(p,q)=\#\{i\le p:\ w(i)\le q\}$＝把 $w$ 畫成置換矩陣（第 $i$ 列第 $w(i)$ 行放點），數左上角 $p\times q$ 裡有幾個點。$u\le v\iff r_u\ge r_v$（每一格）。
+\[
+r_{132}=\begin{pmatrix}1&1&1\\1&1&2\\1&2&3\end{pmatrix},\qquad r_{312}=\begin{pmatrix}0&0&1\\1&1&2\\1&2&3\end{pmatrix}\ \Longrightarrow\ 132\le312 .
+\]
+
+\textbf{判法二：前綴排序}（練習 8，\fulref{p.175}）。對每個 $p$，把 $u$ 與 $v$ 的前 $p$ 個數各自排好序，逐項比較，$u$ 的每一項都 $\le$ $v$ 的對應項。
+\textbf{例 10.11}：$2143\le4231$？$p=1$：$\{2\}\le\{4\}$；$p=2$：$\{1,2\}\le\{2,4\}$；$p=3$：$\{1,2,4\}\le\{2,3,4\}$——全部通過 $\checkmark$。
+\textbf{例 10.12}：$1423$ 與 $3124$？$p=2$：$\{1,4\}$ 對 $\{1,3\}$，第二項 $4>3$，所以 $1423\not\le3124$；反過來 $p=1$：$3>1$，$3124\not\le1423$。\textbf{兩個都不成立：Bruhat 序不是全序。}
+同理 $231$ 與 $312$ 不可比（同一層的兩個不同置換永遠不可比）。
+
+\textbf{全貌}。$S_3$ 的 Hasse 圖見上面例 10.7 的圖（6 個點、8 條邊）；$S_4$ 各層有 $1,3,5,6,5,3,1$ 個置換，和 $Fl(4)$ 的胞腔維數分布一樣。
+
+\textbf{例 10.13}（下樓梯，Lemma 11，\fulref{p.174--175}）。要判斷 $u\le v$，可以從 $v$ 開始一步步往下走：找第一個 $u$、$v$ 不同的位置 $j$，再往右找第一個值介於 $u(j)$ 與 $v(j)$ 之間的位置 $k$，把它們對調。
+書上的例子 $v=679251834$、$u=428361795$：
+\[
+\begin{aligned}
+&679251834\to579261834\to479261835\to429761835\to428761935\\
+\to\ &428671935\to428371965\to428361975\to428361795,
+\end{aligned}
+\]
+每一步長度減 1（從 22 到 14），走到了 $u$，所以 $u\le v$。若換成 $u'=428671953$，走到 $428671935$ 後就找不到可以交換的位置，所以 $u'\not\le v$。
+
+\begin{thmbox}[命題 7 \fulref{p.175--176}]
+$u\le v\iff X_u\subset X_v\iff\Omega_u\supset\Omega_v$；而且 $X_w=\{E_\bullet:\ \dim(E_p\cap F_q)\ge r_w(p,q)\ \text{對所有}\ p,q\}$——秩矩陣就是 Schubert 簇的方程。
+\end{thmbox}
+
+% ------------------------------------------------------------------
+\subsection{回到 Grassmannian：Schubert 多項式變成 Schur 多項式（F55）}\label{sec:f-schurweyl-gr}
+
+\textbf{Grassmann 置換}：只在一個位置 $r$ 下降的置換（$w(r)>w(r+1)$，其他地方都遞增）。它對應一個 Young 圖
+\[
+\lambda=(w(r)-r,\ \dots,\ w(2)-2,\ w(1)-1).
+\]
+\begin{thmbox}[命題 8、9 \fulref{p.178--179}]
+Grassmann 置換的 Schubert 多項式是 Schur 多項式：$\mathfrak S_w=s_\lambda(x_1,\dots,x_r)$。而且投影 $p:Fl(m)\to Gr(r,m)$（$E_\bullet\mapsto E_r$）把第 9 章的 $\sigma_\lambda$ 拉回成 $\sigma_w$。
+\end{thmbox}
+
+\textbf{例 10.14}（$r=2$、$m=4$：正好六個，對應 $2\times2$ 方框的六個 Young 圖）：
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+$w$ & $\lambda$ & $\mathfrak S_w$ & $=s_\lambda(x_1,x_2)$\\
+\midrule
+$1234$ & $\varnothing$ & $1$ & \\
+$1324$ & $(1)$ & $x_1+x_2$ & $s_1$\\
+$1423$ & $(2)$ & $x_1^2+x_1x_2+x_2^2$ & $s_2$\\
+$2314$ & $(1,1)$ & $x_1x_2$ & $s_{11}$\\
+$2413$ & $(2,1)$ & $x_1^2x_2+x_1x_2^2$ & $s_{21}$\\
+$3412$ & $(2,2)$ & $x_1^2x_2^2$ & $s_{22}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+另一個例子：$1342$ 在 $r=3$ 下降，$\lambda=(1,1,0)$，$\mathfrak S_{1342}=x_1x_2+x_1x_3+x_2x_3=e_2(x_1,x_2,x_3)$。
+
+\textbf{例 10.15}（四條線第三次）。$\sigma_1$ 拉回成 $\mathfrak S_{1324}=x_1+x_2=s_1(x_1,x_2)$。兩個變數時
+\[
+(x_1+x_2)^4=s_4+3s_{31}+2s_{22}
+\]
+（係數 $1,3,2$ 是各形狀的標準表個數）。$(4)$、$(3,1)$ 放不進 $2\times2$ 方框，在 $Gr(2,4)$ 上是 0，剩下 $2s_{22}=2\mathfrak S_{3412}$：又是 \textbf{2 條}。
+上一小節的 $(x_1+x_2)^2=\mathfrak S_{2314}+\mathfrak S_{1423}$ 就是 $s_1^2=s_{11}+s_2$，也就是 $\sigma_1^2=\sigma_{11}+\sigma_2$。
+
+\begin{keybox}[第 9、10 章對照]
+\begin{tabular}{@{}lll@{}}
+ & $Gr(r,m)$（第 9 章） & $Fl(m)$（第 10 章）\\ \midrule
+胞腔的標記 & 方框 $r\times n$ 裡的 Young 圖 $\lambda$ & 置換 $w\in S_m$\\
+胞腔的維數 & 星號數 $rn-|\lambda|$ & 星號數 $\ell(w)$（逆序數）\\
+$\mathbb F_q$ 上的點數 & $q$-二項式 $\binom mr_q$ & $q$-階乘 $[m]_q!$\\
+包含關係 & 圖的包含 & Bruhat 序（前綴排序）\\
+類的多項式 & Schur 多項式 $s_\lambda$ & Schubert 多項式 $\mathfrak S_w$\\
+乘法 & LR 規則（只留方框裡的） & Monk 公式等（一般情形還不完全知道）\\
+\end{tabular}
+\end{keybox}
+
+\begin{notebox}[練習（答案在後面）]
+\begin{enumerate}[nosep]
+\item 算 $\ell(3142)$，並寫出 $3142$ 的胞腔矩陣有幾顆星。
+\item 算 $\partial_1(x_1^2x_3)$ 與 $\partial_2(x_2^2x_3)$。
+\item 用表~\ref{tab:f-schubert-s4} 驗證 $\mathfrak S_{2143}=x_1\cdot(x_1+x_2+x_3)$。（提示：$2143=s_1s_3$，兩個交換互不干擾。）
+\item $2413\le3412$ 嗎？用前綴排序判斷。
+\item $Fl(3)$ 在 $\mathbb F_3$ 上有幾個點？
+\end{enumerate}
+\textbf{答案}：1. 逆序 $(3,1),(3,2),(4,2)$，$\ell=3$，3 顆星。
+2. $(x_1+x_2)x_3$；$x_2x_3$。
+3. 表中 $\mathfrak S_{2143}=x_1^2+x_1x_2+x_1x_3$ $\checkmark$。
+4. $\{2\}\le\{3\}$、$\{2,4\}\le\{3,4\}$、$\{1,2,4\}\le\{1,3,4\}$，是。
+5. $(1+3)(1+3+9)=52$。
+\end{notebox}
