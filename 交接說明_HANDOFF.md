@@ -6,7 +6,7 @@
 開發機上是 `C:\mypython\manim\projects\catalan930`（例如 `notes/mit_plan.md` 就是 `C:\mypython\manim\projects\catalan930\notes\mit_plan.md`），
 可攜版則是解壓縮後的資料夾。`C:\mypython\manim` 是 ManimGL 本身的資料夾，底下**沒有** `notes/`。
 
-最後更新：2026-10-15（Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
+最後更新：2026-10-15（可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
 
 ---
 
@@ -68,7 +68,8 @@
 | `catalan_portable_101.zip` | 2026-10-01 | 加入卡塔蘭模組**之前**的版本（講義 15 頁、9 個場景） |
 | `catalan_portable_102` | 2026-10-03 | 卡塔蘭模組 13 個場景、講義 23 頁、26 支 1080p 影片（**不含** MIT 補充 M01–M14） |
 | `catalan_portable_103` | 2026-10-04 | 再加上 MIT 補充 14 個場景、講義 40 頁（含附錄 A）、42 支 1080p 影片（**不含** Fulton 的 F01–F08） |
-| `catalan_portable_104`（資料夾與 `.zip`） | 2026-10-13 | **目前最新**：全部 81 個場景與 10 組連續播放（含 Fulton F01–F45）、兩份講義（40 頁＋25 頁）、`codes/render_all.bat`。**不含影片**（8.7 MB），影片用 `render_all.bat` 自己輸出。在開發機的複本上測過 `check_env.py --render` 與 `render_all.bat 00h -l` |
+| `catalan_portable_104`（資料夾與 `.zip`） | 2026-10-13 | 全部 81 個場景與 10 組連續播放（含 Fulton F01–F45）、兩份講義（40 頁＋25 頁）、`codes/render_all.bat`。**不含影片**（8.7 MB），影片用 `render_all.bat` 自己輸出。在開發機的複本上測過 `check_env.py --render` 與 `render_all.bat 00h -l`（**不含** Raney 導讀與 R01–R06） |
+| `catalan_portable_105`（資料夾與 `.zip`） | 2026-10-15 | **目前最新**：全部 87 個場景與 11 組連續播放（含 Fulton F01–F45、Raney 引理筆記 R01–R06）、講義四份（Chu 40 頁、Young 表 25 頁、Raney (1960) 導讀 33 頁、Raney 引理筆記勘誤 7 頁）、`codes/render_all.bat`；`setup_records/install.log` 是 2026-10-15 的版本（含進度紀錄）。**不含影片**（10 MB），影片用 `render_all.bat` 自己輸出。在開發機的複本上測過 `check_env.py --render`、`python utils/raney.py` 與 `render_all.bat R04 -l` |
 
 之後專案若再修改，照第 2 節最後的「重做可攜版」做新的一份。
 
@@ -79,7 +80,7 @@
 **需要：** Windows、Anaconda（Python 3.10 以上）、MiKTeX。
 字型用 Windows 內建的「微軟正黑體」與「標楷體」。
 
-1. 解壓縮到一個**之後不會再搬動**的位置，例如 `C:\mypython\catalan_portable_104`。
+1. 解壓縮到一個**之後不會再搬動**的位置，例如 `C:\mypython\catalan_portable_105`。
    ManimGL 會以「可編輯模式」安裝，指向這個資料夾；搬動後要重新安裝。
 2. 安裝 MiKTeX：https://miktex.org/download 。裝好後開新的終端機執行：
    ```bat
@@ -143,28 +144,29 @@
 
 ### 重做可攜版（在開發機上）
 
-`catalan_portable_101`～`104` 都是這樣做的。專案改過之後要再做一份，照做即可
-（以下在 Git Bash、`C:\mypython\manim\projects` 裡執行，新資料夾以 `catalan_portable_105` 為例）：
+`catalan_portable_101`～`105` 都是這樣做的。專案改過之後要再做一份，照做即可
+（以下在 Git Bash、`C:\mypython\manim\projects` 裡執行，新資料夾以 `catalan_portable_106` 為例）：
 
 1. 把 `catalan930` 整個複製成新資料夾。`.git/`、`codes/latex_cache/` 與各處的 `__pycache__/` 不必帶；
-   `codes/renders/` 裡的影片很大（約 490 MB），104 起不帶，只留空資料夾（`render_all.bat` 已在 `codes/` 裡）。104 用的指令：
+   `codes/renders/` 裡的影片很大（約 490 MB），104 起不帶，只留空資料夾（`render_all.bat` 已在 `codes/` 裡）。105 用的指令（`.gitignore`、`.gitattributes` 只在開發機，複製後刪掉）：
    ```bash
-   mkdir catalan_portable_105
-   tar -C catalan930 --exclude='./codes/latex_cache' --exclude='__pycache__' --exclude='./codes/renders/*' --exclude='./.git' -cf - . | tar -C catalan_portable_105 -xf -
+   mkdir catalan_portable_106
+   tar -C catalan930 --exclude='./codes/latex_cache' --exclude='__pycache__' --exclude='./codes/renders/*' --exclude='./.git' -cf - . | tar -C catalan_portable_106 -xf -
+   mkdir -p catalan_portable_106/codes/renders && rm catalan_portable_106/.gitignore catalan_portable_106/.gitattributes
    ```
 2. 匯出固定版本的 ManimGL 原始碼：
    ```bash
-   mkdir -p catalan_portable_105/third_party
-   git -C C:/mypython/manim archive --format=tar --prefix=manim/ fafa083 | tar -x -C catalan_portable_105/third_party
+   mkdir -p catalan_portable_106/third_party
+   git -C C:/mypython/manim archive --format=tar --prefix=manim/ fafa083 | tar -x -C catalan_portable_106/third_party
    ```
 3. 從上一份可攜版取出 `install_windows.bat`、`third_party/MANIM_VERSION.txt`、`setup_records/`，放到新資料夾的同一位置，
    並把 `MANIM_VERSION.txt` 裡的資料夾名稱改成新的。這三樣與專案內容無關，可以直接沿用
-   （`setup_records/` 的兩個檔案也可以從 `C:\mypython\manim` 的 `install.log`、`manim使用說明.md` 複製）。
+   （`setup_records/` 的兩個檔案從 `C:\mypython\manim` 的 `install.log`、`manim使用說明.md` 複製最新版，105 就是這樣做的）。
    再把 `C:\mypython\manim\環境與交接_ENVIRONMENT.md`（環境說明的正本）複製到新資料夾的最上層。
 4. 壓縮。Windows 內建的壓縮用 cp950 存中文檔名（`catalan_portable_101.zip` 就是這樣），在繁中 Windows 上解壓縮沒問題；
-   換到其他語系的電腦，中文檔名會變亂碼。`catalan_portable_104.zip` 改用 Python 的 `zipfile` 壓縮（中文檔名存成 UTF-8 並設好旗標），沒有這個問題：
+   換到其他語系的電腦，中文檔名會變亂碼。`catalan_portable_104.zip` 起改用 Python 的 `zipfile` 壓縮（中文檔名存成 UTF-8 並設好旗標），沒有這個問題：
    ```bash
-   python -c "import shutil; shutil.make_archive('catalan_portable_105', 'zip', '.', 'catalan_portable_105')"
+   python -c "import shutil; shutil.make_archive('catalan_portable_106', 'zip', '.', 'catalan_portable_106')"
    ```
 
 ### 版本控制（git）
@@ -182,7 +184,7 @@
 ## 3. 檔案結構
 
 ```text
-catalan930/                    開發機上的工作資料夾（可攜版的資料夾名稱是 catalan_portable_104）
+catalan930/                    開發機上的工作資料夾（可攜版的資料夾名稱是 catalan_portable_105）
 ├── 交接說明_HANDOFF.md        本文件
 ├── .gitignore, .gitattributes git 設定（只在開發機；見第 2 節「版本控制」）
 ├── 環境與交接_ENVIRONMENT.md  整台電腦的 ManimGL 環境說明（只在可攜版；正本在 C:\mypython\manim）
