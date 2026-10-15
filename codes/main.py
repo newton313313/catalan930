@@ -16,6 +16,7 @@ main.py —— 所有場景的總入口
     manimgl main.py FultonDemo4                  Fulton 第 7 章（F28–F41），獨立
     manimgl main.py FultonDemo5                  Fulton 第 8 章（F42–F45），獨立
     manimgl main.py RaneyLemmaDemo               Raney 引理筆記（R01–R06），獨立
+    manimgl main.py RaneyPaperDemo               Raney (1960) 導讀（N01–N12），獨立
     manimgl main.py CompleteDemo -w --hd         把完整版輸出成一支 1080p 影片
 
 每個場景也可以從它自己的檔案單獨執行，例如：
@@ -115,6 +116,18 @@ from scenes import sceneR03_positive_counts as sR03
 from scenes import sceneR04_stack_catalan as sR04
 from scenes import sceneR05_card_game as sR05
 from scenes import sceneR06_summary as sR06
+from scenes import sceneN01_prefix_words as sN01
+from scenes import sceneN02_rank_counter as sN02
+from scenes import sceneN03_three_readings as sN03
+from scenes import sceneN04_raney_proof as sN04
+from scenes import sceneN05_double_counting as sN05
+from scenes import sceneN06_random_examples as sN06
+from scenes import sceneN07_split_first as sN07
+from scenes import sceneN08_lstar as sN08
+from scenes import sceneN09_lagrange as sN09
+from scenes import sceneN10_trinomial as sN10
+from scenes import sceneN11_convolution as sN11
+from scenes import sceneN12_summary as sN12
 
 
 # ManimGL 只會列出「定義在這個檔案裡」的場景，所以這裡各做一個同名的子類別。
@@ -481,6 +494,56 @@ class SceneR06Summary(sR06.SceneR06Summary):
     pass
 
 
+# ------------------------------------------------------------ Raney (1960) 導讀（N01–N12）
+
+class SceneN01PrefixWords(sN01.SceneN01PrefixWords):
+    pass
+
+
+class SceneN02RankCounter(sN02.SceneN02RankCounter):
+    pass
+
+
+class SceneN03ThreeReadings(sN03.SceneN03ThreeReadings):
+    pass
+
+
+class SceneN04RaneyProof(sN04.SceneN04RaneyProof):
+    pass
+
+
+class SceneN05DoubleCounting(sN05.SceneN05DoubleCounting):
+    pass
+
+
+class SceneN06RandomExamples(sN06.SceneN06RandomExamples):
+    pass
+
+
+class SceneN07SplitFirst(sN07.SceneN07SplitFirst):
+    pass
+
+
+class SceneN08LStar(sN08.SceneN08LStar):
+    pass
+
+
+class SceneN09Lagrange(sN09.SceneN09Lagrange):
+    pass
+
+
+class SceneN10Trinomial(sN10.SceneN10Trinomial):
+    pass
+
+
+class SceneN11Convolution(sN11.SceneN11Convolution):
+    pass
+
+
+class SceneN12Summary(sN12.SceneN12Summary):
+    pass
+
+
 INTRO_SCENES = [
     s00a.Scene00aCatalanDefinition,
     s00b.Scene00bTriangulation,
@@ -603,6 +666,21 @@ RANEY_SCENES = [                    # Raney 引理筆記（notes/ran_note015_改
     sR06.SceneR06Summary,
 ]
 
+RANEY_PAPER_SCENES = [              # Raney (1960) 導讀（notes/raney1960_導讀.pdf），獨立播放
+    sN01.SceneN01PrefixWords,
+    sN02.SceneN02RankCounter,
+    sN03.SceneN03ThreeReadings,
+    sN04.SceneN04RaneyProof,
+    sN05.SceneN05DoubleCounting,
+    sN06.SceneN06RandomExamples,
+    sN07.SceneN07SplitFirst,
+    sN08.SceneN08LStar,
+    sN09.SceneN09Lagrange,
+    sN10.SceneN10Trinomial,
+    sN11.SceneN11Convolution,
+    sN12.SceneN12Summary,
+]
+
 
 def play_sequence(scene, classes):
     """依序播放多個場景；場景之間把畫面清空、鏡頭歸位。"""
@@ -691,3 +769,10 @@ class RaneyLemmaDemo(s08.Scene08FormulaVerification):
 
     def construct(self):
         play_sequence(self, RANEY_SCENES)
+
+
+class RaneyPaperDemo(s08.Scene08FormulaVerification):
+    """Raney (1960) 論文導讀：N01–N12 連續播放，不接其他影片。"""
+
+    def construct(self):
+        play_sequence(self, RANEY_PAPER_SCENES)

@@ -25,8 +25,9 @@
 8. **Fulton《Young Tableaux》第 8 章（場景 F42–F45，獨立的一組）**：Schur 模 $E^\lambda$、權重與特徵標 $s_\lambda$、Schur–Weyl 對偶、
    Plücker 二次關係。計畫表 `../notes/fulton_plan_ch8.md`。
 9. **Raney 引理筆記（場景 R01–R06，獨立的一組）**：整數序列的 Raney 引理、最後一個最低點的證明、加強版、出棧序列與 $C_n$、摸牌遊戲（洛谷 P6672）＝ Raney 的字、原筆記的勘誤。依 `../notes/ran_note015_改寫.pdf`。
+10. **Raney (1960) 論文導讀（場景 N01–N12，獨立的一組）**：前序記法與字、秩、三種讀法、Raney 的循環引理證明、雙重計數、用循環引理製造隨機例子、切開與第一個符號、L*、Lagrange 反演、三項式與 Problem 4983、卷積、總結。依 `../notes/raney1960_導讀.pdf`，分鏡 `../notes/raney/manim_plan.md`。
 
-共 87 個可以單獨執行的場景，外加十一種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（25 頁，第 1–8 節對應 F01–F45）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（33 頁，Raney (1960) 論文導讀，沒有對應的動畫）。
+共 99 個可以單獨執行的場景，外加十二種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（25 頁，第 1–8 節對應 F01–F45）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（33 頁，Raney (1960) 論文導讀，動畫 N01–N12）。
 
 ## 注意：這是 ManimGL，不是 Manim Community
 
@@ -54,7 +55,7 @@
 | LaTeX | MiKTeX 25.12：`latex` + `dvisvgm` 3.4.3 + **`cm-super`** | 場景裡的公式（沒有 cm-super 會出現 "SVG has no content"） |
 | 講義 | MiKTeX 的 `xelatex` + `xeCJK`、`tcolorbox`、`tikz`、`ytableau`、`booktabs`、`hyperref` | `../notes/*.tex`（第一次編譯時 MiKTeX 會自動裝套件） |
 | 字型 | 微軟正黑體 `Microsoft JhengHei` | 字幕與講義 |
-| 工具包 | `C:\mypython\manim\projects\combkit`（1.7.0） | `tools/render_check.py`（低畫質試渲染＋總覽圖）、`tools/strict_render.py`；`utils/` 改過後用 `tools/sync_from_catalan930.py` 同步 |
+| 工具包 | `C:\mypython\manim\projects\combkit`（1.8.0） | `tools/render_check.py`（低畫質試渲染＋總覽圖）、`tools/strict_render.py`；`utils/` 改過後用 `tools/sync_from_catalan930.py` 同步 |
 
 檢查環境：在 `codes/` 裡執行 `python check_env.py --render`。
 
@@ -125,6 +126,7 @@ manimgl scenes/scene00c_triangulation_recurrence.py Scene00cTriangulationRecurre
 | `manimgl main.py FultonDemo4` | Fulton 第 7 章 F28–F41（獨立） |
 | `manimgl main.py FultonDemo5` | Fulton 第 8 章 F42–F45（獨立） |
 | `manimgl main.py RaneyLemmaDemo` | Raney 引理筆記 R01–R06（獨立） |
+| `manimgl main.py RaneyPaperDemo` | Raney (1960) 導讀 N01–N12（獨立） |
 
 完整版跳過 Scene01 與 Scene02：Scene01（經典卡塔蘭與圓上配對）已由 00a、00j 取代，Scene02（從弦到多邊形、兩個向量）已由 00m 取代。
 這兩個場景仍保留，單獨播放或 `FullDemo` 都會用到。
@@ -150,8 +152,8 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 
 | 指令 | 輸出 |
 |---|---|
-| 對 `render_all.bat` 按兩下 | **一鍵輸出**：選單 1 全部場景＋11 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p；也可帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda |
-| `python render_all.py` | 全部單一場景（00a–00m、01–09、08r、M01–M14、F01–F45、R01–R06），1080p |
+| 對 `render_all.bat` 按兩下 | **一鍵輸出**：選單 1 全部場景＋12 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p；也可帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda |
+| `python render_all.py` | 全部單一場景（00a–00m、01–09、08r、M01–M14、F01–F45、R01–R06、N01–N12），1080p |
 | `python render_all.py --intro` | 只有卡塔蘭模組 00a–00m |
 | `python render_all.py --chu` | 只有 Chu 的部分 01–09 與 08r |
 | `python render_all.py --mit` | 只有 MIT 補充 M01–M14 |
@@ -161,10 +163,11 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 | `python render_all.py --fulton4` | 只有 Fulton 第 7 章 F28–F41 |
 | `python render_all.py --fulton5` | 只有 Fulton 第 8 章 F42–F45 |
 | `python render_all.py --raney` | 只有 Raney 引理筆記 R01–R06 |
+| `python render_all.py --raney-paper` | 只有 Raney (1960) 導讀 N01–N12 |
 | `python render_all.py 00c 05` | 指定的場景（代號見下面的表） |
 | `python render_all.py --complete --demos-only` | 只輸出完整版 `CompleteDemo.mp4` |
 
-連續播放的影片用 `--intro-demo`、`--full`、`--complete`、`--mit-demo`、`--mit-complete`、`--fulton-demo`、`--fulton2-demo`、`--fulton3-demo`、`--fulton4-demo`、`--fulton5-demo`、`--raney-demo` 加上去。加 `-l` 改成低畫質。
+連續播放的影片用 `--intro-demo`、`--full`、`--complete`、`--mit-demo`、`--mit-complete`、`--fulton-demo`、`--fulton2-demo`、`--fulton3-demo`、`--fulton4-demo`、`--fulton5-demo`、`--raney-demo`、`--raney-paper-demo` 加上去。加 `-l` 改成低畫質。
 
 ## 卡塔蘭基礎模組（00a–00m）
 
@@ -360,6 +363,27 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 | R06 | `SceneR06Summary` | 三種用法的回顧；原筆記的五個勘誤重點 | 23 秒 |
 | | `RaneyLemmaDemo` | 以上六個連續播放 | 3 分 56 秒 |
 
+## Raney (1960) 論文導讀（N01–N12，獨立）
+
+依 `../notes/raney1960_導讀.pdf`，分鏡 `../notes/raney/manim_plan.md`；數學在 `utils/raney.py`，隨機例子由 `utils/raney_examples.py` 產生（固定 seed，每次渲染相同），畫圖在 `utils/raney_draw.py`；各場景開頭的 `check_math()` assert 畫面上的數字。用 `RaneyPaperDemo` 連續播放。
+例題集：`python utils/raney_examples.py --md --seed 7 --count 3 --out ../notes/raney/raney_examples_seed7.md`。
+
+| 代號 | 類別名稱 | 內容 | 長度 |
+|---|---|---|---|
+| N01 | `SceneN01PrefixWords` | Cayley：abcd 的 5 種乘積 ↔ 5 棵樹 ↔ 5 個字；前序記法與「型」；$F(G(x,H(y,z),t),K(u))\to230200010$；$a_0=1+\sum(i-1)a_i$ | 46 秒 |
+| N02 | `SceneN02RankCounter` | 讀 230200010 的「還欠幾個引數」計數器 ＝ 秩＋1，同步畫秩路徑；Rosenbloom 判別法；020 不是字；字列 3000200 ＝ 3000 | 200 | 40 秒 |
+| N03 | `SceneN03ThreeReadings` | 同一個 2 字列的三種畫法：Raney 的秩路徑、倒過來讀的 Chu 路徑、森林；高度 ＝ −後綴的秩；Gessel 的後序碼 00201（鏡射） | 40 秒 |
+| N04 | `SceneN04RaneyProof` | σ = 0020030 的 7 個循環變形（k = 2、5）；Raney 證明四步：圓周上最大的弧 α、從 α 讀、切成字並輪換、從字中間讀不行；200200 的重複 | 47 秒 |
+| N05 | `SceneN05DoubleCounting` | 30 個字串排成 5 × 6，每列恰一個字 ⇒ 30 = 6 × 5；定理 2.2；Chu 原文 Fig. 1 的 5 種分法 ↔ 5 個字（203000 的分解）；Cayley $L(1;0,k)=C_k$ | 45 秒 |
+| N06 | `SceneN06RandomExamples` | 循環引理 ＝ 均勻隨機樹產生器：打亂 → 轉到好起點 → 樹與運算式；2100 次抽樣的直方圖；隨機不交叉分法；例題集指令（`utils/raney_examples.py`） | 40 秒 |
+| N07 | `SceneN07SplitFirst` | 定理 2.3：2003000 的唯一 1 字列開頭；12 = 5+1+1+5；定理 2.4：12 = 5+3+4、5 = 2+3（Chu 的收尾）；$F_n=F_1^n$、$F_1=1+\sum x_iF_1^i$ | 45 秒 |
+| N08 | `SceneN08LStar` | 大代數的變數 $E_i$；$L^*$ 的前幾項；定理 4.1 與 $E_1E_2$ 的係數 3 = 1 + 2；三種代換（依邊數 → $C_e$、依節點數不行、Chu 的 (6)(8)(9)(10)） | 37 秒 |
+| N09 | `SceneN09Lagrange` | $[x^n]w=\frac1n[x^{n-1}]\phi^n$ ＝ 樹的權重和；Motzkin 4 棵樹；$\phi=2+3x+x^3$ 的 18；同態 $E_j\mapsto a_0^{j-1}a_jx^j$；四個 $\phi$ 的係數表；冪次版本 | 45 秒 |
+| N10 | `SceneN10Trinomial` | 三項式 $w=1+xw^n$ 的 Fuss–Catalan 表；Problem 4983（$P_5(2)=3$、Kelly 的方程）；六邊形切成四邊形 3 種；$C_n$ 奇 ⇔ $n=2^j-1$ | 40 秒 |
+| N11 | `SceneN11Convolution` | 定理 7.1（森林切兩片）；投票數表、$b(2,3)=14=5+2+2+5$；Gould 的 $G$：$\gamma=1$ ＝ Chu 的 $A_t$（$\alpha=\frac12$ 也成立）、$\gamma=0$ ＝ Abel（50 = 16+9+9+16） | 46 秒 |
+| N12 | `SceneN12Summary` | 邏輯流程圖；Chu 講義第 4–8 節 ↔ Raney 的定理對照 | 23 秒 |
+| | `RaneyPaperDemo` | 以上十二個連續播放 | 8 分 26 秒 |
+
 ## Chu 的部分（01–09）
 
 | 代號 | 類別名稱 | 內容 | 長度 |
@@ -427,7 +451,9 @@ catalan930/
 │   │   ├── rep_draw.py         Fulton 第 7 章的圖形：tabloid、帶方向的行 tabloid、帶號線性組合、矩陣
 │   │   ├── formulas.py         常用公式的 Tex 物件
 │   │   ├── counting.py         純 Python 的計數與驗證（公式、暴力列舉、遞迴、Raney、卡塔蘭物件、MIT 補充）
-│   │   ├── raney.py            純 Python：Raney (1960) 的字、循環引理、L(n;a)、L*、Lagrange 反演、卷積（Raney 導讀用，暫無場景）
+│   │   ├── raney.py            純 Python：Raney (1960) 的字、循環引理、L(n;a)、L*、Lagrange 反演、卷積；第 9 節整數序列的 Raney 引理（N、R 場景與兩份講義用）
+│   │   ├── raney_examples.py   純 Python：用循環引理製造例子（均勻隨機的字／樹／不交叉分法、Markdown 例題集）
+│   │   ├── raney_draw.py       N、R 場景的圖形：字的方塊、平面樹、秩路徑、整數步路徑、牌
 │   │   └── tableaux.py         純 Python 的 Young 表運算與驗證（插入、乘積、jeu de taquin、Schur 多項式、Knuth、R-S-K、LR、對稱函數、半標準表與權重）
 │   ├── latex_cache/          LaTeX 編譯的中間檔（ManimGL 自動產生，可以刪）
 │   └── renders/              輸出的 1080p 影片（92 支；不要刪除或覆寫）

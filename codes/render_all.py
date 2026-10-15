@@ -3,7 +3,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
 
 在 codes/ 資料夾內執行：
 
-    python render_all.py                全部場景（00a–00m、Chu 01–09、08r、MIT M01–M14、Fulton F01–F45、Raney R01–R06），1080p
+    python render_all.py                全部場景（00a–00m、Chu 01–09、08r、MIT M01–M14、Fulton F01–F45、Raney R01–R06、N01–N12），1080p
     python render_all.py --intro        只輸出卡塔蘭模組（00a–00m）
     python render_all.py --chu          只輸出 Chu 的部分（01–09 與 08r）
     python render_all.py --mit          只輸出 MIT 18.212 L1–4 補充（M01–M14）
@@ -13,6 +13,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
     python render_all.py --fulton4      只輸出 Fulton 第 7 章（F28–F41）
     python render_all.py --fulton5      只輸出 Fulton 第 8 章（F42–F45）
     python render_all.py --raney        只輸出 Raney 引理筆記（R01–R06）
+    python render_all.py --raney-paper  只輸出 Raney (1960) 導讀（N01–N12）
     python render_all.py 00c 05 M03     只輸出指定的場景（代號見下表；"5" 也可以，等於 "05"）
     python render_all.py -l             改用低畫質 480p（最快，用來預覽）；另有 -m（720p）、--uhd（4K）
 
@@ -28,6 +29,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
     python render_all.py --fulton4-demo FultonDemo4：F28–F41 連續播放（獨立）
     python render_all.py --fulton5-demo FultonDemo5：F42–F45 連續播放（獨立）
     python render_all.py --raney-demo   RaneyLemmaDemo：R01–R06 連續播放（獨立）
+    python render_all.py --raney-paper-demo  RaneyPaperDemo：N01–N12 連續播放（獨立）
     只要連續播放的影片、不要單一場景時，加 --demos-only。
 """
 import subprocess
@@ -143,6 +145,20 @@ RANEY = [                            # Raney 引理筆記（notes/ran_note015_�
     ("R05", "scenes/sceneR05_card_game.py", "SceneR05CardGame"),
     ("R06", "scenes/sceneR06_summary.py", "SceneR06Summary"),
 ]
+RANEY_PAPER = [                      # Raney (1960) 導讀（notes/raney1960_導讀.pdf、notes/raney/manim_plan.md）
+    ("N01", "scenes/sceneN01_prefix_words.py", "SceneN01PrefixWords"),
+    ("N02", "scenes/sceneN02_rank_counter.py", "SceneN02RankCounter"),
+    ("N03", "scenes/sceneN03_three_readings.py", "SceneN03ThreeReadings"),
+    ("N04", "scenes/sceneN04_raney_proof.py", "SceneN04RaneyProof"),
+    ("N05", "scenes/sceneN05_double_counting.py", "SceneN05DoubleCounting"),
+    ("N06", "scenes/sceneN06_random_examples.py", "SceneN06RandomExamples"),
+    ("N07", "scenes/sceneN07_split_first.py", "SceneN07SplitFirst"),
+    ("N08", "scenes/sceneN08_lstar.py", "SceneN08LStar"),
+    ("N09", "scenes/sceneN09_lagrange.py", "SceneN09Lagrange"),
+    ("N10", "scenes/sceneN10_trinomial.py", "SceneN10Trinomial"),
+    ("N11", "scenes/sceneN11_convolution.py", "SceneN11Convolution"),
+    ("N12", "scenes/sceneN12_summary.py", "SceneN12Summary"),
+]
 DEMOS = {
     "--intro-demo": ("main.py", "CatalanIntroDemo"),
     "--full": ("main.py", "FullDemo"),
@@ -155,6 +171,7 @@ DEMOS = {
     "--fulton4-demo": ("main.py", "FultonDemo4"),
     "--fulton5-demo": ("main.py", "FultonDemo5"),
     "--raney-demo": ("main.py", "RaneyLemmaDemo"),
+    "--raney-paper-demo": ("main.py", "RaneyPaperDemo"),
 }
 QUALITY_FLAGS = {"-l", "-m", "--hd", "--uhd"}
 
@@ -163,7 +180,7 @@ def main(argv):
     quality = "--hd"
     groups, keys, demos = [], [], []
     demos_only = False
-    by_key = {k: (f, s) for k, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY}
+    by_key = {k: (f, s) for k, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY + RANEY_PAPER}
     for arg in argv:
         if arg in QUALITY_FLAGS:
             quality = arg
@@ -185,6 +202,8 @@ def main(argv):
             groups.append(FULTON5)
         elif arg == "--raney":
             groups.append(RANEY)
+        elif arg == "--raney-paper":
+            groups.append(RANEY_PAPER)
         elif arg in DEMOS:
             demos.append(DEMOS[arg])
         elif arg == "--demos-only":
@@ -208,7 +227,7 @@ def main(argv):
             for g in groups:
                 jobs += [(f, s) for _, f, s in g]
         if not keys and not groups:
-            jobs += [(f, s) for _, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY]
+            jobs += [(f, s) for _, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY + RANEY_PAPER]
     jobs += demos
 
     failed = []

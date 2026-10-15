@@ -130,6 +130,120 @@ def draws_badge(k: int, radius: float = 0.24, font_size: float = 26) -> VGroup:
     return VGroup(c, Tex(str(k), font_size=font_size).move_to(c))
 
 
+# ---------------------------------------------------------------------------
+# Raney (1960) 導讀（動畫 N01–N12）：字、樹、秩路徑
+#   符號 j（j 元運算子）的顏色 = j 點群組的顏色（2 藍、3 黃、4 綠、5 紫），1 棕、0（引數）灰。
+# ---------------------------------------------------------------------------
+LEAF_COLOR = GREY_B
+UNARY_COLOR = LIGHT_BROWN
+
+
+def symbol_color(j: int):
+    if j == 0:
+        return LEAF_COLOR
+    if j == 1:
+        return UNARY_COLOR
+    return block_color(j)
+
+
+def word_tiles(word, size: float = 0.5, buff: float = 0.06, font_size: float = 28, sep_after=()) -> VGroup:
+    """字（或字串）的方塊列；sep_after：在這些位置之後多空一點（用來把字列切開）。"""
+    tiles = VGroup()
+    for x in word:
+        sq = Square(side_length=size, stroke_color=symbol_color(x), stroke_width=3,
+                    fill_color=symbol_color(x), fill_opacity=0.2)
+        tiles.add(VGroup(sq, Tex(str(x), font_size=font_size).move_to(sq)))
+    tiles.arrange(RIGHT, buff=buff)
+    for k in sorted(sep_after):
+        for t in tiles[k + 1:]:
+            t.shift(size * 0.5 * RIGHT)
+    return tiles
+
+
+class WordTreeMob(VGroup):
+    """
+    把字（前序記法）畫成平面樹：葉子依序等距，內部節點在第一個與最後一個小孩的中間；節點依元數上色。
+    labels：與字等長的字串串列（運算子名稱、引數名稱），給了就寫在節點裡。
+    屬性：.nodes（依前序，= 字的第 k 個符號）、.edges（.edges 的順序同建立順序）、.parent（list）
+    方法：.node(k)（第 k 個符號的節點）
+    """
+
+    def __init__(self, word, x_gap: float = 0.55, y_gap: float = 0.7, root_pos=ORIGIN, labels=None,
+                 node_size: float = 0.22, font_size: float = 24, edge_width: float = 3):
+        word = tuple(word)
+        parent = [None] * len(word)
+        xs, depth = [0.0] * len(word), [0] * len(word)
+        pos = [0]
+        leaf = [0]
+
+        def rec(p, d):
+            k = pos[0]
+            pos[0] += 1
+            parent[k] = p
+            depth[k] = d
+            if word[k] == 0:
+                xs[k] = leaf[0]
+                leaf[0] += 1
+                return k
+            kids = [rec(k, d + 1) for _ in range(word[k])]
+            xs[k] = (xs[kids[0]] + xs[kids[-1]]) / 2
+            return k
+
+        rec(None, 0)
+        assert pos[0] == len(word), "不是字"
+        root_pos = np.array(root_pos, dtype=float)
+        pts = [root_pos + x_gap * (xs[k] - xs[0]) * RIGHT + y_gap * depth[k] * DOWN for k in range(len(word))]
+        nodes = VGroup()
+        for k, x in enumerate(word):
+            col = symbol_color(x)
+            if labels:
+                if x == 0:
+                    shape = Square(side_length=node_size * 1.9, stroke_color=col, stroke_width=2,
+                                   fill_color=col, fill_opacity=0.15)
+                else:
+                    shape = Circle(radius=node_size, stroke_color=col, stroke_width=3, fill_color=col, fill_opacity=0.2)
+                node = VGroup(shape, Tex(labels[k], font_size=font_size).move_to(shape))
+            elif x == 0:
+                node = Square(side_length=node_size * 0.9, stroke_color=col, stroke_width=2, fill_color=col,
+                              fill_opacity=0.5)
+            else:
+                node = Circle(radius=node_size * 0.75, stroke_color=col, stroke_width=3, fill_color=col,
+                              fill_opacity=0.35)
+            node.move_to(pts[k])
+            nodes.add(node)
+        edges = VGroup(*[Line(pts[parent[k]], pts[k], stroke_color=GREY_C, stroke_width=edge_width)
+                         for k in range(1, len(word))])
+        for e, k in zip(edges, range(1, len(word))):
+            e.put_start_and_end_on(nodes[parent[k]].get_center(), nodes[k].get_center())
+        super().__init__(edges, nodes)
+        nodes.set_z_index(1)
+        self.nodes = nodes
+        self.edges = edges
+        self.parent = parent
+        self.word = word
+
+    def node(self, k: int):
+        return self.nodes[k]
+
+
+def forest_mob(words, gap: float = 0.6, **kwargs) -> VGroup:
+    """字列（一串字）畫成森林，由左到右。"""
+    return VGroup(*[WordTreeMob(w, **kwargs) for w in words]).arrange(RIGHT, buff=gap, aligned_edge=UP)
+
+
+def rank_walk(word, unit: float = 0.35, origin=ORIGIN, **kwargs) -> IntPathMob:
+    """Raney 的秩路徑：由左往右讀，符號 j 走 j − 1；線段依符號上色。"""
+    return IntPathMob([x - 1 for x in word], unit=unit, origin=origin,
+                      colors=[symbol_color(x) for x in word], **kwargs)
+
+
+def chu_walk(word, unit: float = 0.35, origin=ORIGIN, **kwargs) -> IntPathMob:
+    """Chu 講義的路徑：把字串倒過來讀，符號 j 走 1 − j；線段依符號上色。"""
+    rev = list(reversed(word))
+    return IntPathMob([1 - x for x in rev], unit=unit, origin=origin,
+                      colors=[symbol_color(x) for x in rev], **kwargs)
+
+
 def caption_zh(text: str, font_size: float = 26, color=GREY_A) -> Text:
     return zh(text, font_size=font_size, color=color)
 
