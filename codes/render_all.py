@@ -3,7 +3,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
 
 在 codes/ 資料夾內執行：
 
-    python render_all.py                全部場景（00a–00m、Chu 01–09、08r、MIT M01–M14、Fulton F01–F45），1080p
+    python render_all.py                全部場景（00a–00m、Chu 01–09、08r、MIT M01–M14、Fulton F01–F45、Raney R01–R06），1080p
     python render_all.py --intro        只輸出卡塔蘭模組（00a–00m）
     python render_all.py --chu          只輸出 Chu 的部分（01–09 與 08r）
     python render_all.py --mit          只輸出 MIT 18.212 L1–4 補充（M01–M14）
@@ -12,6 +12,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
     python render_all.py --fulton3      只輸出 Fulton 第 5–6 章（F20–F27）
     python render_all.py --fulton4      只輸出 Fulton 第 7 章（F28–F41）
     python render_all.py --fulton5      只輸出 Fulton 第 8 章（F42–F45）
+    python render_all.py --raney        只輸出 Raney 引理筆記（R01–R06）
     python render_all.py 00c 05 M03     只輸出指定的場景（代號見下表；"5" 也可以，等於 "05"）
     python render_all.py -l             改用低畫質 480p（最快，用來預覽）；另有 -m（720p）、--uhd（4K）
 
@@ -26,6 +27,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
     python render_all.py --fulton3-demo FultonDemo3：F20–F27 連續播放（獨立）
     python render_all.py --fulton4-demo FultonDemo4：F28–F41 連續播放（獨立）
     python render_all.py --fulton5-demo FultonDemo5：F42–F45 連續播放（獨立）
+    python render_all.py --raney-demo   RaneyLemmaDemo：R01–R06 連續播放（獨立）
     只要連續播放的影片、不要單一場景時，加 --demos-only。
 """
 import subprocess
@@ -133,6 +135,14 @@ FULTON5 = [                          # 第 8 章（notes/fulton_plan_ch8.md）
     ("F44", "scenes/sceneF44_schur_weyl.py", "SceneF44SchurWeyl"),
     ("F45", "scenes/sceneF45_quadratic_relations.py", "SceneF45QuadraticRelations"),
 ]
+RANEY = [                            # Raney 引理筆記（notes/ran_note015_改寫.pdf）
+    ("R01", "scenes/sceneR01_raney_lemma.py", "SceneR01RaneyLemma"),
+    ("R02", "scenes/sceneR02_last_minimum.py", "SceneR02LastMinimum"),
+    ("R03", "scenes/sceneR03_positive_counts.py", "SceneR03PositiveCounts"),
+    ("R04", "scenes/sceneR04_stack_catalan.py", "SceneR04StackCatalan"),
+    ("R05", "scenes/sceneR05_card_game.py", "SceneR05CardGame"),
+    ("R06", "scenes/sceneR06_summary.py", "SceneR06Summary"),
+]
 DEMOS = {
     "--intro-demo": ("main.py", "CatalanIntroDemo"),
     "--full": ("main.py", "FullDemo"),
@@ -144,6 +154,7 @@ DEMOS = {
     "--fulton3-demo": ("main.py", "FultonDemo3"),
     "--fulton4-demo": ("main.py", "FultonDemo4"),
     "--fulton5-demo": ("main.py", "FultonDemo5"),
+    "--raney-demo": ("main.py", "RaneyLemmaDemo"),
 }
 QUALITY_FLAGS = {"-l", "-m", "--hd", "--uhd"}
 
@@ -152,7 +163,7 @@ def main(argv):
     quality = "--hd"
     groups, keys, demos = [], [], []
     demos_only = False
-    by_key = {k: (f, s) for k, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5}
+    by_key = {k: (f, s) for k, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY}
     for arg in argv:
         if arg in QUALITY_FLAGS:
             quality = arg
@@ -172,6 +183,8 @@ def main(argv):
             groups.append(FULTON4)
         elif arg == "--fulton5":
             groups.append(FULTON5)
+        elif arg == "--raney":
+            groups.append(RANEY)
         elif arg in DEMOS:
             demos.append(DEMOS[arg])
         elif arg == "--demos-only":
@@ -195,7 +208,7 @@ def main(argv):
             for g in groups:
                 jobs += [(f, s) for _, f, s in g]
         if not keys and not groups:
-            jobs += [(f, s) for _, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5]
+            jobs += [(f, s) for _, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY]
     jobs += demos
 
     failed = []

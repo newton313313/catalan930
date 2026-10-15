@@ -15,6 +15,7 @@ main.py —— 所有場景的總入口
     manimgl main.py FultonDemo3                  Fulton 第 5–6 章（F20–F27），獨立
     manimgl main.py FultonDemo4                  Fulton 第 7 章（F28–F41），獨立
     manimgl main.py FultonDemo5                  Fulton 第 8 章（F42–F45），獨立
+    manimgl main.py RaneyLemmaDemo               Raney 引理筆記（R01–R06），獨立
     manimgl main.py CompleteDemo -w --hd         把完整版輸出成一支 1080p 影片
 
 每個場景也可以從它自己的檔案單獨執行，例如：
@@ -108,6 +109,12 @@ from scenes import sceneF42_schur_module as sF42
 from scenes import sceneF43_weights as sF43
 from scenes import sceneF44_schur_weyl as sF44
 from scenes import sceneF45_quadratic_relations as sF45
+from scenes import sceneR01_raney_lemma as sR01
+from scenes import sceneR02_last_minimum as sR02
+from scenes import sceneR03_positive_counts as sR03
+from scenes import sceneR04_stack_catalan as sR04
+from scenes import sceneR05_card_game as sR05
+from scenes import sceneR06_summary as sR06
 
 
 # ManimGL 只會列出「定義在這個檔案裡」的場景，所以這裡各做一個同名的子類別。
@@ -448,6 +455,32 @@ class SceneF45QuadraticRelations(sF45.SceneF45QuadraticRelations):
     pass
 
 
+# ------------------------------------------------------------ Raney 引理筆記（R01–R06）
+
+class SceneR01RaneyLemma(sR01.SceneR01RaneyLemma):
+    pass
+
+
+class SceneR02LastMinimum(sR02.SceneR02LastMinimum):
+    pass
+
+
+class SceneR03PositiveCounts(sR03.SceneR03PositiveCounts):
+    pass
+
+
+class SceneR04StackCatalan(sR04.SceneR04StackCatalan):
+    pass
+
+
+class SceneR05CardGame(sR05.SceneR05CardGame):
+    pass
+
+
+class SceneR06Summary(sR06.SceneR06Summary):
+    pass
+
+
 INTRO_SCENES = [
     s00a.Scene00aCatalanDefinition,
     s00b.Scene00bTriangulation,
@@ -561,6 +594,15 @@ FULTON5_SCENES = [                  # Fulton 第 8 章（notes/fulton_plan_ch8.m
     sF45.SceneF45QuadraticRelations,
 ]
 
+RANEY_SCENES = [                    # Raney 引理筆記（notes/ran_note015_改寫.pdf），獨立播放
+    sR01.SceneR01RaneyLemma,
+    sR02.SceneR02LastMinimum,
+    sR03.SceneR03PositiveCounts,
+    sR04.SceneR04StackCatalan,
+    sR05.SceneR05CardGame,
+    sR06.SceneR06Summary,
+]
+
 
 def play_sequence(scene, classes):
     """依序播放多個場景；場景之間把畫面清空、鏡頭歸位。"""
@@ -642,3 +684,10 @@ class FultonDemo5(s08.Scene08FormulaVerification):
 
     def construct(self):
         play_sequence(self, FULTON5_SCENES)
+
+
+class RaneyLemmaDemo(s08.Scene08FormulaVerification):
+    """Raney 引理筆記（ran_note015 的勘誤與改寫）：R01–R06 連續播放，不接其他影片。"""
+
+    def construct(self):
+        play_sequence(self, RANEY_SCENES)

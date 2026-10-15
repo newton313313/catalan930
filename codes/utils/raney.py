@@ -594,6 +594,128 @@ def _faces(sides: int, diags) -> list:
 
 
 # ---------------------------------------------------------------------------
+# 9. 整數序列的 Raney 引理（notes/ran_note015_改寫.tex；動畫 R01–R06）
+#
+#    序列 x_1..x_M 是一條路徑的步，S_i = 第 i 點的高度（S_0 = 0）。
+#    「從第 i 點開始讀」= 依序讀 x_{i+1}, …, x_{i+M}（循環），i = 0..M−1。
+#    好讀法：出發後每點的（相對）高度都 > 0。
+# ---------------------------------------------------------------------------
+
+NOTE015_SEQ = (2, -1, -3, 1, 2)          # 講義的主例：和為 1
+
+
+def heights(seq) -> list:
+    """[S_0, S_1, …, S_M]，S_0 = 0。"""
+    out = [0]
+    for x in seq:
+        out.append(out[-1] + x)
+    return out
+
+
+def reading(seq, i: int) -> tuple:
+    """從第 i 點開始讀一圈：x_{i+1}, …, x_{i+M}。"""
+    seq = tuple(seq)
+    return seq[i:] + seq[:i]
+
+
+def positive_count(seq) -> int:
+    """出發後高度 > 0 的點數。"""
+    return sum(1 for h in heights(seq)[1:] if h > 0)
+
+
+def is_good_reading(seq) -> bool:
+    return positive_count(seq) == len(seq)
+
+
+def good_starts(seq) -> list:
+    """所有好讀法的起點 i。"""
+    return [i for i in range(len(seq)) if is_good_reading(reading(seq, i))]
+
+
+def last_minimum(seq) -> int:
+    """S_1..S_M 中最後一個最小值的位置 x（1 起算）。從第 x 點開始讀就是好讀法（和為 1 時）。"""
+    S = heights(seq)
+    m = min(S[1:])
+    return max(i for i in range(1, len(seq) + 1) if S[i] == m)
+
+
+def positive_count_order(seq) -> list:
+    """加強版的排序法：1..M 依 (S_k, −k) 由小到大。排第 r 位的起點有 M − r + 1 個正的點。"""
+    S = heights(seq)
+    return sorted(range(1, len(seq) + 1), key=lambda k: (S[k], -k))
+
+
+def periodic_heights(seq, periods: int) -> list:
+    """重複 periods 個週期的高度 [S_0, …, S_{periods·M}]。"""
+    return heights(tuple(seq) * periods)
+
+
+def stack_ops_to_steps(ops: str) -> tuple:
+    """進棧 'P' → +1、出棧 'O' → −1。"""
+    return tuple(1 if c == "P" else -1 for c in ops)
+
+
+def stack_sequences(n: int) -> list:
+    """所有合法的進出棧操作（n 次進、n 次出、出棧時棧不空），字典序。"""
+    out = []
+
+    def rec(s, pushed, popped):
+        if len(s) == 2 * n:
+            out.append(s)
+            return
+        if pushed < n:
+            rec(s + "P", pushed + 1, popped)
+        if popped < pushed:
+            rec(s + "O", pushed, popped + 1)
+
+    rec("", 0, 0)
+    return out
+
+
+def pop_order(ops: str) -> tuple:
+    """操作序列 → 出棧順序（進棧順序 1, 2, …）。"""
+    stack, out, nxt = [], [], 1
+    for c in ops:
+        if c == "P":
+            stack.append(nxt)
+            nxt += 1
+        else:
+            out.append(stack.pop())
+    return tuple(out)
+
+
+def draws_left(cards) -> list:
+    """摸牌遊戲：一開始能摸 1 張，摸到 w 元的牌變化 w − 1。回傳 [1, 摸完第 1 張後, …]。
+    （= Raney 的「還欠幾個引數」= 開頭的秩 + 1。）"""
+    out = [1]
+    for w in cards:
+        out.append(out[-1] + w - 1)
+    return out
+
+
+def deck_ok(cards) -> bool:
+    """前 m 張牌（勝利牌在最底下，不列入）能否摸到勝利牌：每張之後都還能再摸。"""
+    return all(d >= 1 for d in draws_left(cards)[1:])
+
+
+def card_game_brute(w, m: int) -> list:
+    """所有合格的牌序（牌有標號）：特殊牌 S1..Sn（w_i），無用牌 U1..U(m−n)。回傳標號 tuple 的串列。"""
+    from itertools import permutations
+    n = len(w)
+    labels = [f"S{i + 1}" for i in range(n)] + [f"U{i + 1}" for i in range(m - n)]
+    value = dict(zip(labels, list(w) + [0] * (m - n)))
+    return [p for p in permutations(labels) if deck_ok([value[c] for c in p])]
+
+
+def card_game_formula(w, m: int) -> int:
+    """m!/(m − n + 1)，n = w_i ≥ 1 的張數。"""
+    n = sum(1 for x in w if x >= 1)
+    value, rem = divmod(factorial(m), m - n + 1)
+    assert rem == 0
+    return value
+
+
+# ---------------------------------------------------------------------------
 # 自我檢查
 # ---------------------------------------------------------------------------
 
@@ -757,6 +879,39 @@ def _self_test():
             for n in range(6):
                 assert gould_G(t, n, v, 1) == ct.raney_A(t, (n,), (v,))
     print("Raney (1960)：字、循環引理、L(n;a)、L*、Lagrange 反演、第 6–7 節全部驗證通過")
+
+    # 第 9 節：整數序列的 Raney 引理、加強版、兩題例題（notes/ran_note015_改寫.tex）
+    import random
+    rng = random.Random(15)
+    for M in range(1, 8):
+        for _ in range(1500):
+            a = [rng.randint(-5, 5) for _ in range(M - 1)]
+            a.append(1 - sum(a))
+            assert len(good_starts(a)) == 1 and good_starts(a) == [last_minimum(a) % M]
+            assert sorted(positive_count(reading(a, i)) for i in range(M)) == list(range(1, M + 1))
+            for r, k in enumerate(positive_count_order(a), 1):
+                assert positive_count(reading(a, k % M)) == M - r + 1
+    a = NOTE015_SEQ
+    assert heights(a) == [0, 2, 1, -2, -1, 1] and last_minimum(a) == 3 and good_starts(a) == [3]
+    assert [positive_count(reading(a, i)) for i in range(5)] == [3, 1, 2, 5, 4]
+    assert positive_count_order(a) == [3, 4, 5, 2, 1]
+    assert periodic_heights(a, 3)[5::5] == [1, 2, 3]
+    assert [positive_count(reading((Fraction(1, 2), Fraction(1, 2)), i)) for i in range(2)] == [2, 2]
+    assert [positive_count(reading((2, 0), i)) for i in range(2)] == [2, 1]
+    for n in range(0, 7):
+        ops = stack_sequences(n)
+        assert len(ops) == comb(2 * n, n) // (n + 1) == len({pop_order(o) for o in ops})
+        for o in ops:
+            assert is_good_reading((1,) + stack_ops_to_steps(o))
+    for w, m in [((3,), 3), ((1, 2), 3), ((2, 2), 4), ((1, 1, 2), 4), ((2, 3), 5)]:
+        decks = card_game_brute(w, m)
+        assert len(decks) == card_game_formula(w, m)
+        vals = dict(zip([f"S{i + 1}" for i in range(len(w))], w))
+        for d in decks:
+            word = tuple(vals.get(c, 0) for c in d) + (0,)
+            assert is_word(word) and [h + 1 for h in head_ranks(word)][:-1] == draws_left(word[:-1])
+    assert card_game_formula((0, 3), 3) == len(card_game_brute((0, 3), 3)) == 2
+    print("Raney 引理（整數序列）、加強版、出棧、摸牌全部驗證通過")
 
 
 if __name__ == "__main__":
