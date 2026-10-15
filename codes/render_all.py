@@ -3,7 +3,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
 
 在 codes/ 資料夾內執行：
 
-    python render_all.py                全部場景（00a–00m、Chu 01–09、08r、MIT M01–M14、Fulton F01–F45、Raney R01–R06、N01–N12），1080p
+    python render_all.py                全部場景（00a–00m、Chu 01–09、08r、MIT M01–M14、Fulton F01–F55、Raney R01–R06、N01–N12），1080p
     python render_all.py --intro        只輸出卡塔蘭模組（00a–00m）
     python render_all.py --chu          只輸出 Chu 的部分（01–09 與 08r）
     python render_all.py --mit          只輸出 MIT 18.212 L1–4 補充（M01–M14）
@@ -12,6 +12,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
     python render_all.py --fulton3      只輸出 Fulton 第 5–6 章（F20–F27）
     python render_all.py --fulton4      只輸出 Fulton 第 7 章（F28–F41）
     python render_all.py --fulton5      只輸出 Fulton 第 8 章（F42–F45）
+    python render_all.py --fulton6      只輸出 Fulton 第 9–10 章（F46–F55）
     python render_all.py --raney        只輸出 Raney 引理筆記（R01–R06）
     python render_all.py --raney-paper  只輸出 Raney (1960) 導讀（N01–N12）
     python render_all.py 00c 05 M03     只輸出指定的場景（代號見下表；"5" 也可以，等於 "05"）
@@ -28,6 +29,7 @@ render_all.py —— 一次把場景輸出成影片（存到 renders/）
     python render_all.py --fulton3-demo FultonDemo3：F20–F27 連續播放（獨立）
     python render_all.py --fulton4-demo FultonDemo4：F28–F41 連續播放（獨立）
     python render_all.py --fulton5-demo FultonDemo5：F42–F45 連續播放（獨立）
+    python render_all.py --fulton6-demo FultonDemo6：F46–F55 連續播放（獨立）
     python render_all.py --raney-demo   RaneyLemmaDemo：R01–R06 連續播放（獨立）
     python render_all.py --raney-paper-demo  RaneyPaperDemo：N01–N12 連續播放（獨立）
     只要連續播放的影片、不要單一場景時，加 --demos-only。
@@ -137,6 +139,18 @@ FULTON5 = [                          # 第 8 章（notes/fulton_plan_ch8.md）
     ("F44", "scenes/sceneF44_schur_weyl.py", "SceneF44SchurWeyl"),
     ("F45", "scenes/sceneF45_quadratic_relations.py", "SceneF45QuadraticRelations"),
 ]
+FULTON6 = [                          # 第 9–10 章（notes/fulton_plan_ch9-10.md）
+    ("F46", "scenes/sceneF46_plucker.py", "SceneF46Plucker"),
+    ("F47", "scenes/sceneF47_flag_ring.py", "SceneF47FlagRing"),
+    ("F48", "scenes/sceneF48_grass_cells.py", "SceneF48GrassCells"),
+    ("F49", "scenes/sceneF49_four_lines.py", "SceneF49FourLines"),
+    ("F50", "scenes/sceneF50_flag_cells.py", "SceneF50FlagCells"),
+    ("F51", "scenes/sceneF51_divided_differences.py", "SceneF51DividedDifferences"),
+    ("F52", "scenes/sceneF52_schubert_polys.py", "SceneF52SchubertPolys"),
+    ("F53", "scenes/sceneF53_pipe_dreams.py", "SceneF53PipeDreams"),
+    ("F54", "scenes/sceneF54_bruhat.py", "SceneF54Bruhat"),
+    ("F55", "scenes/sceneF55_grassmannian_schur.py", "SceneF55GrassmannianSchur"),
+]
 RANEY = [                            # Raney 引理筆記（notes/ran_note015_改寫.pdf）
     ("R01", "scenes/sceneR01_raney_lemma.py", "SceneR01RaneyLemma"),
     ("R02", "scenes/sceneR02_last_minimum.py", "SceneR02LastMinimum"),
@@ -170,6 +184,7 @@ DEMOS = {
     "--fulton3-demo": ("main.py", "FultonDemo3"),
     "--fulton4-demo": ("main.py", "FultonDemo4"),
     "--fulton5-demo": ("main.py", "FultonDemo5"),
+    "--fulton6-demo": ("main.py", "FultonDemo6"),
     "--raney-demo": ("main.py", "RaneyLemmaDemo"),
     "--raney-paper-demo": ("main.py", "RaneyPaperDemo"),
 }
@@ -180,7 +195,7 @@ def main(argv):
     quality = "--hd"
     groups, keys, demos = [], [], []
     demos_only = False
-    by_key = {k: (f, s) for k, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY + RANEY_PAPER}
+    by_key = {k: (f, s) for k, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + FULTON6 + RANEY + RANEY_PAPER}
     for arg in argv:
         if arg in QUALITY_FLAGS:
             quality = arg
@@ -200,6 +215,8 @@ def main(argv):
             groups.append(FULTON4)
         elif arg == "--fulton5":
             groups.append(FULTON5)
+        elif arg == "--fulton6":
+            groups.append(FULTON6)
         elif arg == "--raney":
             groups.append(RANEY)
         elif arg == "--raney-paper":
@@ -227,7 +244,7 @@ def main(argv):
             for g in groups:
                 jobs += [(f, s) for _, f, s in g]
         if not keys and not groups:
-            jobs += [(f, s) for _, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + RANEY + RANEY_PAPER]
+            jobs += [(f, s) for _, f, s in INTRO + CHU + MIT + FULTON + FULTON2 + FULTON3 + FULTON4 + FULTON5 + FULTON6 + RANEY + RANEY_PAPER]
     jobs += demos
 
     failed = []

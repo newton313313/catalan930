@@ -116,6 +116,12 @@ def main():
     report("數學驗證 utils/tableaux.py", ok,
            "列插入、乘積、jeu de taquin、Schur 多項式全部一致" if ok else out[-300:])
 
+    # 9b. Schubert（Fulton 第 9–10 章，場景 F46–F55）
+    code, out = run([sys.executable, str(HERE / "utils" / "schubert.py")])
+    ok = code == 0 and "Fulton 第 9–10 章：Plücker、Schubert 胞腔與計算、Bruhat 序、差商、Schubert 多項式全部驗證通過" in out
+    report("數學驗證 utils/schubert.py", ok,
+           "Plücker、胞腔計數、Schubert 計算、Bruhat 序、Schubert 多項式＝pipe dream 全部一致" if ok else out[-300:])
+
     # 10. 實際渲染（選用）
     if render:
         # 只輸出 Scene04 的前兩個動畫（含 LaTeX 公式），存成一小段影片後刪掉。

@@ -15,6 +15,7 @@ main.py —— 所有場景的總入口
     manimgl main.py FultonDemo3                  Fulton 第 5–6 章（F20–F27），獨立
     manimgl main.py FultonDemo4                  Fulton 第 7 章（F28–F41），獨立
     manimgl main.py FultonDemo5                  Fulton 第 8 章（F42–F45），獨立
+    manimgl main.py FultonDemo6                  Fulton 第 9–10 章（F46–F55），獨立
     manimgl main.py RaneyLemmaDemo               Raney 引理筆記（R01–R06），獨立
     manimgl main.py RaneyPaperDemo               Raney (1960) 導讀（N01–N12），獨立
     manimgl main.py CompleteDemo -w --hd         把完整版輸出成一支 1080p 影片
@@ -110,6 +111,16 @@ from scenes import sceneF42_schur_module as sF42
 from scenes import sceneF43_weights as sF43
 from scenes import sceneF44_schur_weyl as sF44
 from scenes import sceneF45_quadratic_relations as sF45
+from scenes import sceneF46_plucker as sF46
+from scenes import sceneF47_flag_ring as sF47
+from scenes import sceneF48_grass_cells as sF48
+from scenes import sceneF49_four_lines as sF49
+from scenes import sceneF50_flag_cells as sF50
+from scenes import sceneF51_divided_differences as sF51
+from scenes import sceneF52_schubert_polys as sF52
+from scenes import sceneF53_pipe_dreams as sF53
+from scenes import sceneF54_bruhat as sF54
+from scenes import sceneF55_grassmannian_schur as sF55
 from scenes import sceneR01_raney_lemma as sR01
 from scenes import sceneR02_last_minimum as sR02
 from scenes import sceneR03_positive_counts as sR03
@@ -468,6 +479,48 @@ class SceneF45QuadraticRelations(sF45.SceneF45QuadraticRelations):
     pass
 
 
+# ------------------------------------------------------------ Fulton《Young Tableaux》第 9–10 章（獨立）
+
+class SceneF46Plucker(sF46.SceneF46Plucker):
+    pass
+
+
+class SceneF47FlagRing(sF47.SceneF47FlagRing):
+    pass
+
+
+class SceneF48GrassCells(sF48.SceneF48GrassCells):
+    pass
+
+
+class SceneF49FourLines(sF49.SceneF49FourLines):
+    pass
+
+
+class SceneF50FlagCells(sF50.SceneF50FlagCells):
+    pass
+
+
+class SceneF51DividedDifferences(sF51.SceneF51DividedDifferences):
+    pass
+
+
+class SceneF52SchubertPolys(sF52.SceneF52SchubertPolys):
+    pass
+
+
+class SceneF53PipeDreams(sF53.SceneF53PipeDreams):
+    pass
+
+
+class SceneF54Bruhat(sF54.SceneF54Bruhat):
+    pass
+
+
+class SceneF55GrassmannianSchur(sF55.SceneF55GrassmannianSchur):
+    pass
+
+
 # ------------------------------------------------------------ Raney 引理筆記（R01–R06）
 
 class SceneR01RaneyLemma(sR01.SceneR01RaneyLemma):
@@ -657,6 +710,19 @@ FULTON5_SCENES = [                  # Fulton 第 8 章（notes/fulton_plan_ch8.m
     sF45.SceneF45QuadraticRelations,
 ]
 
+FULTON6_SCENES = [                  # Fulton 第 9–10 章（notes/fulton_plan_ch9-10.md），獨立播放
+    sF46.SceneF46Plucker,
+    sF47.SceneF47FlagRing,
+    sF48.SceneF48GrassCells,
+    sF49.SceneF49FourLines,
+    sF50.SceneF50FlagCells,
+    sF51.SceneF51DividedDifferences,
+    sF52.SceneF52SchubertPolys,
+    sF53.SceneF53PipeDreams,
+    sF54.SceneF54Bruhat,
+    sF55.SceneF55GrassmannianSchur,
+]
+
 RANEY_SCENES = [                    # Raney 引理筆記（notes/ran_note015_改寫.pdf），獨立播放
     sR01.SceneR01RaneyLemma,
     sR02.SceneR02LastMinimum,
@@ -762,6 +828,13 @@ class FultonDemo5(s08.Scene08FormulaVerification):
 
     def construct(self):
         play_sequence(self, FULTON5_SCENES)
+
+
+class FultonDemo6(s08.Scene08FormulaVerification):
+    """Fulton《Young Tableaux》第 9–10 章（旗流形、Schubert 簇與 Schubert 多項式）：F46–F55 連續播放，不接其他影片。"""
+
+    def construct(self):
+        play_sequence(self, FULTON6_SCENES)
 
 
 class RaneyLemmaDemo(s08.Scene08FormulaVerification):

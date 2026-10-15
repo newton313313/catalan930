@@ -6,7 +6,7 @@
 開發機上是 `C:\mypython\manim\projects\catalan930`（例如 `notes/mit_plan.md` 就是 `C:\mypython\manim\projects\catalan930\notes\mit_plan.md`），
 可攜版則是解壓縮後的資料夾。`C:\mypython\manim` 是 ManimGL 本身的資料夾，底下**沒有** `notes/`。
 
-最後更新：2026-10-15（Raney (1960) 導讀的動畫 N01–N12、`RaneyPaperDemo`、例題產生器 `codes/utils/raney_examples.py`；combkit 1.8.0；之前：可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
+最後更新：2026-10-15（Fulton 第 9–10 章 F46–F55、`FultonDemo6`、`codes/utils/schubert.py`；combkit 1.9.0；之前：Raney (1960) 導讀的動畫 N01–N12、`RaneyPaperDemo`、例題產生器 `codes/utils/raney_examples.py`；combkit 1.8.0；之前：可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
 
 ---
 
@@ -52,10 +52,11 @@
 | Fulton 第 5–6 章 8 個場景 | `codes/scenes/sceneF20…F27` | 完成（2026-10-10），都可單獨執行；`FultonDemo3` 連續播放 |
 | Fulton 第 7 章 14 個場景 | `codes/scenes/sceneF28…F41` | 完成（2026-10-12），都可單獨執行；`FultonDemo4` 連續播放 |
 | Fulton 第 8 章 4 個場景 | `codes/scenes/sceneF42…F45` | 完成（2026-10-12），都可單獨執行；`FultonDemo5` 連續播放 |
+| Fulton 第 9–10 章 10 個場景 | `codes/scenes/sceneF46…F55` | 完成（2026-10-15），都可單獨執行；`FultonDemo6` 連續播放（計畫 `notes/fulton_plan_ch9-10.md`） |
 | Raney 引理筆記 6 個場景 | `codes/scenes/sceneR01…R06` | 完成（2026-10-15），都可單獨執行；`RaneyLemmaDemo` 連續播放（依 `notes/ran_note015_改寫.pdf`） |
 | Raney (1960) 導讀 12 個場景 | `codes/scenes/sceneN01…N12` | 完成（2026-10-15），都可單獨執行；`RaneyPaperDemo` 連續播放（分鏡 `notes/raney/manim_plan.md`） |
 | 例題產生器 | `codes/utils/raney_examples.py` | 用循環引理均勻抽樣字／樹／不交叉分法，產生附詳解的 Markdown 例題集（範例 `notes/raney/raney_examples_seed7.md`） |
-| 1080p 影片 112 支 | `codes/renders/` | 已輸出，見第 4 節的表 |
+| 1080p 影片 123 支 | `codes/renders/` | 已輸出，見第 4 節的表 |
 | 數學驗證程式 | `codes/utils/counting.py` | 全部通過 |
 | 環境檢查程式 | `codes/check_env.py` | 開發機上全部通過（2026-10-05；也檢查 `tableaux.py`） |
 | 版本控制 | 本資料夾是獨立的 git repo（2026-10-13 起；`.gitignore` 排除 `codes/renders/`、`codes/latex_cache/`、`__pycache__`、LaTeX 中間檔） | 見第 2 節最後的「版本控制」 |
@@ -125,6 +126,7 @@
 | Fulton 第 5–6 章（獨立） | `manimgl main.py FultonDemo3` |
 | Fulton 第 7 章（獨立） | `manimgl main.py FultonDemo4` |
 | Fulton 第 8 章（獨立） | `manimgl main.py FultonDemo5` |
+| Fulton 第 9–10 章（獨立） | `manimgl main.py FultonDemo6` |
 | Raney 引理筆記（獨立） | `manimgl main.py RaneyLemmaDemo` |
 | Raney (1960) 導讀（獨立） | `manimgl main.py RaneyPaperDemo` |
 | 產生例題集 | `python utils/raney_examples.py --md --seed 7 --count 3 --out 檔名`（不加 `--md` 是自我檢查） |
@@ -132,8 +134,8 @@
 | 輸出某場景的 1080p 影片 | `manimgl main.py Scene05RootDecomposition -w --hd` |
 | 快速低畫質輸出（檢查用） | 把 `--hd` 換成 `-l` |
 | 一鍵輸出（選單） | 對 `render_all.bat` 按兩下；或 `render_all.bat --fulton5 -l`（參數照 `render_all.py`） |
-| 一次輸出全部影片 | `python render_all.py --intro-demo --full --complete --mit-demo --mit-complete --fulton-demo --fulton2-demo --fulton3-demo --fulton4-demo --fulton5-demo --raney-demo` |
-| 只輸出一部分 | `python render_all.py --intro`（00a–00m）、`--chu`（01–09、08r）、`--mit`（M01–M14）、`--fulton`（F01–F08）、`--fulton2`（F09–F19）、`--fulton3`（F20–F27）、`--fulton4`（F28–F41）、`--fulton5`（F42–F45）、`--raney`（R01–R06）、`--raney-paper`（N01–N12）、`00c 05 M03 F04 R02 N04`（指定場景） |
+| 一次輸出全部影片 | `python render_all.py --intro-demo --full --complete --mit-demo --mit-complete --fulton-demo --fulton2-demo --fulton3-demo --fulton4-demo --fulton5-demo --fulton6-demo --raney-demo --raney-paper-demo` |
+| 只輸出一部分 | `python render_all.py --intro`（00a–00m）、`--chu`（01–09、08r）、`--mit`（M01–M14）、`--fulton`（F01–F08）、`--fulton2`（F09–F19）、`--fulton3`（F20–F27）、`--fulton4`（F28–F41）、`--fulton5`（F42–F45）、`--fulton6`（F46–F55）、`--raney`（R01–R06）、`--raney-paper`（N01–N12）、`00c 05 M03 F04 R02 N04`（指定場景） |
 | 只輸出連續播放的影片 | `python render_all.py --complete --demos-only` |
 | 數學驗證 | `python utils/counting.py`；Fulton 部分：`python utils/tableaux.py`；Raney 導讀：`python utils/raney.py` |
 | 環境檢查 | `python check_env.py --render` |
@@ -227,7 +229,8 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 │   ├── fulton_plan_ch5-6.md                  Fulton 第 5–6 章的計畫表：F20–F27 規格與 tableaux.py 第 8 節的 API
 │   ├── fulton_plan_ch7-8.md                  第 7–8 章的早期大綱（已被下面兩份取代，只留作紀錄）
 │   ├── fulton_plan_ch7.md                    Fulton 第 7 章定稿計畫（14 幕、省 token 的調整、檔名、共用 API）
-│   └── fulton_plan_ch8.md                    Fulton 第 8 章計畫（F42–F45 規格）
+│   ├── fulton_plan_ch8.md                    Fulton 第 8 章計畫（F42–F45 規格）
+│   └── fulton_plan_ch9-10.md                 Fulton 第 9–10 章：草稿、生動度與例子檢討、程式大綱、省 token 定稿（F46–F55 規格）
 ├── codes/                     Manim 專案（細節見 codes/README.md）
 │   ├── README.md              專案說明（給使用者看的）
 │   ├── main.py                總入口：列出所有場景、CatalanIntroDemo、FullDemo、CompleteDemo、MITDemo、MITCompleteDemo
@@ -235,7 +238,7 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 │   ├── render_all.bat         一鍵輸出：按兩下出現選單（全部／只輸出連續播放／只輸出場景／480p），也可帶參數
 │   ├── check_env.py           環境檢查
 │   ├── custom_config.yml      ManimGL 設定（必須純 ASCII）
-│   ├── scenes/                scene00a…00m（卡塔蘭模組）、scene01…09（Chu）、sceneM01…M14（MIT 補充）、sceneF01…F45（Fulton）、sceneR01…R06（Raney 引理筆記）、sceneN01…N12（Raney 導讀），一個檔案一個場景
+│   ├── scenes/                scene00a…00m（卡塔蘭模組）、scene01…09（Chu）、sceneM01…M14（MIT 補充）、sceneF01…F55（Fulton）、sceneR01…R06（Raney 引理筆記）、sceneN01…N12（Raney 導讀），一個檔案一個場景
 │   ├── data/                  fulton7_math.json：第 7 章的固定算例（來自 fulton7_agent_pack，由 utils/rep_data.py 讀取）
 │   ├── utils/                 共用工具
 │   ├── latex_cache/           LaTeX 編譯的中間檔（ManimGL 自動產生，可以刪；做可攜版時不必帶）
@@ -378,6 +381,21 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 | F44 | `SceneF44SchurWeyl` | $GL(E)$ 與 $S_3$ 在 $E^{\otimes3}$ 上可交換（交換圖）；$E^{\otimes n}\cong\bigoplus E^\lambda\otimes S^\lambda$；$8=4\cdot1+2\cdot2+0\cdot1$、$27=10\cdot1+8\cdot2+1\cdot1$；$E^\lambda\cong E^{\otimes n}\otimes_{\mathbb C[S_n]}S^\lambda$ | 2 分 6 秒 |
 | F45 | `SceneF45QuadraticRelations` | 同一條交換關係的三個身分：Specht、Schur 模、$2\times4$ 矩陣的子式；Plücker $p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=-3-9+12=0$；預告第 9 章 Grassmannian；總結第 7–8 章 | 2 分 15 秒 |
 
+**Fulton《Young Tableaux》第 9–10 章**（獨立；規格見 `notes/fulton_plan_ch9-10.md` 第 6 節；數學 `utils/schubert.py`、畫圖 `utils/schubert_draw.py`）：
+
+| # | 類別 | 內容 | 1080p 影片長度 |
+|---|---|---|---|
+| F46 | `SceneF46Plucker` | 六個數認出一個平面：$2\times4$ 矩陣的 6 個子式、換基底全部 ×$\det g$；$p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0$；練習 2 由 $1,2,1,1,2,3$ 還原矩陣 | 2 分 12 秒 |
+| F47 | `SceneF47FlagRing` | 點在線上 $x_1y_{23}-x_2y_{13}+x_3y_{12}=0$；$Fl(\mathbb C^3)\subset\mathbb P^2\times\mathbb P^2$；座標環的維數 $=\dim E^{(a+b,b)}$（$9-1=8$）；不變量、Borel–Weil 各一句 | 2 分 12 秒 |
+| F48 | `SceneF48GrassCells` | 數星星：$Gr(2,4)$ 的 6 個胞腔（列梯形矩陣、方框裡的 Young 圖）；$\binom42_q$，$\mathbb F_2$ 上 35 個平面；$\Omega_\lambda$ 與閉包；書上 $\lambda=(5,3,2,2,1)$ | 2 分 9 秒 |
+| F49 | `SceneF49FourLines` | 四條線問題：$\sigma_1^4=2\sigma_{22}$（方框裡的兩條路徑＝兩個標準表）；對偶；$Gr(2,5)$：5、$Gr(3,6)$：42；$\sigma_{21}^2=\sigma_{33}+2\sigma_{321}+\sigma_{222}$ | 2 分 29 秒 |
+| F50 | `SceneF50FlagCells` | $Fl(3)$ 的 6 個不動點（座標三角形）與胞腔（星號＝$\ell(w)$）；書上 $w=426135$；$[3]_q!$，Fano 平面上 21 個旗、$S_4$：315；$\sigma_w$ 的對偶基底 | 2 分 36 秒 |
+| F51 | `SceneF51DividedDifferences` | $H^*(Fl(3))=\mathbb Z[x]/(e_1,e_2,e_3)$ 的 6 個基底；吃多項式的機器 $\partial_i$；$\partial_i^2=0$、辮關係、Leibniz；$\partial_i\sigma_w=\sigma_{ws_i}$ | 2 分 39 秒 |
+| F52 | `SceneF52SchubertPolys` | 從 $\mathfrak S_{w_0}=x_1^2x_2$ 沿 $S_3$ 的 Hasse 圖流下來；書上 $54321\to\cdots\to41352=x_1^3(x_2x_3+x_2x_4+x_3x_4)$；穩定性、基底 | 2 分 13 秒 |
+| F53 | `SceneF53PipeDreams` | 練習 5：$\mathfrak S_{21543}$ 的 13 項、係數 2 ＝兩張 pipe dream；水管規則、非縮減的反例；全部 14 張（書外延伸：Billey–Jockusch–Stanley） | 2 分 15 秒 |
+| F54 | `SceneF54Bruhat` | 秩矩陣 $r_w(p,q)$；前綴排序遊戲（$2143\le4231$、$1423$ 與 $3124$ 不可比）；$S_3$、$S_4$ 的 Hasse 圖；書上 9 位數的下降鏈與卡住的例子；$u\le v\iff X_u\subset X_v$ | 2 分 17 秒 |
+| F55 | `SceneF55GrassmannianSchur` | Grassmann 置換：$\mathfrak S_{2413}=s_{21}(x_1,x_2)$、$\mathfrak S_{1342}=e_2$；$p^*\sigma_\lambda=\sigma_w$；四條線在 $Fl(4)$ 重算 $(x_1+x_2)^4\equiv2\mathfrak S_{3412}$；三個「2」；第 9–10 章總結 | 2 分 11 秒 |
+
 **Raney 引理筆記**（獨立；依 `notes/ran_note015_改寫.pdf`，原筆記 `notes/ran_note015.txt` 是他人所寫；數學在 `utils/raney.py` 第 9 節，畫圖在 `utils/raney_draw.py`）：
 
 | # | 類別 | 內容 | 1080p 影片長度 |
@@ -420,6 +438,7 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 | `FultonDemo3` | Fulton 第 5–6 章 F20–F27（獨立） | 10 分 0 秒 |
 | `FultonDemo4` | Fulton 第 7 章 F28–F41（獨立） | 36 分 15 秒 |
 | `FultonDemo5` | Fulton 第 8 章 F42–F45（獨立） | 9 分 17 秒 |
+| `FultonDemo6` | Fulton 第 9–10 章 F46–F55（獨立） | 23 分 24 秒 |
 | `RaneyLemmaDemo` | Raney 引理筆記 R01–R06（獨立） | 3 分 56 秒 |
 | `RaneyPaperDemo` | Raney (1960) 導讀 N01–N12（獨立） | 8 分 26 秒 |
 
@@ -454,9 +473,9 @@ M14 也分段（`part1_walk` … `part5_conclusion`），但寫成模組層級�
 
 | 檔案 | 功能 |
 |---|---|
-| `main.py` | 為每個場景做同名子類別（ManimGL 只列出定義在該檔案裡的場景）；`INTRO_SCENES`、`ALL_SCENES`、`COMPLETE_SCENES`、`MIT_SCENES`、`MIT_COMPLETE_SCENES`、`FULTON_SCENES`、`FULTON2_SCENES`、`FULTON3_SCENES`、`FULTON4_SCENES`、`FULTON5_SCENES`、`RANEY_SCENES`、`RANEY_PAPER_SCENES` 十二個清單與 `CatalanIntroDemo`、`FullDemo`、`CompleteDemo`、`MITDemo`、`MITCompleteDemo`、`FultonDemo`、`FultonDemo2`、`FultonDemo3`、`FultonDemo4`、`FultonDemo5`、`RaneyLemmaDemo`、`RaneyPaperDemo` 十二個連續播放 |
-| `render_all.py` | 依序呼叫 `manimgl … -w`；參數 `-l/-m/--hd/--uhd`、`--intro`、`--chu`、`--mit`、`--fulton`、`--fulton2`、`--fulton3`、`--fulton4`、`--fulton5`、`--raney`、場景代號（`00c`、`05`、`08r`、`M03`、`F04`、`R02`）、`--intro-demo`、`--full`、`--complete`、`--mit-demo`、`--mit-complete`、`--fulton-demo`、`--fulton2-demo`、`--fulton3-demo`、`--fulton4-demo`、`--fulton5-demo`、`--raney-demo`、`--demos-only` |
-| `render_all.bat` | 一鍵輸出（包裝 `render_all.py`）：按兩下會出現選單——1 全部 99 個場景＋12 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p 快速檢查；也可以帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda／Miniconda。檔案必須純 ASCII、CRLF 換行 |
+| `main.py` | 為每個場景做同名子類別（ManimGL 只列出定義在該檔案裡的場景）；`INTRO_SCENES`、`ALL_SCENES`、`COMPLETE_SCENES`、`MIT_SCENES`、`MIT_COMPLETE_SCENES`、`FULTON_SCENES`、`FULTON2_SCENES`、`FULTON3_SCENES`、`FULTON4_SCENES`、`FULTON5_SCENES`、`FULTON6_SCENES`、`RANEY_SCENES`、`RANEY_PAPER_SCENES` 十三個清單與 `CatalanIntroDemo`、`FullDemo`、`CompleteDemo`、`MITDemo`、`MITCompleteDemo`、`FultonDemo`、`FultonDemo2`、`FultonDemo3`、`FultonDemo4`、`FultonDemo5`、`FultonDemo6`、`RaneyLemmaDemo`、`RaneyPaperDemo` 十三個連續播放 |
+| `render_all.py` | 依序呼叫 `manimgl … -w`；參數 `-l/-m/--hd/--uhd`、`--intro`、`--chu`、`--mit`、`--fulton`、`--fulton2`、`--fulton3`、`--fulton4`、`--fulton5`、`--fulton6`、`--raney`、`--raney-paper`、場景代號（`00c`、`05`、`08r`、`M03`、`F04`、`R02`）、`--intro-demo`、`--full`、`--complete`、`--mit-demo`、`--mit-complete`、`--fulton-demo`、`--fulton2-demo`、`--fulton3-demo`、`--fulton4-demo`、`--fulton5-demo`、`--fulton6-demo`、`--raney-demo`、`--raney-paper-demo`、`--demos-only` |
+| `render_all.bat` | 一鍵輸出（包裝 `render_all.py`）：按兩下會出現選單——1 全部 109 個場景＋13 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p 快速檢查；也可以帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda／Miniconda。檔案必須純 ASCII、CRLF 換行 |
 | `check_env.py` | 檢查 Python、ManimGL、套件、ffmpeg、LaTeX、cm-super、字型、設定檔、數學驗證；`--render` 實際渲染一小段 |
 | `custom_config.yml` | 輸出資料夾 `renders/`、背景色、fps、預設字型 |
 | `notes/make_catalan_figs.py` | 產生講義第 1 節的 TikZ 圖 `catalan_figs.tex`：物件由 `counting.py` 的樹產生，排列順序與根／左／右配色和動畫相同；產生前先檢查第 1 節寫到的數字（明安圖級數、Bertrand 公式、$\sqrt{1-4x}$ 的係數等） |
@@ -553,6 +572,7 @@ $$
   F20–F27 由 3 個代理人各做 2–3 幕，同樣自查後由主對話檢查。
   第 7 章（F28–F41）：固定算例由使用者的工作包提供並自帶 selfcheck；`python -m utils.rep_data` 再用 `tableaux.py` 獨立重算核對（polytabloid 座標、$\rho(12)$、$\rho(23)$、$S_3$ 特徵標、Kostka、$c^2=3c$、LR、分支）。4 個代理人各做 3–4 幕。
    第 8 章（F42–F45）：數字由 `tableaux.py` 現算並在場景的 `check_math()` assert（半標準表與權重、$d_\lambda(m)$、$m^n=\sum d_\lambda(m)f^\lambda$、Plücker 子式）；1 個代理人做 4 幕。
+   第 9–10 章（F46–F55）：`utils/schubert.py` 的自我測試（`check_env.py` 也會跑）用獨立方法互相核對——pipe dream 總和＝Schubert 多項式（$S_4$ 全部）、Grassmann 置換的 $\mathfrak S_w$＝$s_\lambda$（$S_5$ 全部）、秩矩陣判準＝前綴判準＝Lemma 11 的下降鏈、$\mathbb F_2$ 上暴力數的點＝$q$-二項式與 $q$-階乘；書上的例子（練習 2、$426135$、$41352$、$21543$、9 位數的下降鏈）逐字重現；各場景 `check_math()` assert 畫面上的數字。2 個代理人各做 5 幕（平行試渲染：`render_check.py` 改成每次用自己的 TEMP）。
 - 2026-10-04 檢查過 `MITCompleteDemo` 的 33 個場景交界（同樣乾淨），並在 103 的全新安裝環境用空的 LaTeX 快取、嚴格模式重新輸出 M01–M14，全部成功。
 
 ---
@@ -610,7 +630,7 @@ $$
 - **改顏色字型**：`codes/utils/styles.py`。講義的顏色在 `.tex` 開頭的 `\colorlet`，兩邊刻意一致（弦藍、三角形黃／橘、交叉紅、固定點橘／桃紅）。
   卡塔蘭模組的根／左／右（橘／青／粉紅）在 `catalan_draw.py` 開頭，左／右沿用 Chu 部分區域 $R_1$／$R_2$ 的顏色。
 - **新增場景**：繼承 `utils.scene_base.ChuScene`，檔頭照抄其他場景的 `sys.path.insert(...)`；輔助函式寫成模組層級的函式（見第 7 節第 8 點）；
-  再到 `main.py` 加同名子類別並放進對應的清單（`INTRO_SCENES`、`ALL_SCENES`、`MIT_SCENES`、`FULTON_SCENES`…`FULTON5_SCENES`），到 `render_all.py` 對應的清單加一行；
+  再到 `main.py` 加同名子類別並放進對應的清單（`INTRO_SCENES`、`ALL_SCENES`、`MIT_SCENES`、`FULTON_SCENES`…`FULTON6_SCENES`），到 `render_all.py` 對應的清單加一行；
   新增一組連續播放時，也要加進 `render_all.py` 的 `DEMOS` 和 `render_all.bat` 的 `DEMOS` 變數。
 - **改講義第 1 節的圖**：改 `notes/make_catalan_figs.py`，執行後再編譯講義（`catalan_figs.tex` 是產生出來的，不要手改）。
   第 2–9 節的圖是直接寫在 `.tex` 裡的 TikZ；附錄 A 的圖也是程式產生的（見下面「改講義附錄 A」）。
