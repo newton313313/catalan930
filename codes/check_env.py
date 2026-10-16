@@ -122,6 +122,12 @@ def main():
     report("數學驗證 utils/schubert.py", ok,
            "Plücker、胞腔計數、Schubert 計算、Bruhat 序、Schubert 多項式＝pipe dream 全部一致" if ok else out[-300:])
 
+    # 9c. 附錄 A–B（場景 F56–F65）
+    code, out = run([sys.executable, str(HERE / "utils" / "fulton_appendix.py")])
+    ok = code == 0 and "Fulton 附錄 A–B：evacuation、行插入、Burge 與四個角、0-1 矩陣、鑰匙、胞腔與 Chern 類全部驗證通過" in out
+    report("數學驗證 utils/fulton_appendix.py", ok,
+           "evacuation、Burge 與四個角、0-1 對應、Gale–Ryser、鑰匙全部一致" if ok else out[-300:])
+
     # 10. 實際渲染（選用）
     if render:
         # 只輸出 Scene04 的前兩個動畫（含 LaTeX 公式），存成一小段影片後刪掉。

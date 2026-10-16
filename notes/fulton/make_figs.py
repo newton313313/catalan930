@@ -936,6 +936,110 @@ def fig_pipes_21543() -> str:
     return "\\qquad ".join(_pipe_tikz(D, 5, 0.42) for D in two) + "\n"
 
 
+# =============================================================================
+# 附錄 A–B（part9.tex、part10.tex；動畫 F56–F65）
+# =============================================================================
+def check_numbers_appAB():
+    """part9.tex（附錄 A）與 part10.tex（附錄 B）寫到的每一個數字。"""
+    from utils import fulton_appendix as FA
+    from utils.schubert import gaussian_binomial, q_factorial
+    from utils.tableaux import insert_word, transpose
+    assert FA.check()
+    # §A.1
+    assert FA.dual_word((3, 1, 2, 1), 3) == (3, 2, 3, 1)
+    assert insert_word((3, 1, 2, 1)) == ((1, 1), (2,), (3,)) and insert_word((3, 2, 3, 1)) == ((1, 3), (2,), (3,))
+    assert FA.evacuation(((1, 1), (2,), (3,)), 3) == ((1, 3), (2,), (3,))
+    st = FA.evacuation_steps(((1, 2), (3,)), 3)
+    assert [s[1] for s in st] == [(0, 1), (1, 0), (0, 0)] and [s[2] for s in st] == [3, 2, 1]
+    assert FA.evacuation(((1, 2), (3,)), 3) == ((1, 3), (2,)) and FA.evacuation(((1, 3), (2,)), 3) == ((1, 2), (3,))
+    assert FA.evacuation(((1, 1, 2), (2, 3)), 3) == ((1, 2, 3), (2, 3))
+    T = ((1, 2, 2, 3), (2, 3, 5, 5), (4, 4, 6), (5, 6))
+    assert FA.evacuation_steps(T, 6)[0][0] == ((2, 2, 2, 3), (3, 4, 5, 5), (4, 6, 6), (5,))
+    assert FA.evacuation(T, 6) == ((1, 1, 2, 3), (2, 2, 3, 5), (4, 4, 5), (5, 6))
+    # §A.2
+    assert FA.column_insert(((1, 3), (2,)), 1)[0] == ((1, 1, 3), (2,)) and FA.column_insert(((1, 3), (2,)), 2)[0] == ((1, 2, 3), (2,))
+    assert FA.column_insert(((1, 2), (3,)), 2)[0] == ((1, 2), (2, 3))
+    assert insert_word((2, 4, 1, 3, 5)) == FA.column_insert_word((5, 3, 1, 4, 2)) == ((1, 3, 5), (2, 4))
+    assert insert_word((5, 3, 1, 4, 2)) == ((1, 2), (3, 4), (5,)) == transpose(((1, 3, 5), (2, 4)))
+    # §A.4.1–4.2
+    A = [[1, 2, 0], [0, 1, 1], [1, 1, 1]]
+    assert FA.antilex_sort(*zip(*FA.matrix_to_pairs(A))) == ((3, 3, 3, 2, 2, 1, 1, 1), (1, 2, 3, 2, 3, 1, 2, 2))
+    P, Q = FA.rsk_array(*zip(*FA.matrix_to_pairs(A)))
+    R, S = FA.burge(A)
+    assert (P, Q) == (((1, 1, 2, 2, 2, 3), (2, 3)), ((1, 1, 1, 2, 2, 3), (3, 3)))
+    assert (R, S) == (((1, 1, 2, 2, 2), (2, 3), (3,)), ((1, 1, 1, 3, 3), (2, 2), (3,)))
+    c = FA.corners(A)
+    assert c["se"] == (P, ((1, 1, 1, 3, 3, 3), (2, 2))) and FA.evacuation(P, 3) == P
+    assert c["sw"] == (R, ((1, 1, 1, 2, 3), (2, 3), (3,))) and c["ne"] == (((1, 1, 2, 2, 3), (2, 2), (3,)), S)
+    # §A.4.3
+    assert FA.dual_rsk([[0, 1, 1], [1, 0, 1], [1, 0, 1]]) == (((1, 1, 2), (3, 3, 3)), ((1, 1), (2, 2), (3, 3)))
+    assert len(FA.zero_one_matrices((3, 2, 1), (2, 2, 2))) == 3 and FA.zero_one_matrices((3, 3), (3, 1, 1, 1)) == []
+    assert len(FA.zero_one_matrices((2, 2), (2, 2))) == 1 and len(FA.zero_one_matrices((3, 1), (2, 1, 1))) == 1
+    assert FA.gale_ryser((3, 2, 1), (2, 2, 2)) and not FA.gale_ryser((3, 3), (3, 1, 1, 1))
+    assert conjugate((3, 3)) == (2, 2, 2) and conjugate((3, 2, 1)) == (3, 2, 1)
+    assert sum(kostka(conjugate(nu), (3, 2, 1)) * kostka(nu, (2, 2, 2)) for nu in partitions(6)) == 3
+    # §A.5
+    T5 = ((1, 1, 2, 2), (2, 3, 3), (4,))
+    assert FA.frank_tableau(T5, [2, 3, 2, 1]) == ((1, 2), (1, 3, 4), (2, 3), (2,))
+    assert FA.keys(T5) == (((1, 1, 1, 1), (2, 2, 2), (4,)), ((2, 2, 2, 2), (3, 3, 3), (4,)))
+    assert FA.keys(((1, 2), (3,))) == (((1, 1), (3,)), ((2, 2), (3,)))
+    # 附錄 A 的練習
+    assert FA.dual_word((4, 1, 3, 2), 4) == (3, 2, 4, 1)
+    assert FA.column_insert(((1, 2), (3,)), 3)[0] == ((1, 2), (3, 3))
+    assert FA.gale_ryser((2, 2, 1), (3, 1, 1)) and conjugate((2, 2, 1)) == (3, 2)
+    assert [[1, 1, 0], [1, 0, 1], [1, 0, 0]] in FA.zero_one_matrices((2, 2, 1), (3, 1, 1))
+    # 附錄 B
+    assert FA.betti_from_cells([1, 1, 1]) == ([1, 0, 1, 0, 1], 3)
+    assert FA.betti_from_cells(gaussian_binomial(4, 2)) == ([1, 0, 1, 0, 2, 0, 1, 0, 1], 6)
+    assert FA.betti_from_cells(q_factorial(3))[1] == 6 and FA.betti_from_cells([1, 1])[1] == 2
+    assert FA.chern_projective(1) == [1, 2] and FA.chern_projective(2) == [1, 3, 3] and FA.chern_projective(3) == [1, 4, 6, 4]
+    assert FA.plucker_degree(2, 4) == 2 and FA.plucker_degree(2, 5) == 5 and FA.plucker_degree(3, 6) == 42
+    assert 1 * 2 == 2 and 2 * 2 == 4                                               # 直線∩圓錐、兩條圓錐
+    # Segre：(h1+h2)^2 = 2 h1 h2（h1^2 = h2^2 = 0）
+    sq = poly_mul({(1, 0): 1, (0, 1): 1}, {(1, 0): 1, (0, 1): 1})
+    assert {e: c for e, c in sq.items() if max(e) <= 1} == {(1, 1): 2}
+    cu = poly_mul(sq, {(1, 0): 1, (0, 1): 1})                                        # P^1 × P^2：h1^2 = 0、h2^3 = 0
+    assert {e: c for e, c in cu.items() if e[0] <= 1 and e[1] <= 2} == {(1, 2): 3}
+    assert FA.betti_from_cells(gaussian_binomial(5, 2)) == ([1, 0, 1, 0, 2, 0, 2, 0, 2, 0, 1, 0, 1], 10)
+    assert FA.betti_from_cells(q_factorial(4))[1] == 24 and 3 * 3 == 9
+    print("附錄 A–B（part9.tex、part10.tex）的數字全部正確")
+
+
+def _ytab(T):
+    return r"{\ytableausetup{smalltableaux}\ytableaushort{" + ",".join("".join(map(str, r)) for r in T) + "}}"
+
+
+def fig_evac_small() -> str:
+    """T = 12/3（N = 3）的 evacuation：每步的 ΔT 與逐漸填滿的 T*。"""
+    from utils.fulton_appendix import evacuation_steps
+    T = ((1, 2), (3,))
+    lam = (2, 1)
+    star = {}
+    cols_top, cols_bot = [_ytab(T)], [r"{\ytableausetup{smalltableaux}\ytableaushort{{}{},{}}}"]
+    for nxt, b, val in evacuation_steps(T, 3):
+        star[b] = val
+        cols_top.append(_ytab(nxt) if nxt else r"$\varnothing$")
+        rows = []
+        for i in range(len(lam)):
+            rows.append("".join(str(star[(i, j)]) if (i, j) in star else "{}" for j in range(lam[i])))
+        cols_bot.append(r"{\ytableausetup{smalltableaux}\ytableaushort{" + ",".join(rows) + "}}")
+    n = len(cols_top)
+    return ("\\begin{tabular}{@{}l" + "c" * n + "@{}}\n剩下的表 & " + " & ".join(cols_top) + "\\\\[4pt]\n"
+            "$T^*$（填進去的 $x^*=4-x$） & " + " & ".join(cols_bot) + "\\\\\n\\end{tabular}\n")
+
+
+def fig_gale_ryser() -> str:
+    from utils.fulton_appendix import zero_one_matrices
+    mats = zero_one_matrices((3, 2, 1), (2, 2, 2))
+    return "\\quad ".join("$" + r"\begin{pmatrix}" + r"\\".join("&".join(map(str, r)) for r in M) + r"\end{pmatrix}$"
+                          for M in mats) + "\n"
+
+
+FIGURES += [
+    ("FulEvacSmall", fig_evac_small),
+    ("FulGaleRyser", fig_gale_ryser),
+]
+
 FIGURES += [
     ("FulGrassCells", fig_grass_cells),
     ("FulFlagCells", fig_flag_cells),
@@ -952,6 +1056,7 @@ def main():
     check_numbers_ch7()
     check_numbers_ch8()
     check_numbers_ch910()
+    check_numbers_appAB()
     parts = ["% figs.tex —— 由 fulton/make_figs.py 產生，請勿手動修改。\n"
              "% 重新產生：python fulton/make_figs.py（附錄 B，動畫 F09–F19）\n"]
     for name, func in FIGURES:

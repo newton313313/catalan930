@@ -16,6 +16,7 @@ main.py —— 所有場景的總入口
     manimgl main.py FultonDemo4                  Fulton 第 7 章（F28–F41），獨立
     manimgl main.py FultonDemo5                  Fulton 第 8 章（F42–F45），獨立
     manimgl main.py FultonDemo6                  Fulton 第 9–10 章（F46–F55），獨立
+    manimgl main.py FultonDemo7                  Fulton 附錄 A–B 與全書回顧（F56–F65），獨立
     manimgl main.py RaneyLemmaDemo               Raney 引理筆記（R01–R06），獨立
     manimgl main.py RaneyPaperDemo               Raney (1960) 導讀（N01–N12），獨立
     manimgl main.py CompleteDemo -w --hd         把完整版輸出成一支 1080p 影片
@@ -121,6 +122,16 @@ from scenes import sceneF52_schubert_polys as sF52
 from scenes import sceneF53_pipe_dreams as sF53
 from scenes import sceneF54_bruhat as sF54
 from scenes import sceneF55_grassmannian_schur as sF55
+from scenes import sceneF56_evacuation as sF56
+from scenes import sceneF57_column_bumping as sF57
+from scenes import sceneF58_burge as sF58
+from scenes import sceneF59_four_corners as sF59
+from scenes import sceneF60_zero_one as sF60
+from scenes import sceneF61_keys as sF61
+from scenes import sceneF62_cells_homology as sF62
+from scenes import sceneF63_classes_degrees as sF63
+from scenes import sceneF64_chern_classes as sF64
+from scenes import sceneF65_book_map as sF65
 from scenes import sceneR01_raney_lemma as sR01
 from scenes import sceneR02_last_minimum as sR02
 from scenes import sceneR03_positive_counts as sR03
@@ -521,6 +532,48 @@ class SceneF55GrassmannianSchur(sF55.SceneF55GrassmannianSchur):
     pass
 
 
+# ------------------------------------------------------------ Fulton《Young Tableaux》附錄 A–B 與全書回顧（獨立）
+
+class SceneF56Evacuation(sF56.SceneF56Evacuation):
+    pass
+
+
+class SceneF57ColumnBumping(sF57.SceneF57ColumnBumping):
+    pass
+
+
+class SceneF58Burge(sF58.SceneF58Burge):
+    pass
+
+
+class SceneF59FourCorners(sF59.SceneF59FourCorners):
+    pass
+
+
+class SceneF60ZeroOne(sF60.SceneF60ZeroOne):
+    pass
+
+
+class SceneF61Keys(sF61.SceneF61Keys):
+    pass
+
+
+class SceneF62CellsHomology(sF62.SceneF62CellsHomology):
+    pass
+
+
+class SceneF63ClassesDegrees(sF63.SceneF63ClassesDegrees):
+    pass
+
+
+class SceneF64ChernClasses(sF64.SceneF64ChernClasses):
+    pass
+
+
+class SceneF65BookMap(sF65.SceneF65BookMap):
+    pass
+
+
 # ------------------------------------------------------------ Raney 引理筆記（R01–R06）
 
 class SceneR01RaneyLemma(sR01.SceneR01RaneyLemma):
@@ -723,6 +776,19 @@ FULTON6_SCENES = [                  # Fulton 第 9–10 章（notes/fulton_plan_
     sF55.SceneF55GrassmannianSchur,
 ]
 
+FULTON7_SCENES = [                  # Fulton 附錄 A–B（notes/fulton_plan_appAB.md），獨立播放
+    sF56.SceneF56Evacuation,
+    sF57.SceneF57ColumnBumping,
+    sF58.SceneF58Burge,
+    sF59.SceneF59FourCorners,
+    sF60.SceneF60ZeroOne,
+    sF61.SceneF61Keys,
+    sF62.SceneF62CellsHomology,
+    sF63.SceneF63ClassesDegrees,
+    sF64.SceneF64ChernClasses,
+    sF65.SceneF65BookMap,
+]
+
 RANEY_SCENES = [                    # Raney 引理筆記（notes/ran_note015_改寫.pdf），獨立播放
     sR01.SceneR01RaneyLemma,
     sR02.SceneR02LastMinimum,
@@ -835,6 +901,13 @@ class FultonDemo6(s08.Scene08FormulaVerification):
 
     def construct(self):
         play_sequence(self, FULTON6_SCENES)
+
+
+class FultonDemo7(s08.Scene08FormulaVerification):
+    """Fulton《Young Tableaux》附錄 A（組合的變形）、附錄 B（拓撲）與全書回顧：F56–F65 連續播放，不接其他影片。"""
+
+    def construct(self):
+        play_sequence(self, FULTON7_SCENES)
 
 
 class RaneyLemmaDemo(s08.Scene08FormulaVerification):

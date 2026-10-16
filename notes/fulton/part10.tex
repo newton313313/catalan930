@@ -1,0 +1,144 @@
+% Young 表講義第 10 段：附錄 B 代數簇的拓撲（動畫 F62–F64）＋全書地圖（F65）
+% 數字由 fulton/make_figs.py 的 check_numbers_appAB() 核對（codes/utils/fulton_appendix.py、schubert.py）。
+
+\section{代數簇的拓撲（動畫 F62--F65）}\label{sec:f-appB}
+
+\begin{keybox}[這個附錄在做什麼（先看這裡）]
+第 9--10 章用了幾個拓撲的事實：「子簇有類」「類可以相乘」「乘積數交點」「胞腔給出基底」「Chern 類」。附錄 B 說明它們從哪裡來。
+你\textbf{不需要}會證明，只要會用。這一節用最少的術語，把每個事實翻成「數格子」或「數交點」，並且全部用例子驗算。
+最後一句話：一條 Whitney 公式 $\prod(1-x_i)=1$ 解釋了第 10 章為什麼 $e_1=\cdots=e_m=0$。
+\end{keybox}
+
+% ------------------------------------------------------------------
+\subsection{我們用到了哪些事實（\S B.1）}\label{sec:f-facts}
+
+第 9 章 \fulref{p.146--147} 與附錄 B 開頭 \fulref{p.211} 列出的規則，翻成白話：
+\begin{enumerate}[nosep]
+\item \textbf{子簇有類}：光滑射影簇 $X$ 裡餘維數 $d$ 的不可約子簇 $V$，給出上同調裡的一個類 $[V]\in H^{2d}(X)$。
+\item \textbf{點的類}：$X$ 的維數是 $N$ 時，$H^{2N}(X)=\mathbb Z$，一個點的類是生成元。所以「最高次的類」就是一個整數。
+\item \textbf{乘積數交點}：兩個子簇維數互補、橫截地交於 $t$ 個點，則 $[V]\cdot[W]=t$（$t$ 個點）。
+\item \textbf{胞腔給出基底}：$X$ 切成一塊塊 $\mathbb C^k$，這些胞腔的閉包的類組成上同調的基底（Lemma 6）。
+\item 還有拉回、推出與 Chern 類（\S\ref{sec:f-chern}）。
+\end{enumerate}
+第 9 章的四條線問題（$\sigma_1^4=2$）就是用 2、3、4 這三條規則算的。
+
+% ------------------------------------------------------------------
+\subsection{同調＝數洞；胞腔給出基底（F62）}\label{sec:f-cells}
+
+\textbf{直觀}（\S B.2 的背景）。同調群 $H_i$ 量的是「$i$ 維的洞」：圓有一個 1 維的洞（$H_1=\mathbb Z$），球面有一個 2 維的洞（$H_2=\mathbb Z$）。
+Fulton 用的 Borel--Moore 同調也能處理不緊緻的空間，例如 $\mathbb C^k$：它只在 $H_{2k}$ 有一個 $\mathbb Z$（\fulref{p.222}）——一塊實維數 $2k$ 的「平地」只貢獻一個 $2k$ 維的類。
+
+\begin{thmbox}[Lemma 6 \fulref{p.222}]
+若 $X$ 有一串閉子集，每一層的差是若干個 $\mathbb C^{n_{ij}}$ 的不交併，則這些胞腔閉包的類組成 $H_*(X)$ 的基底。
+特別地：複維數 $k$ 的胞腔個數＝Betti 數 $b_{2k}$，奇數的 Betti 數全是 0，Euler 示性數＝胞腔總數。
+\end{thmbox}
+
+\textbf{例 B.1}（射影空間）。$\mathbb P^1=\mathbb C^1\sqcup\mathbb C^0$：Betti 數 $1,0,1$，$\chi=2$——$\mathbb P^1$ 就是球面 $\checkmark$。
+$\mathbb P^2=\mathbb C^2\sqcup\mathbb C^1\sqcup\mathbb C^0$（例 9.2）：Betti $1,0,1,0,1$，$\chi=3$。一般 $\chi(\mathbb P^n)=n+1$。
+
+\textbf{例 B.2}（$Gr(2,4)$）。胞腔維數 $4,3,2,2,1,0$（表~\ref{tab:f-grasscells}），個數依維數 $0,1,2,3,4$ 是 $1,1,2,1,1$。所以
+\[
+b_0,b_1,\dots,b_8=1,0,1,0,2,0,1,0,1,\qquad \chi(Gr(2,4))=6 .
+\]
+注意左右對稱（Poincaré 對偶），而且 $\chi=6$ 正好是 \S\ref{sec:f-fixed} 那種「對角矩陣的不動點」的個數（$\binom42$ 個座標平面）。
+
+\textbf{例 B.3}（旗流形）。$Fl(3)$：$1,2,2,1$，$\chi=6=3!$；$Fl(4)$：$1,3,5,6,5,3,1$，$\chi=24=4!$；$Gr(2,5)$：$1,1,2,2,2,1,1$，$\chi=10=\binom52$。
+
+\textbf{和 $\mathbb F_q$ 的點數比較}。第 9--10 章在 $\mathbb F_q$ 上數點得到 $1+q+2q^2+q^3+q^4$；把 $q$ 換成 $t^2$ 就是 Betti 數的生成函數 $1+t^2+2t^4+t^6+t^8$。
+這不是巧合：每個胞腔 $\mathbb C^k$ 在 $\mathbb F_q$ 上有 $q^k$ 個點、在同調裡貢獻 $t^{2k}$。
+
+% ------------------------------------------------------------------
+\subsection{交點就是乘法：子簇的類與次數（F63）}\label{sec:f-classes}
+
+\textbf{例 B.4}（$\mathbb P^2$ 裡的 Bézout）。$H^*(\mathbb P^2)=\mathbb Z[h]/(h^3)$，$h=[\text{一條直線}]$，$h^2=[\text{一個點}]$。$d$ 次曲線的類是 $dh$。
+\begin{itemize}[nosep]
+\item 兩條直線：$h\cdot h=h^2$，交 1 點 $\checkmark$。
+\item 直線與圓錐曲線：$h\cdot2h=2h^2$，交 2 點 $\checkmark$（例如 $y=0$ 與 $x^2+y^2=1$ 交於 $(\pm1,0)$）。
+\item 兩條圓錐曲線：$2h\cdot2h=4$ 點；$d$ 次與 $e$ 次曲線：$de$ 點（Bézout 定理）。
+\end{itemize}
+
+\textbf{次數}。$V\subset\mathbb P^n$ 維數 $k$，它和 $k$ 個一般的超平面交於幾點，就叫 $V$ 的次數：$\deg V=[V]\cdot h^k$。
+
+\textbf{例 B.5}（Grassmannian 的次數）。Plücker 嵌入 $Gr(2,4)\subset\mathbb P^5$ 下，超平面拉回成 $\sigma_1$，所以
+\[
+\deg Gr(2,4)=\sigma_1^4=2 .
+\]
+次數 2＝它由\textbf{一條二次方程}切出——正是 \S\ref{sec:f-plucker} 的 Plücker 關係 $p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0$。一般地 $\deg Gr(r,m)=$ 矩形 $r\times(m-r)$ 的標準表個數：
+$\deg Gr(2,5)=5$、$\deg Gr(3,6)=42$（第 9 章練習 17）。
+
+\textbf{例 B.6}（Segre 嵌入，練習 8，\fulref{p.222}）。$\mathbb P^1\times\mathbb P^1\to\mathbb P^3$，$([a:b],[c:d])\mapsto[ac:ad:bc:bd]$。超平面拉回成 $h_1+h_2$（$h_1^2=h_2^2=0$），
+\[
+(h_1+h_2)^2=h_1^2+2h_1h_2+h_2^2=2h_1h_2\ \Longrightarrow\ \deg=2 ,
+\]
+又是一個二次曲面（$z_0z_3=z_1z_2$）。同理 $\mathbb P^1\times\mathbb P^2\subset\mathbb P^5$：$(h_1+h_2)^3=3h_1h_2^2$，次數 3。
+
+% ------------------------------------------------------------------
+\subsection{Chern 類：為什麼 $e_k=0$（F64）}\label{sec:f-chern}
+
+\textbf{線叢的第一 Chern 類}（\S B.4，\fulref{p.222--223}）。線叢 $L$ 有一個截面 $s$ 時，$c_1(L)$＝$s$ 的零點集的類（性質 (12)）。
+例：$\mathbb P^n$ 上的 $\mathcal O(1)$，截面就是一次式，零點集是一個超平面，所以 $c_1(\mathcal O(1))=h$；對偶線叢 $c_1(L^\vee)=-c_1(L)$（(11)）。
+
+\textbf{全 Chern 類與 Whitney 公式}。秩 $e$ 的向量叢有 $c(E)=1+c_1(E)+\cdots+c_e(E)$，而
+\[
+c(E\oplus F)=c(E)\,c(F)\qquad\text{（(14)；對子叢的短正合列也成立）}.
+\]
+所以若 $E$ 有一串子叢 $0=E_0\subset E_1\subset\cdots\subset E_e=E$、每層的商是線叢 $L_i$，則 $c(E)=\prod_i(1+c_1(L_i))$（分裂原理，Lemma 7--8）。
+
+\textbf{例 B.7}（$\mathbb P^n$ 的切叢）。$c(T\mathbb P^n)=(1+h)^{n+1}$（截到 $h^n$）：
+\begin{itemize}[nosep]
+\item $\mathbb P^1$：$1+2h$，$c_1=2=\chi(\mathbb P^1)$（球面的 Euler 示性數）。
+\item $\mathbb P^2$：$1+3h+3h^2$，$c_2=3=\chi(\mathbb P^2)$。
+\item $\mathbb P^3$：$1+4h+6h^2+4h^3$，$c_3=4=\chi(\mathbb P^3)$。
+\end{itemize}
+最高次的 Chern 類就是 Euler 示性數——和 \S\ref{sec:f-cells} 用胞腔數出來的一樣。
+
+\begin{thmbox}[射影叢公式 (33) \fulref{p.223}]
+$E$ 是 $X$ 上秩 $e$ 的向量叢，$\mathbb P(E)$ 是它的射影化，$\zeta=c_1(\mathcal O(1))$。則
+$H^*(\mathbb P(E))=H^*(X)[\zeta]\,/\,(\zeta^e+c_1(E)\zeta^{e-1}+\cdots+c_e(E))$。
+\end{thmbox}
+\textbf{例 B.8}。$X$ 是一點、$E=\mathbb C^e$：$c(E)=1$，所以 $H^*(\mathbb P^{e-1})=\mathbb Z[\zeta]/(\zeta^e)$——例 B.1 的 Betti 數 $1,0,1,\dots$。
+
+\textbf{第 10 章的關係式從哪裡來}（命題 3，\S\ref{sec:f-borel}）。在 $Fl(m)$ 上，平凡叢 $\mathbb C^m$ 被 $U_1\subset U_2\subset\cdots\subset U_m$ 一層層切開，每層的商 $L_i=U_i/U_{i-1}$ 是線叢，$x_i=-c_1(L_i)$。Whitney 公式給
+\[
+\prod_{i=1}^m(1-x_i)=c(\text{平凡叢})=1 .
+\]
+展開左邊：$1-e_1+e_2-\cdots+(-1)^me_m=1$，比較各次數就得 $e_1=e_2=\cdots=e_m=0$。
+\textbf{例 B.9}（$m=2$）。$Fl(2)=\mathbb P^1$：$(1-x_1)(1-x_2)=1-(x_1+x_2)+x_1x_2=1$，所以 $x_1+x_2=0$、$x_1x_2=0$，即 $x_2=-x_1$、$x_1^2=0$：$H^*(\mathbb P^1)=\mathbb Z[x_1]/(x_1^2)$ $\checkmark$（例 10.4）。
+
+而 $Fl(m)$ 是一串射影叢（先選 $E_1$，再在 $\mathbb C^m/E_1$ 裡選，…），射影叢公式一層層用下去，就得到命題 3 的基底 $x^I$（$i_j\le m-j$）。
+最後，Lemma 9（\fulref{p.225}）說秩 2 叢的射影化 $p:\mathbb P(E)\to Y$ 有 $p_*(x)=1$——這正是第 10 章差商 $\partial_i$ 的幾何（$\partial_i(x_i)=1$）。
+
+% ------------------------------------------------------------------
+\subsection{全書地圖（F65）}\label{sec:f-map}
+
+\begin{keybox}[從擠數字到旗流形]
+\begin{tabular}{@{}lll@{}}
+部分 & 章（動畫） & 一句話\\ \midrule
+組合 & 1--3（F01--F15） & 列插入、滑動、字、Knuth 等價；$P(w)$ 只看等價類\\
+ & 4（F16--F19） & R-S-K：矩陣 $\leftrightarrow$ 同形狀的表對\\
+ & 5--6（F20--F27） & LR 規則；對稱函數的五組基底、Jacobi–Trudi、$\omega$\\
+表示 & 7（F28--F41） & $S_n$ 的 Specht 模 $S^\lambda$，標準表是基底，$R\cong\Lambda$\\
+ & 8（F42--F45） & $GL(E)$ 的 Schur 模 $E^\lambda$，半標準表是基底，Schur–Weyl\\
+幾何 & 9（F46--F49） & Plücker、Grassmannian 的胞腔、Schubert 計算＝LR\\
+ & 10（F50--F55） & 旗流形、差商、Schubert 多項式、Bruhat 序\\
+附錄 & A（F56--F61） & evacuation、行插入、Burge、四個角、0-1 矩陣、鑰匙\\
+ & B（F62--F64） & 胞腔＝同調、交點＝乘法、Chern 類\\
+\end{tabular}
+
+\medskip
+三條貫穿全書的線：\textbf{同一條交換關係}（Specht 模、Schur 模、Plücker 關係）；\textbf{同一個 LR 係數}（表的乘法、表示的分解、Schubert 計算）；
+\textbf{同一個「2」}（四條線、$c^{321}_{21,21}$、$\mathfrak S_{21543}$ 的 pipe dream）。Young 表是組合、表示與幾何共用的語言。
+\end{keybox}
+
+\begin{notebox}[練習（答案在後面）]
+\begin{enumerate}[nosep]
+\item 寫出 $Gr(2,5)$ 的 Betti 數與 Euler 示性數。
+\item 兩條三次曲線在 $\mathbb P^2$ 裡一般交幾點？
+\item $c(T\mathbb P^1)$ 是多少？它的 $c_1$ 為什麼等於 2？
+\item $m=3$ 時，從 $\prod(1-x_i)=1$ 讀出三條關係。
+\end{enumerate}
+\textbf{答案}：1. $1,0,1,0,2,0,2,0,2,0,1,0,1$，$\chi=10$。
+2. $3\times3=9$。
+3. $1+2h$；$\mathbb P^1$ 是球面，$\chi=2$。
+4. $x_1+x_2+x_3=0$、$x_1x_2+x_1x_3+x_2x_3=0$、$x_1x_2x_3=0$。
+\end{notebox}
