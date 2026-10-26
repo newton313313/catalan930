@@ -1,3 +1,6 @@
+# Reference PDFs and transcriptions (ref/): personal study only, not for
+# distribution; kept out of git because the repo is public on GitHub
+ref/
 # Rendered videos (large; regenerate with codes/render_all.bat)
 codes/renders/
 *_temp.mp4
