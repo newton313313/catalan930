@@ -971,6 +971,24 @@ $2+3x+x^3$ & $w=x(2+3w+w^3)$ & 逐次代入 & $2$ & $6$ & $18$ & $62$ & $258$ & 
 \fill (6,-2) circle (1.25pt);
 \end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]\bottomrule\end{tabular}}
 
+\newcommand{\RanLadder}{%
+\begin{tabular}{@{}>{\raggedright}p{2.3cm}>{\raggedright}p{3.4cm}>{\raggedright}p{3.0cm}cl@{}}\toprule
+推廣 & Chu 講義的物件 & Raney 的字 & 個數 & 例子\\\midrule
+卡塔蘭 $C_n$ & 只用弦（2 點群組），$t=1$ & 只有 2、0 的字 & $\frac{1}{2n+1}\binom{2n+1}{n}$ & $n=3$：5\\
+Fuss--Catalan & 只用 $v$ 點群組，$t=1$ & 只有 $v$、0 的字 & $\frac{1}{(v-1)n+1}\binom{vn}{n}$ & $v=3,\ n=2$：3\\
+Chu 的 $\Cv(\vn)$ & $n_i$ 個 $v_i$ 點群組，$t=1$ & 符號 $v_i$ 出現 $n_i$ 次的字 & $\frac{1}{N+1}\binom{N+1}{\vn}$ & 一條弦＋一個三角形：5\\
+Chu 的 $A_t(\vn)$ & 同上，固定點 $t$ 個 & $t$ 字列（$t$ 棵樹） & $\frac{t}{N+t}\binom{N+t}{\vn}$ & 同上，$t=2$：12\\
+\bottomrule\end{tabular}}
+
+\newcommand{\RanBinaryWords}{%
+\begin{tabular}{@{}lll@{}}\toprule 字 & 運算式 & Chu 路徑的高度（倒過來讀，步 $1-a$）\\\midrule
+$\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & $((a+b)+c)+d$ & 1, 2, 3, 4, 3, 2, 1\\
+$\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & $(a+(b+c))+d$ & 1, 2, 3, 2, 3, 2, 1\\
+$\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & $(a+b)+(c+d)$ & 1, 2, 1, 2, 3, 2, 1\\
+$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & $a+((b+c)+d)$ & 1, 2, 3, 2, 1, 2, 1\\
+$\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{cA}{2}\,\textcolor{gray!70!black}{0}\,\textcolor{gray!70!black}{0}$ & $a+(b+(c+d))$ & 1, 2, 1, 2, 1, 2, 1\\
+\bottomrule\end{tabular}}
+
 \newcommand{\RanNeyView}{%
 \begin{tikzpicture}[x=0.5cm,y=0.5cm]
 \draw[gray!25] (0,0) grid (10,6);

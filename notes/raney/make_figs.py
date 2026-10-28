@@ -653,6 +653,62 @@ def table_notation() -> str:
 
 
 # =============================================================================
+# 第 2 節末：從卡塔蘭到 Chu 的推廣階梯（只有 2 和 0 的字 = 卡塔蘭）
+# =============================================================================
+LADDER = [  # (名稱, Chu 的物件, Raney 的字, 公式, 例子說明, n, a)
+    ("卡塔蘭 $C_n$", "只用弦（2 點群組），$t=1$", "只有 2、0 的字", r"$\frac{1}{2n+1}\binom{2n+1}{n}$",
+     r"$n=3$", 1, (0, 3)),
+    ("Fuss--Catalan", r"只用 $v$ 點群組，$t=1$", r"只有 $v$、0 的字", r"$\frac{1}{(v-1)n+1}\binom{vn}{n}$",
+     r"$v=3,\ n=2$", 1, (0, 0, 2)),
+    (r"Chu 的 $\Cv(\vn)$", r"$n_i$ 個 $v_i$ 點群組，$t=1$", r"符號 $v_i$ 出現 $n_i$ 次的字", r"$\frac{1}{N+1}\binom{N+1}{\vn}$",
+     r"一條弦＋一個三角形", 1, (0, 1, 1)),
+    (r"Chu 的 $A_t(\vn)$", r"同上，固定點 $t$ 個", r"$t$ 字列（$t$ 棵樹）", r"$\frac{t}{N+t}\binom{N+t}{\vn}$",
+     r"同上，$t=2$", 2, (0, 1, 1)),
+]
+
+
+def check_numbers_ladder():
+    assert [L_brute(n, a) for *_, n, a in LADDER] == [L_formula(n, a) for *_, n, a in LADDER] == [5, 3, 5, 12]
+    assert [comb(2 * k + 1, k) // (2 * k + 1) for k in range(1, 6)] == [ct.catalan(k) for k in range(1, 6)]
+    for k in range(1, 6):                          # 只有 2、0 的字 = C_k；只有 3、0 = Fuss–Catalan
+        assert L_brute(1, (0, k)) == ct.catalan(k)
+        assert L_brute(1, (0, 0, k)) == L_formula(1, (0, 0, k)) == comb(3 * k, k) // (2 * k + 1)
+    words = lists_with(1, (0, 3))
+    assert sorted(plain(w) for w in words) == ["2020200", "2022000", "2200200", "2202000", "2220000"]
+    assert chu_heights((2, 0, 2, 0, 2, 0, 0)) == [0, 1, 2, 1, 2, 1, 2, 1]
+    for w in words:                                # Chu 路徑：出發後高度都 > 0，終點 1
+        h = chu_heights(w)
+        assert h[-1] == 1 and min(h[1:]) > 0
+    print("推廣階梯（卡塔蘭 → Chu）的數字核對通過")
+
+
+def table_ladder() -> str:
+    rows = [rf"{a} & {b} & {c} & {d} & {e}：{L_brute(n, s)}\\" for a, b, c, d, e, n, s in LADDER]
+    return "\n".join([r"\begin{tabular}{@{}>{\raggedright}p{2.3cm}>{\raggedright}p{3.4cm}>{\raggedright}p{3.0cm}cl@{}}\toprule",
+                      r"推廣 & Chu 講義的物件 & Raney 的字 & 個數 & 例子\\\midrule", *rows, r"\bottomrule\end{tabular}"])
+
+
+def infix(w) -> str:
+    """只有 2、0 的字 → 中序運算式 ((a+b)+c)+d。"""
+    letters = iter("abcdefgh")
+
+    def rec(t):
+        k, kids = t
+        return next(letters) if k == 0 else "(" + "+".join(rec(c) for c in kids) + ")"
+
+    return rec(word_to_tree(w))[1:-1]
+
+
+def table_binary_words() -> str:
+    rows = []
+    for w in sorted(lists_with(1, (0, 3)), key=plain, reverse=True):
+        rows.append(rf"${wstr(w)}$ & ${infix(w)}$ & "
+                    + ", ".join(map(str, chu_heights(w)[1:])) + r"\\")
+    return "\n".join([r"\begin{tabular}{@{}lll@{}}\toprule 字 & 運算式 & Chu 路徑的高度（倒過來讀，步 $1-a$）\\\midrule",
+                      *rows, r"\bottomrule\end{tabular}"])
+
+
+# =============================================================================
 # 附錄 A：Neylon《Notes on Raney's Lemmas》的補充（數學在 codes/utils/raney.py 第 10 節）
 # =============================================================================
 EX_BOUNDS = [(1, 1, 1), (3,), (2, 2, -1), (3, -1, -1, 2), NEYLON_VIEW, NEYLON_LEMMA2, (4, -1, -1, -1, 1)]
@@ -777,6 +833,7 @@ def table_neylon_sym() -> str:
 def main():
     check_numbers()
     check_numbers_neylon()
+    check_numbers_ladder()
     figs = {
         "RanIntroTrees": fig_intro_trees(),
         "RanRankF": fig_rank_F(),
@@ -801,6 +858,8 @@ def main():
         "RanWalkPlusOne": walk_tikz(EX_PLUS1, 1, unit=0.3),
         "RanWalkPlusTwo": walk_tikz(EX_PLUS2, 1, unit=0.3),
         "RanCycThree": cyc_table(CYC3),
+        "RanLadder": table_ladder(),
+        "RanBinaryWords": table_binary_words(),
         "RanNeyView": fig_neylon_view(),
         "RanNeyBounds": table_neylon_bounds(),
         "RanNeyContract": table_neylon_contract(),

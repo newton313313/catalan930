@@ -6,7 +6,7 @@
 開發機上是 `C:\mypython\manim\projects\catalan930`（例如 `notes/mit_plan.md` 就是 `C:\mypython\manim\projects\catalan930\notes\mit_plan.md`），
 可攜版則是解壓縮後的資料夾。`C:\mypython\manim` 是 ManimGL 本身的資料夾，底下**沒有** `notes/`。
 
-最後更新：2026-10-28（Raney (1960) 導讀加附錄 A：T. Neylon〈Notes on Raney's Lemmas〉的實數版、上下界、收縮、隨機序列，38 頁；`codes/utils/raney.py` 第 10 節；combkit 1.41.0；之前：2026-10-16（可攜版 `catalan_portable_106`；Fulton 附錄 A–B 與全書回顧 F56–F65、`FultonDemo7`、`codes/utils/fulton_appendix.py`；Young 表講義補上附錄 A、B，46 頁；combkit 1.10.0；之前：Young 表講義補上第 9–10 章，37 頁；之前：Fulton 第 9–10 章 F46–F55、`FultonDemo6`、`codes/utils/schubert.py`；combkit 1.9.0；之前：Raney (1960) 導讀的動畫 N01–N12、`RaneyPaperDemo`、例題產生器 `codes/utils/raney_examples.py`；combkit 1.8.0；之前：可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
+最後更新：2026-10-28（Raney 導讀第 2 節加「從卡塔蘭到 Chu」推廣階梯與「走路的部分和」說明，`check_numbers_ladder()`，39 頁；Raney (1960) 導讀加附錄 A：T. Neylon〈Notes on Raney's Lemmas〉的實數版、上下界、收縮、隨機序列，38 頁；`codes/utils/raney.py` 第 10 節；combkit 1.41.0；之前：2026-10-16（可攜版 `catalan_portable_106`；Fulton 附錄 A–B 與全書回顧 F56–F65、`FultonDemo7`、`codes/utils/fulton_appendix.py`；Young 表講義補上附錄 A、B，46 頁；combkit 1.10.0；之前：Young 表講義補上第 9–10 章，37 頁；之前：Fulton 第 9–10 章 F46–F55、`FultonDemo6`、`codes/utils/schubert.py`；combkit 1.9.0；之前：Raney (1960) 導讀的動畫 N01–N12、`RaneyPaperDemo`、例題產生器 `codes/utils/raney_examples.py`；combkit 1.8.0；之前：可攜版 `catalan_portable_105`；Raney 引理筆記的動畫 R01–R06、`RaneyLemmaDemo`；combkit 1.7.0；之前：Raney (1960) 論文導讀 `notes/raney1960_導讀.pdf`；可攜版 `catalan_portable_104`、一鍵輸出 `codes/render_all.bat`、本資料夾改用 git 管理；之前：Fulton 第 8 章 F42–F45、第 7 章 F28–F41；Fulton《Young Tableaux》第 2–4 章 F09–F19、第 5–6 章 F20–F27 的獨立演示；Young 表講義獨立成 `notes/young_tableaux_導讀.pdf`；可攜工具包 combkit 1.5.0（2026-10-14，加入 raney）
 
 ---
 
@@ -41,7 +41,7 @@
 | 成品 | 位置 | 狀態 |
 |---|---|---|
 | 中文講義（40 頁） | `notes/chu1987_導讀.pdf`（原始檔 `.tex`） | 完成。第 1 節是卡塔蘭基礎模組（13 個小節，依序對應 00a–00m），第 7 節是 Raney 公式的完整證明，附錄 A 是 MIT 補充（A.1–A.14，依序對應 M01–M14） |
-| Raney (1960) 導讀（38 頁） | `notes/raney1960_導讀.pdf`（原始檔 `.tex`，內文 `notes/raney/part1..7.tex`） | 完成（2026-10-13；2026-10-28 加附錄 A：Neylon 網頁筆記的實數版、上下界、收縮、隨機序列 E = H_m，以及步長獨立時的 2m·C(2m,m)/4^m，數字由 `check_numbers_neylon()` 核對）。G. N. Raney, *Functional composition patterns and power series reversion*（1960）的逐節導讀，記號與 Chu 講義相容；附記號對照表、大量例子、Gessel (2016) 與 Problem 4983 的補充、練習與答案。數學在 `codes/utils/raney.py`，圖與數字檢查在 `notes/raney/make_figs.py` |
+| Raney (1960) 導讀（39 頁） | `notes/raney1960_導讀.pdf`（原始檔 `.tex`，內文 `notes/raney/part1..7.tex`） | 完成（2026-10-13；2026-10-28 加附錄 A：Neylon 網頁筆記的實數版、上下界、收縮、隨機序列 E = H_m，以及步長獨立時的 2m·C(2m,m)/4^m，數字由 `check_numbers_neylon()` 核對）。G. N. Raney, *Functional composition patterns and power series reversion*（1960）的逐節導讀，記號與 Chu 講義相容；附記號對照表、大量例子、Gessel (2016) 與 Problem 4983 的補充、練習與答案。數學在 `codes/utils/raney.py`，圖與數字檢查在 `notes/raney/make_figs.py` |
 | Raney 引理筆記勘誤（7 頁） | `notes/ran_note015_改寫.pdf`（原始檔 `.tex`；原筆記 `notes/ran_note015.txt` 是他人所寫） | 完成（2026-10-15）。勘誤表＋改寫成 Chu 講義／Raney 導讀的記號；數字檢查 `notes/note015/check_numbers.py` |
 | Young 表講義（46 頁） | `notes/young_tableaux_導讀.pdf`（原始檔 `.tex`，內文 `notes/fulton/part1..10.tex`，part9、part10 是附錄 A、B） | 完成（2026-10-11，從 Chu 講義的附錄 B 獨立出來並補上第 5–6 章；2026-10-12 補上第 7 章；2026-10-13 補上第 8 章；2026-10-16 補上第 9–10 章與附錄 A、B，寫給初學者、例子很多）。第 1 節回顧 Fulton 第 1 章（F01–F08），第 2–10 節依序是第 2–10 章（F09–F55），附錄 A、B 對應 F56–F65 |
 | 卡塔蘭基礎模組 13 個場景 | `codes/scenes/scene00a…00m` | 完成（2026-10-03），都可單獨執行 |
@@ -210,7 +210,7 @@ catalan930/                    開發機上的工作資料夾（可攜版的資�
 │   ├── chu1987_導讀.tex                       LaTeX 原始檔（xelatex + xeCJK + TikZ）
 │   ├── chu1987_導讀.pdf                       編譯好的講義，40 頁
 │   ├── young_tableaux_導讀.tex / .pdf        Young 表講義（Fulton 第 1–10 章與附錄 A、B，46 頁；xelatex，內文在 fulton/）
-│   ├── raney1960_導讀.tex / .pdf             Raney (1960) 論文導讀（38 頁；xelatex，內文在 raney/，part7 = 附錄 A）
+│   ├── raney1960_導讀.tex / .pdf             Raney (1960) 論文導讀（39 頁；xelatex，內文在 raney/，part7 = 附錄 A）
 │   ├── ran_note015.txt                       他人寫的 Raney 引理筆記（原樣保留）
 │   ├── ran_note015_改寫.tex / .pdf           上面那份的勘誤與改寫（7 頁）；數字檢查 note015/check_numbers.py
 │   ├── raney/                                Raney 導讀的內文 part1..6.tex、make_figs.py（含數字檢查）與產生的 figs.tex（不要手改）

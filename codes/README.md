@@ -29,7 +29,7 @@
 11. **Fulton《Young Tableaux》第 9–10 章（場景 F46–F55，獨立的一組）**：Plücker 座標、旗流形的座標環、Grassmannian 與旗流形的 Schubert 胞腔、四條線問題（Schubert 計算）、差商、Schubert 多項式、pipe dream、Bruhat 序、Grassmann 置換＝Schur 多項式。計畫表 `../notes/fulton_plan_ch9-10.md`。
 12. **Fulton《Young Tableaux》附錄 A–B 與全書回顧（場景 F56–F65，獨立的一組）**：evacuation、行插入、Burge 對應、矩陣的四個角、0-1 矩陣與 Gale–Ryser、鑰匙；胞腔與同調、子簇的類與次數、Chern 類；全書地圖。計畫表 `../notes/fulton_plan_appAB.md`。
 
-共 119 個可以單獨執行的場景，外加十四種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（46 頁，第 1–10 節與附錄 A、B 對應 F01–F65）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（38 頁，Raney (1960) 論文導讀，動畫 N01–N12；附錄 A 是 Neylon 筆記的實數版與隨機序列，數學在 `utils/raney.py` 第 10 節）。
+共 119 個可以單獨執行的場景，外加十四種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（46 頁，第 1–10 節與附錄 A、B 對應 F01–F65）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（39 頁，Raney (1960) 論文導讀，動畫 N01–N12；附錄 A 是 Neylon 筆記的實數版與隨機序列，數學在 `utils/raney.py` 第 10 節）。
 
 ## 注意：這是 ManimGL，不是 Manim Community
 

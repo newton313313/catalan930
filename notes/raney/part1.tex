@@ -152,6 +152,47 @@ Gessel（後序碼） & 先寫子樹、最後寫根 & 每項減 1（reduced code
 Gessel 的後序碼則是「把森林左右鏡射之後的 Raney 碼倒過來」，三者都是同一個對應的不同寫法。
 \end{keybox}
 
+\subsection{從卡塔蘭到 Chu：同一條推廣路線 \extra}\label{ssec:ladder}
+
+\textbf{只有 2 和 0 的字就是卡塔蘭。}每個 2 是一個二元運算（例如 $+$），0 是引數。
+有 $n$ 個 2 的字一定剛好有 $n+1$ 個 0（字的秩是 $n\cdot(+1)+(n+1)\cdot(-1)=-1$），長度 $m=2n+1$。
+定理 2.2 給出
+\[
+\RL{1}{0,n}=\frac{1}{2n+1}\binom{2n+1}{n}=\frac{1}{n+1}\binom{2n}{n}=C_n .
+\]
+（字裡不可能「全是 2」：一定要有 0 當葉子。）$n=3$ 的五個字（第 \ref{sec:motive} 節的 Cayley 例子也是它們，那裡附了樹）：
+
+\begin{table}[H]
+\centering\small
+\RanBinaryWords
+\caption{只有 2、0 的字（$n=3$）＝滿二元樹＝加括號的方式，共 $C_3=5$ 個。
+第三欄是倒過來讀、每個符號 $a$ 走 $1-a$ 的 Chu 講義路徑：出發後一直 $>0$，終點高度 1。}
+\label{tab:binarywords}
+\end{table}
+
+Chu 講義的推廣和 Raney 的字走的是同一條路：一種元數 $\to$ 多種元數 $\to$ 多棵樹。
+Chu 講義用圓周上的點和群組來說，Raney 用前序記法的字串來說；
+「$v$ 點群組」就是「符號 $v$」，「固定點 $t$ 個」就是「$t$ 個字接成的字列」。
+
+\begin{table}[H]
+\centering\small
+\RanLadder
+\caption{推廣的階梯。$N=\ip{\vn}{\vv}=\sum n_iv_i$，字串長度 $m=N+t$；四個公式都是定理 2.2 的 $\RL{n}{a}=\frac nm M$ 換記號。
+例子欄的個數由 \texttt{make\_figs.py} 窮舉核對。}
+\label{tab:ladder}
+\end{table}
+
+Chu 講義各步驟對應的定理見上面組合部分的對照表最後四列（定理 2.1--2.4）。
+
+\begin{notebox}[Chu 的推廣也是「走路的部分和」]
+把每個符號換成一步：葉子（0）走 $+1$，$v_i$ 點群組走 $1-v_i$。
+$A_t(\vn)$ 數的就是：$\ell$ 個 $+1$ 步、$n_i$ 個 $1-v_i$ 步排成一列，
+\textbf{每個部分和都 $>0$}、總和 $=\ell+\sum n_i(1-v_i)=t$ 的排法（這叫 Łukasiewicz 路徑）。
+每一步都 $\le1$、總和為 $t$，所以 $N+t$ 種循環讀法中恰有 $t$ 種的部分和全正（附錄 \ref{sec:neylon} 的引理 2，也就是定理 2.1），
+於是 $A_t(\vn)=\frac{t}{N+t}\times$（全部排法數）。
+卡塔蘭的情形就是 $\pm1$ 的走法：Dyck 路徑。
+\end{notebox}
+
 % =====================================================================
 \section{動機：Cayley 的問題與 Problem 4983}\label{sec:motive}
 % =====================================================================
