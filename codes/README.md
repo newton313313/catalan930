@@ -29,7 +29,7 @@
 11. **Fulton《Young Tableaux》第 9–10 章（場景 F46–F55，獨立的一組）**：Plücker 座標、旗流形的座標環、Grassmannian 與旗流形的 Schubert 胞腔、四條線問題（Schubert 計算）、差商、Schubert 多項式、pipe dream、Bruhat 序、Grassmann 置換＝Schur 多項式。計畫表 `../notes/fulton_plan_ch9-10.md`。
 12. **Fulton《Young Tableaux》附錄 A–B 與全書回顧（場景 F56–F65，獨立的一組）**：evacuation、行插入、Burge 對應、矩陣的四個角、0-1 矩陣與 Gale–Ryser、鑰匙；胞腔與同調、子簇的類與次數、Chern 類；全書地圖。計畫表 `../notes/fulton_plan_appAB.md`。
 
-共 119 個可以單獨執行的場景，外加十四種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（46 頁，第 1–10 節與附錄 A、B 對應 F01–F65）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（39 頁，Raney (1960) 論文導讀，動畫 N01–N12；附錄 A 是 Neylon 筆記的實數版與隨機序列，數學在 `utils/raney.py` 第 10 節）。
+共 123 個可以單獨執行的場景，外加十五種連續播放的版本。配套的中文講義在 `../notes/chu1987_導讀.pdf`（40 頁；第 1 節的 13 個小節依序對應卡塔蘭模組 00a–00m，附錄 A.1–A.14 依序對應 MIT 補充 M01–M14）；Fulton 的部分另有 `../notes/young_tableaux_導讀.pdf`（46 頁，第 1–10 節與附錄 A、B 對應 F01–F65）。Chu 引用的 Raney 公式的出處另有 `../notes/raney1960_導讀.pdf`（39 頁，Raney (1960) 論文導讀，動畫 N01–N12，第 2.4 小節「從卡塔蘭到 Chu」另有 N13–N16；附錄 A 是 Neylon 筆記的實數版與隨機序列，數學在 `utils/raney.py` 第 10 節）。
 
 ## 注意：這是 ManimGL，不是 Manim Community
 
@@ -133,6 +133,7 @@ manimgl scenes/scene00c_triangulation_recurrence.py Scene00cTriangulationRecurre
 | `manimgl main.py FultonDemo7` | Fulton 附錄 A–B 與全書回顧 F56–F65（獨立） |
 | `manimgl main.py RaneyLemmaDemo` | Raney 引理筆記 R01–R06（獨立） |
 | `manimgl main.py RaneyPaperDemo` | Raney (1960) 導讀 N01–N12（獨立） |
+| `manimgl main.py RaneyLadderDemo` | 從卡塔蘭到 Chu 的對照 N13–N16（獨立） |
 
 完整版跳過 Scene01 與 Scene02：Scene01（經典卡塔蘭與圓上配對）已由 00a、00j 取代，Scene02（從弦到多邊形、兩個向量）已由 00m 取代。
 這兩個場景仍保留，單獨播放或 `FullDemo` 都會用到。
@@ -158,8 +159,8 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 
 | 指令 | 輸出 |
 |---|---|
-| 對 `render_all.bat` 按兩下 | **一鍵輸出**：選單 1 全部場景＋14 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p；也可帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda |
-| `python render_all.py` | 全部單一場景（00a–00m、01–09、08r、M01–M14、F01–F65、R01–R06、N01–N12），1080p |
+| 對 `render_all.bat` 按兩下 | **一鍵輸出**：選單 1 全部場景＋15 個連續播放（1080p）、2 只輸出連續播放、3 只輸出單一場景、4 全部用 480p；也可帶參數，例如 `render_all.bat --fulton5 -l`。找不到 `manimgl` 時會自己啟用 Anaconda |
+| `python render_all.py` | 全部單一場景（00a–00m、01–09、08r、M01–M14、F01–F65、R01–R06、N01–N16），1080p |
 | `python render_all.py --intro` | 只有卡塔蘭模組 00a–00m |
 | `python render_all.py --chu` | 只有 Chu 的部分 01–09 與 08r |
 | `python render_all.py --mit` | 只有 MIT 補充 M01–M14 |
@@ -172,6 +173,7 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 | `python render_all.py --fulton7` | 只有 Fulton 附錄 A–B 與全書回顧 F56–F65 |
 | `python render_all.py --raney` | 只有 Raney 引理筆記 R01–R06 |
 | `python render_all.py --raney-paper` | 只有 Raney (1960) 導讀 N01–N12 |
+| `python render_all.py --raney-ladder` | 只有從卡塔蘭到 Chu 的對照 N13–N16 |
 | `python render_all.py 00c 05` | 指定的場景（代號見下面的表） |
 | `python render_all.py --complete --demos-only` | 只輸出完整版 `CompleteDemo.mp4` |
 
@@ -427,6 +429,16 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 | N11 | `SceneN11Convolution` | 定理 7.1（森林切兩片）；投票數表、$b(2,3)=14=5+2+2+5$；Gould 的 $G$：$\gamma=1$ ＝ Chu 的 $A_t$（$\alpha=\frac12$ 也成立）、$\gamma=0$ ＝ Abel（50 = 16+9+9+16） | 46 秒 |
 | N12 | `SceneN12Summary` | 邏輯流程圖；Chu 講義第 4–8 節 ↔ Raney 的定理對照 | 23 秒 |
 | | `RaneyPaperDemo` | 以上十二個連續播放 | 8 分 26 秒 |
+
+**從卡塔蘭到 Chu 的對照（N13–N16，導讀第 2.4 小節，給初學者）**（720p 長度）：
+
+| 代號 | 類別名稱 | 內容 | 長度 |
+|---|---|---|---|
+| N13 | `SceneN13CatalanWords` | 括號 → 前序記法 → 只有 2 和 0 的字 → 二元樹；$n=3$ 的 5 個字；轉一圈 7 種讀法恰 1 種是字（35/7=5）；倒過來讀 ＝ Dyck 路徑 | 1 分 20 秒 |
+| N14 | `SceneN14ChuGroups` | Chu 的圓周群組讀成字（5 點、弦＋三角形 → 203000）；5 種分法 ↔ 5 個字、30/6=5、Chu 公式；只用弦 ＝ 卡塔蘭 | 1 分 11 秒 |
+| N15 | `SceneN15Ladder` | 推廣的階梯：卡塔蘭 → Fuss–Catalan → Chu 的 $C_{\vec v}$ → $A_t$（空分法 ↔ 字 0、$t=2$ 的 12=5+5+1+1）；四個公式都是 $\frac{t}{m}M$ | 1 分 18 秒 |
+| N16 | `SceneN16WalkSums` | 樹葉 +1、v 點群組 $1-v$：Chu 的物件 ＝ 部分和一直 > 0 的走路；6 種讀法 1 種好、7 種讀法 2 種好（42·2/7=12）；週期路徑與從右邊照來的光；四種說法 | 1 分 29 秒 |
+| | `RaneyLadderDemo` | 以上四個連續播放 | 5 分 21 秒 |
 
 ## Chu 的部分（01–09）
 

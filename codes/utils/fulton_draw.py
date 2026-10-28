@@ -32,8 +32,9 @@ RULE_TEX = {"K'": "K'", "K'⁻¹": "K'^{-1}", "K''": "K''", "K''⁻¹": "K''^{-1
 def assert_in_frame(*mobs):
     """物件都在畫面的安全範圍內（不碰到標題與字幕）。"""
     for m in mobs:
-        assert m.get_left()[0] >= X_MIN - 1e-6 and m.get_right()[0] <= X_MAX + 1e-6, m
-        assert m.get_bottom()[1] >= Y_MIN - 1e-6 and m.get_top()[1] <= Y_MAX + 1e-6, m
+        box = (m, m.get_corner(UL).round(2), m.get_corner(DR).round(2))
+        assert m.get_left()[0] >= X_MIN - 1e-6 and m.get_right()[0] <= X_MAX + 1e-6, box
+        assert m.get_bottom()[1] >= Y_MIN - 1e-6 and m.get_top()[1] <= Y_MAX + 1e-6, box
 
 
 def assert_apart(a, b, gap=0.05):

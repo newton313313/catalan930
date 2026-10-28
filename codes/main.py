@@ -19,6 +19,7 @@ main.py —— 所有場景的總入口
     manimgl main.py FultonDemo7                  Fulton 附錄 A–B 與全書回顧（F56–F65），獨立
     manimgl main.py RaneyLemmaDemo               Raney 引理筆記（R01–R06），獨立
     manimgl main.py RaneyPaperDemo               Raney (1960) 導讀（N01–N12），獨立
+    manimgl main.py RaneyLadderDemo              從卡塔蘭到 Chu 的對照（N13–N16），獨立
     manimgl main.py CompleteDemo -w --hd         把完整版輸出成一支 1080p 影片
 
 每個場景也可以從它自己的檔案單獨執行，例如：
@@ -150,6 +151,10 @@ from scenes import sceneN09_lagrange as sN09
 from scenes import sceneN10_trinomial as sN10
 from scenes import sceneN11_convolution as sN11
 from scenes import sceneN12_summary as sN12
+from scenes import sceneN13_catalan_words as sN13
+from scenes import sceneN14_chu_groups as sN14
+from scenes import sceneN15_ladder as sN15
+from scenes import sceneN16_walk_sums as sN16
 
 
 # ManimGL 只會列出「定義在這個檔案裡」的場景，所以這裡各做一個同名的子類別。
@@ -650,6 +655,22 @@ class SceneN12Summary(sN12.SceneN12Summary):
     pass
 
 
+class SceneN13CatalanWords(sN13.SceneN13CatalanWords):
+    pass
+
+
+class SceneN14ChuGroups(sN14.SceneN14ChuGroups):
+    pass
+
+
+class SceneN15Ladder(sN15.SceneN15Ladder):
+    pass
+
+
+class SceneN16WalkSums(sN16.SceneN16WalkSums):
+    pass
+
+
 INTRO_SCENES = [
     s00a.Scene00aCatalanDefinition,
     s00b.Scene00bTriangulation,
@@ -813,6 +834,13 @@ RANEY_PAPER_SCENES = [              # Raney (1960) 導讀（notes/raney1960_導�
     sN12.SceneN12Summary,
 ]
 
+RANEY_LADDER_SCENES = [             # 從卡塔蘭到 Chu（Raney 導讀第 2.4 小節），獨立播放
+    sN13.SceneN13CatalanWords,
+    sN14.SceneN14ChuGroups,
+    sN15.SceneN15Ladder,
+    sN16.SceneN16WalkSums,
+]
+
 
 def play_sequence(scene, classes):
     """依序播放多個場景；場景之間把畫面清空、鏡頭歸位。"""
@@ -922,3 +950,10 @@ class RaneyPaperDemo(s08.Scene08FormulaVerification):
 
     def construct(self):
         play_sequence(self, RANEY_PAPER_SCENES)
+
+
+class RaneyLadderDemo(s08.Scene08FormulaVerification):
+    """從卡塔蘭到 Chu：只有 2 和 0 的字、圓周群組、推廣階梯、走路的部分和（N13–N16）連續播放，不接其他影片。"""
+
+    def construct(self):
+        play_sequence(self, RANEY_LADDER_SCENES)
