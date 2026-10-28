@@ -29,6 +29,11 @@ from utils.raney import (  # noqa: E402
     split_words, thm23_rhs, thm24_rhs, to_chu_path, tree_to_word, trinomial_coeff, word_to_partition,
     word_to_tree,
 )
+from utils.raney import (  # noqa: E402  附錄 A（Neylon）
+    NEYLON_CONTRACT, NEYLON_LEMMA1, NEYLON_LEMMA2, NEYLON_VIEW, contract_all, contract_once, good_blocks,
+    good_starts, harmonic, heights, last_minimum, mc_mean_sigma, reading, records_sigma_counts, sigma,
+    sigma_bounds, stirling1, suffix_minima, symmetric_mean_sigma, visible_points,
+)
 
 OUT = HERE / "figs.tex"
 COL = {0: "gray!70!black", 1: "cU", 2: "cA", 3: "cB", 4: "cC", 5: "cD"}
@@ -648,8 +653,130 @@ def table_notation() -> str:
 
 
 # =============================================================================
+# 附錄 A：Neylon《Notes on Raney's Lemmas》的補充（數學在 codes/utils/raney.py 第 10 節）
+# =============================================================================
+EX_BOUNDS = [(1, 1, 1), (3,), (2, 2, -1), (3, -1, -1, 2), NEYLON_VIEW, NEYLON_LEMMA2, (4, -1, -1, -1, 1)]
+SYM_N = (1, 2, 3, 4, 5, 6, 8, 10)
+MC_TRIALS = 20000
+
+
+def contract_trace(seq) -> list:
+    rows = [tuple(seq)]
+    while any(x <= 0 for x in rows[-1][1:]):
+        js = [j for j in range(1, len(rows[-1])) if rows[-1][j] <= 0]
+        rows.append(contract_once(rows[-1], js[0]))
+    return rows
+
+
+def check_numbers_neylon():
+    # 引理 1、2 的例子（原文 x_4 印成 −1；改成 −5 和才是 1）
+    assert sum((3, -2, 4, -1, 1)) == 5 and sum(NEYLON_LEMMA1) == 1
+    assert good_starts(NEYLON_LEMMA1) == [4] and heights(reading(NEYLON_LEMMA1, 4))[1:] == [1, 4, 2, 6, 1]
+    assert good_starts(NEYLON_LEMMA2) == [1, 5]
+    assert heights(reading(NEYLON_LEMMA2, 1))[1:] == [1, 2, 2, 1, 2, 3, 4, 2]
+    assert heights(reading(NEYLON_LEMMA2, 5))[1:] == [1, 2, 3, 1, 2, 3, 3, 2]
+    assert sigma((2,)) == 1
+    # 折線圖：S = 2,1,3,5,2,4,5,6,5,3，照得到 S_0、S_2、S_5，好讀法從第 1、3、6 項開始
+    assert heights(NEYLON_VIEW) == [0, 2, 1, 3, 5, 2, 4, 5, 6, 5, 3]
+    assert visible_points(NEYLON_VIEW) == good_starts(NEYLON_VIEW) == [0, 2, 5]
+    assert suffix_minima(NEYLON_VIEW) == {1, 2, 3}
+    # 上下界的表
+    for x in EX_BOUNDS:
+        lo, hi = sigma_bounds(x)
+        assert lo <= sigma(x) <= hi
+    assert [sigma(x) for x in EX_BOUNDS] == [3, 1, 2, 2, 3, 2, 2]
+    # 收縮
+    assert contract_once((3, -1, -1, 2), 1) == (2, -1, 2)
+    assert good_blocks(NEYLON_CONTRACT) == [(2, -1), (1,), (3, -1, -1)]
+    assert contract_trace(NEYLON_CONTRACT)[-1] == contract_all(NEYLON_CONTRACT, max) == (1, 1, 1)
+    # 隨機序列：c(3, k) = 2, 3, 1，H_3 = 11/6；Var = H_n − H_n^(2)
+    assert records_sigma_counts(3) == stirling1(3) == [0, 2, 3, 1] and harmonic(3) == F(11, 6)
+    for n in range(1, 7):
+        c = records_sigma_counts(n)
+        mean = sum(F(k * ck, factorial(n)) for k, ck in enumerate(c))
+        var = sum(F(k * k * ck, factorial(n)) for k, ck in enumerate(c)) - mean ** 2
+        assert mean == harmonic(n) and var == harmonic(n) - harmonic(n, 2)
+    # 【補充】對稱分布：2n·C(2n,n)/4^n；n = 2 是 3/2
+    assert symmetric_mean_sigma(1) == 1 and symmetric_mean_sigma(2) == F(3, 2)
+    assert symmetric_mean_sigma(10) == F(230945, 65536)
+    assert abs(float(symmetric_mean_sigma(10)) - 3.524) < 5e-4
+    print("附錄 A（Neylon）的數字全部核對通過")
+
+
+def fig_neylon_view() -> str:
+    x, u = NEYLON_VIEW, 0.5
+    S, n, vis = heights(NEYLON_VIEW), len(NEYLON_VIEW), visible_points(NEYLON_VIEW)
+    right = n + 2.2
+    out = [rf"\begin{{tikzpicture}}[x={u}cm,y={u}cm]",
+           rf"\draw[gray!25] (0,0) grid ({n},{max(S)});",
+           rf"\draw[cTop,dashed] (0,{S[-1]}) -- ({right},{S[-1]}) node[right,font=\scriptsize] {{$S_{{{n}}}={S[-1]}$}};"]
+    for i in vis:
+        out.append(rf"\draw[cLeft,-{{Stealth[length=4pt]}},line width=0.8pt] ({right},{S[i]}) -- ({i + 0.18},{S[i]});")
+    out.append(r"\draw[cA,line width=1.3pt,line join=round] " + " -- ".join(f"({i},{h})" for i, h in enumerate(S)) + ";")
+    for i, h in enumerate(S):
+        if i in vis:
+            out.append(rf"\fill[cRoot] ({i},{h}) circle (3pt) node[below=2pt,font=\scriptsize,cRoot] {{$S_{{{i}}}$}};")
+        else:
+            out.append(rf"\fill ({i},{h}) circle (1.6pt);")
+    for i, xi in enumerate(x):
+        out.append(rf"\node[font=\tiny,gray!60!black] at ({i + 0.5},-1.7) {{${xi}$}};")
+    out.append(rf"\node[font=\scriptsize,cLeft,align=center] at ({right + 1.3},0.6) {{水平\\光線}};")
+    out.append(r"\end{tikzpicture}")
+    return "\n".join(out)
+
+
+def table_neylon_bounds() -> str:
+    rows = []
+    for x in EX_BOUNDS:
+        lo, hi = sigma_bounds(x)
+        s = sigma(x)
+        tag = "上界" if s == hi else ("下界" if s == lo else "")
+        if s == hi == lo:
+            tag = "上下界"
+        rows.append(rf"$({', '.join(map(str, x))})$ & {sum(x)} & {max(x)} & {lo} & \textbf{{{s}}} & {hi} & {tag}\\")
+    return "\n".join([r"\begin{tabular}{@{}lcccccl@{}}\toprule",
+                      r"$x$ & $S_m$ & $h=\max x_i$ & 下界 $\lceil S_m/h\rceil$ & $\nu(x)$ & 上界 $S_m$ & 等號\\\midrule",
+                      *rows, r"\bottomrule\end{tabular}"])
+
+
+def table_neylon_contract() -> str:
+    rows = []
+    for r in contract_trace(NEYLON_CONTRACT):
+        blocks = good_blocks(r)
+        rows.append(r"$" + r"\;\big|\;".join(", ".join(map(str, b)) for b in blocks) + r"$ & "
+                    + ", ".join(map(str, heights(r)[1:])) + r"\\")
+    return "\n".join([r"\begin{tabular}{@{}ll@{}}\toprule 序列（在好讀法的起點切開） & 高度 $S_1,\ldots,S_m$\\\midrule",
+                      *rows, r"\bottomrule\end{tabular}"])
+
+
+def table_neylon_records() -> str:
+    rows = []
+    for n in range(1, 7):
+        c = records_sigma_counts(n)
+        rows.append(rf"{n} & {', '.join(map(str, c[1:]))} & {factorial(n)} & ${fr(harmonic(n))}$ & "
+                    rf"${fr(harmonic(n) - harmonic(n, 2))}$\\")
+    return "\n".join([r"\begin{tabular}{@{}rlrcc@{}}\toprule",
+                      r"$m$ & 排列數，$\nu=1,2,\ldots,m$ & $m!$ & $E[\nu]=H_m$ & $\mathrm{Var}\,\nu=H_m-H_m^{(2)}$\\\midrule",
+                      *rows, r"\bottomrule\end{tabular}"])
+
+
+def table_neylon_sym() -> str:
+    rows = []
+    for n in SYM_N:
+        e = symmetric_mean_sigma(n)
+        u = mc_mean_sigma(n, MC_TRIALS, seed=n)
+        g = mc_mean_sigma(n, MC_TRIALS, seed=100 + n, draw=lambda r: r.gauss(0, 1))
+        assert abs(u - e) < 0.06 and abs(g - e) < 0.06
+        rows.append(rf"{n} & ${fr(e)}$ & {float(e):.3f} & {u:.3f} & {g:.3f} & {float(harmonic(n)):.3f}\\")
+    return "\n".join([r"\begin{tabular}{@{}rccccc@{}}\toprule",
+                      r"$m$ & $2m\binom{2m}{m}/4^m$ & 小數 & 均勻 $[-1,1]$ & 常態 & （對照）$H_m$\\\midrule",
+                      *rows, r"\bottomrule\end{tabular}"])
+
+
+# =============================================================================
 def main():
     check_numbers()
+    check_numbers_neylon()
     figs = {
         "RanIntroTrees": fig_intro_trees(),
         "RanRankF": fig_rank_F(),
@@ -674,6 +801,11 @@ def main():
         "RanWalkPlusOne": walk_tikz(EX_PLUS1, 1, unit=0.3),
         "RanWalkPlusTwo": walk_tikz(EX_PLUS2, 1, unit=0.3),
         "RanCycThree": cyc_table(CYC3),
+        "RanNeyView": fig_neylon_view(),
+        "RanNeyBounds": table_neylon_bounds(),
+        "RanNeyContract": table_neylon_contract(),
+        "RanNeyRecords": table_neylon_records(),
+        "RanNeySym": table_neylon_sym(),
     }
     parts = ["% figs.tex —— 由 raney/make_figs.py 產生，請勿手動修改。\n"
              "% 重新產生：python raney/make_figs.py（在 notes/ 裡執行）\n"]

@@ -1,0 +1,188 @@
+% =====================================================================
+\section{補充：Neylon 的〈Notes on Raney's Lemmas〉}\label{sec:neylon}
+% =====================================================================
+
+T.~Neylon 的網頁筆記〈Notes on Raney's Lemmas〉（2015，\url{http://gaarlicbread.com/tmp/raneys_lemmas.html}）照《Concrete Mathematics》§7.5 的寫法講 Raney 的兩個引理，然後推到實數和隨機序列。
+兩個引理本身就是第 \ref{sec:cycle} 節的循環引理；本附錄只整理\textbf{本導讀還沒有的}四件事：
+實數版的公式（A.2）、上下界（A.3）、收縮（A.4）、隨機序列（A.5）。
+A.6 回答他留下的一個問題，A.7 列出原文的小錯。
+所有數字由 \texttt{raney/make\_figs.py} 的 \texttt{check\_numbers\_neylon()} 核對，
+程式在 \texttt{codes/utils/raney.py} 第 10 節（\texttt{combkit.raney} 也有）\extra。
+
+\begin{keybox}[本附錄的記號]
+序列 $x=(x_1,\ldots,x_m)$ 看成一條路徑的步，高度 $S_0=0$、$S_k=x_1+\cdots+x_k$。
+\textbf{從第 $i$ 點開始讀}（$i=0,\ldots,m-1$）是依序讀 $x_{i+1},\ldots,x_m,x_1,\ldots,x_i$；
+出發後每一點的相對高度都 $>0$ 就叫\textbf{好讀法}。
+好讀法的起點個數記作 $\nu(x)$。（Neylon 記作 $\sigma(x)$，起點從 1 算；本導讀的 $\sigma$ 已經是字串，所以改名。）
+\end{keybox}
+
+\subsection{兩個引理就是循環引理}
+
+\begin{thmbox}[Neylon 的引理 1、2（Raney；《Concrete Mathematics》§7.5）]
+$x_i$ 都是整數。\textbf{引理 1：}若 $\sum x_i=1$，則 $\nu(x)=1$。
+\textbf{引理 2：}若每個 $x_i\le1$ 且 $\sum x_i=\ell>0$，則 $\nu(x)=\ell$。
+\end{thmbox}
+
+例：$x=(3,-2,4,-5,1)$ 只有從第 4 點開始讀是好的：$1,3,-2,4,-5$，高度 $1,4,2,6,1$。
+$x=(-2,1,1,0,-1,1,1,1)$（和 2）的好讀法從第 1、5 點開始，高度分別是
+\[
+1,2,2,1,2,3,4,2\qquad\text{與}\qquad 1,2,3,1,2,3,3,2 .
+\]
+引理 2 的 $x_i\le1$ 不能拿掉：$x=(2)$ 的和是 2，但 $\nu=1$。
+
+\textbf{和 Raney 原文的關係。}把字串倒過來讀、符號 $a$ 換成步 $1-a$（第 \ref{ssec:convert} 節），每一步都 $\le1$，
+秩 $-n$ 變成總和 $n$，「$n$ 字列」變成「好讀法」。所以引理 2 就是定理 2.1，引理 1 是它的 $n=1$ 情形
+（引理 1 不要求 $x_i\le1$；下面 A.3 會看到為什麼）。
+
+\subsection{實數也行：$\nu$ 等於「照得到的點」的個數}
+
+Neylon 的第一步是不用整數。下面的 $x_i$ 可以是任意實數。
+
+\begin{thmbox}[性質 3、4（Neylon）]
+\textbf{(a)} 若 $\sum x_i>0$，在 $S_0,\ldots,S_{m-1}$ 中取\textbf{最後一個}最小值 $S_i$，從第 $i$ 點開始讀是好讀法。所以 $\nu(x)\ge1$。
+
+\textbf{(b)} 設 $x$ 本身已經是好讀法（$S_k>0$，$k\ge1$）。則從第 $i$ 點開始讀是好讀法
+\[
+\iff\quad S_i<S_k\quad\text{對所有 } i<k\le m,
+\]
+也就是：從右邊遠處照來\textbf{水平光線}，第 $i$ 點照得到。所以 $\nu(x)$ = 照得到的點數 = 不同的「字尾最小值」$\min_{k\ge j}S_k$（$1\le j\le m$）的個數。
+\end{thmbox}
+
+\textbf{證明。}(b) 從第 $i$ 點開始讀，到原來的第 $k$ 點（$k>i$）時相對高度是 $S_k-S_i$；
+繞過終點再到第 $k$ 點（$k\le i$）時是 $S_m-S_i+S_k$。
+若 $S_i$ 比後面每一點都低，前者 $>0$，後者也 $>0$（$S_m>S_i$、$S_k\ge0$）。
+反過來，若某個 $k>i$ 有 $S_k\le S_i$，讀到那裡就不 $>0$。
+(a) 取最後一個最小值，前一種情形 $S_k>S_i$ 對 $k<m$ 成立（最後一個），$k=m$ 時 $S_m>S_0\ge S_i$；
+後一種情形 $S_m-S_i+S_k\ge S_m>0$。\hfill$\square$
+
+\begin{figure}[H]
+\centering
+\RanNeyView
+\caption{$x=(2,-1,2,2,-3,2,1,1,-1,-2)$（下方小字），高度 $2,1,3,5,2,4,5,6,5,3$ 都 $>0$。
+從右邊照來的水平光線在 $S_{10}=3$ 以下只照到 $S_0,S_2,S_5$（桃紅點），所以 $\nu=3$，好讀法從第 0、2、5 點開始。}
+\label{fig:neyview}
+\end{figure}
+
+這正是第 \ref{sec:cycle} 節末提到的 Chu 講義光線證明；差別是這裡\textbf{沒有用到整數}，
+而且一般的 $\nu$ 不再是 $S_m$。只有\textbf{大小順序}有關，這是 A.5 的出發點。
+例如 $x=(\tfrac12,\tfrac12)$ 的和是 1，兩種讀法都好：實數版沒有「唯一」。
+
+\subsection{整數的上下界}
+
+\begin{thmbox}[性質 5（Neylon）]
+$x_i$ 是整數，$S_m>0$，$h=\max_i x_i$。則
+\[
+\Bigl\lceil \frac{S_m}{h}\Bigr\rceil\ \le\ \nu(x)\ \le\ S_m .
+\]
+\end{thmbox}
+
+\textbf{證明（比原文短的寫法）。}由 (a) 可以先轉成好讀法；轉動不改變 $S_m$ 和 $h$。
+照得到的點由左到右是 $0=S_{i_1}<S_{i_2}<\cdots<S_{i_\nu}<S_m$。
+\emph{上界：}這 $\nu$ 個高度是 $0,1,\ldots,S_m-1$ 中不同的整數。
+\emph{下界：}$i_r$ 之後的下一個照得到的點（或終點）高度是 $\min_{k>i_r}S_k\le S_{i_r+1}=S_{i_r}+x_{i_r+1}\le S_{i_r}+h$，
+所以每一格最多爬 $h$，$\nu$ 格爬到 $S_m$：$S_m\le\nu h$。\hfill$\square$
+
+\textbf{推論。}$h=1$ 時兩邊都是 $S_m$：引理 2。$S_m=1$ 時兩邊都是 1：引理 1（不用管 $h$）。
+
+\begin{table}[H]
+\centering\small
+\RanNeyBounds
+\caption{上下界的例子。兩邊都可能取到等號，也可能嚴格在中間（$(3,-1,-1,2)$）。}
+\label{tab:neybounds}
+\end{table}
+
+\begin{notebox}[下界對實數也成立 \extra]
+下界的證明\textbf{沒有用到整數}：任意實數只要 $S_m>0$，就有 $\nu(x)\ge S_m/\max_ix_i$。
+上界才需要整數（相鄰高度至少差 1）；實數沒有上界，例如 $m$ 個 $\tfrac1m$ 的和是 1，$\nu=m$。
+\end{notebox}
+
+\subsection{收縮：把非正的一步併進前一步}
+
+\begin{thmbox}[性質 6（Neylon）]
+設 $x$ 是好讀法（$S_k>0$，$k\ge1$），而且 $x_{j+1}\le0$。把 $x_j,x_{j+1}$ 合成一步 $x_j+x_{j+1}$，
+得到的序列還是好讀法，而且 $\nu$ 不變。
+\end{thmbox}
+
+\textbf{證明（用光線說）。}合併只是把高度序列裡的 $S_j$ 拿掉。因為 $S_{j+1}=S_j+x_{j+1}\le S_j$，
+$S_j$ 本來就照不到；別的點 $S_i$（$i<j$）若比 $S_j$ 低，也一定比 $S_{j+1}$ 低，所以拿掉 $S_j$ 不改變誰照得到。\hfill$\square$
+
+一直合併到每一步都 $>0$ 為止，結果與合併的次序無關：在每個好讀法的起點切開，得到的就是\textbf{每一段的和}，
+長度正好是 $\nu$。這是 Raney 證明第 3 步「切成 $n$ 個字、輪流放到最前面」的實數版：
+每一段是一個「字」，引理 2 的情形每段的和都是 1，最後變成 $(1,1,\ldots,1)$。
+
+\begin{table}[H]
+\centering\small
+\RanNeyContract
+\caption{$x=(2,-1,1,3,-1,-1)$：直線是好讀法的起點（第 0、2、3 點）。每次合併最左邊可以合併的一步，三步後變成 $(1,1,1)$，$\nu=3$。
+原文的例子 $(3,-1,-1,2)\to(2,-1,2)$ 是合併 $x_1,x_2$。}
+\label{tab:neycontract}
+\end{table}
+
+\subsection{隨機序列：$E[\nu]=H_m$}
+
+Neylon 的第 3 節（他說「據我所知是新的」）：讓\textbf{高度} $S_1,\ldots,S_m$ 獨立、都均勻分布在 $(0,1]$，
+步長 $x_k=S_k-S_{k-1}$。高度都 $>0$，所以 $x$ 是好讀法，可以用 A.2(b)。
+
+\begin{thmbox}[性質 7（Neylon）]
+這樣的隨機序列 $E[\nu(x)]=H_m=1+\tfrac12+\cdots+\tfrac1m$。
+\end{thmbox}
+
+\textbf{證明。}只有大小順序有關；獨立同分布（而且不會相等）的 $S_k$，$m!$ 種大小順序一樣可能。
+第 $k$ 小的高度照得到 $\iff$ 比它小的 $k-1$ 個都在它左邊；在這 $k$ 個高度裡，它排在最右邊的機率是 $1/k$。
+$\nu$ 是這 $m$ 個事件的指示函數之和，取期望值得 $\sum_k 1/k$。\hfill$\square$
+
+\begin{notebox}[這是「紀錄」的老結果 \extra]
+照得到的點就是從右往左看的\textbf{新低紀錄}（right-to-left minima）。均勻隨機排列的紀錄個數是經典結果（Rényi 1962）：
+不只期望值，連分布都知道——$\nu=k$ 的排列有 $c(m,k)$ 個（無號第一類 Stirling 數，和「有 $k$ 個循環的排列」一樣多，Foata 的基本對應），
+所以 $\mathrm{Var}\,\nu=H_m-H_m^{(2)}$，$H_m^{(2)}=\sum_k 1/k^2$。
+原文用 Steinhaus--Johnson--Trotter 演算法證明「對換生成所有排列」也可以省掉：獨立同分布的序列本來就是可交換的。
+\end{notebox}
+
+\begin{table}[H]
+\centering\small
+\RanNeyRecords
+\caption{把 $1,\ldots,m$ 的 $m!$ 種排列當成高度，直接數 $\nu$：排列數正好是 $c(m,1),\ldots,c(m,m)$，平均是 $H_m$。}
+\label{tab:neyrecords}
+\end{table}
+
+\subsection{步長是獨立隨機的 \extra}
+
+原文最後留了一句待辦：「考慮 $x_i\in[-1,1]$」。這時隨機的是\textbf{步}，不是高度，答案完全不同。
+設 $x_1,\ldots,x_m$ 獨立、同一個\textbf{對稱的連續分布}（例如均勻 $[-1,1]$、常態），只看 $S_m>0$ 的情形。
+
+\begin{thmbox}[期望值 \extra]
+\[
+E\bigl[\nu(x)\bigm| S_m>0\bigr]=\frac{2m\binom{2m}{m}}{4^m}\ \approx\ 2\sqrt{m/\pi},
+\]
+與分布無關。
+\end{thmbox}
+
+\textbf{證明。}$m$ 種讀法的每一種本身也是獨立同分布的序列，所以 $E[\nu]=m\cdot P(S_1>0,\ldots,S_m>0)$。
+對稱連續分布的 Sparre Andersen 定理說 $P(S_1,\ldots,S_m>0)=\binom{2m}{m}/4^m$，跟分布無關；
+好讀法存在時 $S_m>0$，而 $P(S_m>0)=\tfrac12$，相除得上式。\hfill$\square$
+
+$m=2$ 可以直接驗算：給定 $x_1+x_2>0$，兩步都正的機率是 $\tfrac14\big/\tfrac12=\tfrac12$，這時 $\nu=2$，否則 $\nu=1$，平均 $\tfrac32$。
+
+\begin{table}[H]
+\centering\small
+\RanNeySym
+\caption{公式與蒙地卡羅（每格 20000 個 $S_m>0$ 的樣本）。均勻與常態給出同樣的數，而且像 $\sqrt m$ 一樣長，比 A.5 的 $H_m\sim\ln m$ 快。}
+\label{tab:neysym}
+\end{table}
+
+\subsection{原文的小問題}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.27\textwidth}p{0.66\textwidth}@{}}
+\toprule
+位置 & 說明\\
+\midrule
+引理 1 的例子 & 序列印成 $\langle3,-2,4,-1,1\rangle$，和是 5 不是 1；從後面列出的讀法 $\langle1,3,-2,4,-5\rangle$ 看，$x_4$ 應為 $-5$。\\
+性質 5 & 只對整數敘述；下界其實對實數也成立（A.3 補充）。原文證明繞了一段 $s_{j_{k-p}}\ge s_n-pm$ 的歸納，可以直接用「每格最多爬 $h$」。\\
+第 3 節的 Claim & 正確但繞遠：獨立同分布 $\Rightarrow$ 可交換 $\Rightarrow$ 每種大小順序同機率，不需要對換與 SJT 演算法。\\
+Claim 之後的推廣 & 「任何獨立同分布、單點機率為 0 的分布都行」只對排列的均勻性成立；要用性質 4 算 $\nu$，還需要高度都 $>0$（例如分布在正數上）。\\
+「據我所知是新的」 & 性質 7 就是隨機排列的紀錄個數，$E=H_m$ 是古典結果（Rényi 1962）；分布是 Stirling 數（A.5 補充）。\\
+\bottomrule
+\end{tabular}
+\end{center}

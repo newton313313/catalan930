@@ -970,3 +970,79 @@ $2+3x+x^3$ & $w=x(2+3w+w^3)$ & 逐次代入 & $2$ & $6$ & $18$ & $62$ & $258$ & 
 \fill (5,-1) circle (1.25pt);
 \fill (6,-2) circle (1.25pt);
 \end{tikzpicture} & \textcolor{cBad}{$\times$}\\[2pt]\bottomrule\end{tabular}}
+
+\newcommand{\RanNeyView}{%
+\begin{tikzpicture}[x=0.5cm,y=0.5cm]
+\draw[gray!25] (0,0) grid (10,6);
+\draw[cTop,dashed] (0,3) -- (12.2,3) node[right,font=\scriptsize] {$S_{10}=3$};
+\draw[cLeft,-{Stealth[length=4pt]},line width=0.8pt] (12.2,0) -- (0.18,0);
+\draw[cLeft,-{Stealth[length=4pt]},line width=0.8pt] (12.2,1) -- (2.18,1);
+\draw[cLeft,-{Stealth[length=4pt]},line width=0.8pt] (12.2,2) -- (5.18,2);
+\draw[cA,line width=1.3pt,line join=round] (0,0) -- (1,2) -- (2,1) -- (3,3) -- (4,5) -- (5,2) -- (6,4) -- (7,5) -- (8,6) -- (9,5) -- (10,3);
+\fill[cRoot] (0,0) circle (3pt) node[below=2pt,font=\scriptsize,cRoot] {$S_{0}$};
+\fill (1,2) circle (1.6pt);
+\fill[cRoot] (2,1) circle (3pt) node[below=2pt,font=\scriptsize,cRoot] {$S_{2}$};
+\fill (3,3) circle (1.6pt);
+\fill (4,5) circle (1.6pt);
+\fill[cRoot] (5,2) circle (3pt) node[below=2pt,font=\scriptsize,cRoot] {$S_{5}$};
+\fill (6,4) circle (1.6pt);
+\fill (7,5) circle (1.6pt);
+\fill (8,6) circle (1.6pt);
+\fill (9,5) circle (1.6pt);
+\fill (10,3) circle (1.6pt);
+\node[font=\tiny,gray!60!black] at (0.5,-1.7) {$2$};
+\node[font=\tiny,gray!60!black] at (1.5,-1.7) {$-1$};
+\node[font=\tiny,gray!60!black] at (2.5,-1.7) {$2$};
+\node[font=\tiny,gray!60!black] at (3.5,-1.7) {$2$};
+\node[font=\tiny,gray!60!black] at (4.5,-1.7) {$-3$};
+\node[font=\tiny,gray!60!black] at (5.5,-1.7) {$2$};
+\node[font=\tiny,gray!60!black] at (6.5,-1.7) {$1$};
+\node[font=\tiny,gray!60!black] at (7.5,-1.7) {$1$};
+\node[font=\tiny,gray!60!black] at (8.5,-1.7) {$-1$};
+\node[font=\tiny,gray!60!black] at (9.5,-1.7) {$-2$};
+\node[font=\scriptsize,cLeft,align=center] at (13.5,0.6) {水平\\光線};
+\end{tikzpicture}}
+
+\newcommand{\RanNeyBounds}{%
+\begin{tabular}{@{}lcccccl@{}}\toprule
+$x$ & $S_m$ & $h=\max x_i$ & 下界 $\lceil S_m/h\rceil$ & $\nu(x)$ & 上界 $S_m$ & 等號\\\midrule
+$(1, 1, 1)$ & 3 & 1 & 3 & \textbf{3} & 3 & 上下界\\
+$(3)$ & 3 & 3 & 1 & \textbf{1} & 3 & 下界\\
+$(2, 2, -1)$ & 3 & 2 & 2 & \textbf{2} & 3 & 下界\\
+$(3, -1, -1, 2)$ & 3 & 3 & 1 & \textbf{2} & 3 & \\
+$(2, -1, 2, 2, -3, 2, 1, 1, -1, -2)$ & 3 & 2 & 2 & \textbf{3} & 3 & 上界\\
+$(-2, 1, 1, 0, -1, 1, 1, 1)$ & 2 & 1 & 2 & \textbf{2} & 2 & 上下界\\
+$(4, -1, -1, -1, 1)$ & 2 & 4 & 1 & \textbf{2} & 2 & 上界\\
+\bottomrule\end{tabular}}
+
+\newcommand{\RanNeyContract}{%
+\begin{tabular}{@{}ll@{}}\toprule 序列（在好讀法的起點切開） & 高度 $S_1,\ldots,S_m$\\\midrule
+$2, -1\;\big|\;1\;\big|\;3, -1, -1$ & 2, 1, 2, 5, 4, 3\\
+$1\;\big|\;1\;\big|\;3, -1, -1$ & 1, 2, 5, 4, 3\\
+$1\;\big|\;1\;\big|\;2, -1$ & 1, 2, 4, 3\\
+$1\;\big|\;1\;\big|\;1$ & 1, 2, 3\\
+\bottomrule\end{tabular}}
+
+\newcommand{\RanNeyRecords}{%
+\begin{tabular}{@{}rlrcc@{}}\toprule
+$m$ & 排列數，$\nu=1,2,\ldots,m$ & $m!$ & $E[\nu]=H_m$ & $\mathrm{Var}\,\nu=H_m-H_m^{(2)}$\\\midrule
+1 & 1 & 1 & $1$ & $0$\\
+2 & 1, 1 & 2 & $\tfrac{3}{2}$ & $\tfrac{1}{4}$\\
+3 & 2, 3, 1 & 6 & $\tfrac{11}{6}$ & $\tfrac{17}{36}$\\
+4 & 6, 11, 6, 1 & 24 & $\tfrac{25}{12}$ & $\tfrac{95}{144}$\\
+5 & 24, 50, 35, 10, 1 & 120 & $\tfrac{137}{60}$ & $\tfrac{2951}{3600}$\\
+6 & 120, 274, 225, 85, 15, 1 & 720 & $\tfrac{49}{20}$ & $\tfrac{3451}{3600}$\\
+\bottomrule\end{tabular}}
+
+\newcommand{\RanNeySym}{%
+\begin{tabular}{@{}rccccc@{}}\toprule
+$m$ & $2m\binom{2m}{m}/4^m$ & 小數 & 均勻 $[-1,1]$ & 常態 & （對照）$H_m$\\\midrule
+1 & $1$ & 1.000 & 1.000 & 1.000 & 1.000\\
+2 & $\tfrac{3}{2}$ & 1.500 & 1.504 & 1.498 & 1.500\\
+3 & $\tfrac{15}{8}$ & 1.875 & 1.878 & 1.880 & 1.833\\
+4 & $\tfrac{35}{16}$ & 2.188 & 2.178 & 2.187 & 2.083\\
+5 & $\tfrac{315}{128}$ & 2.461 & 2.454 & 2.467 & 2.283\\
+6 & $\tfrac{693}{256}$ & 2.707 & 2.717 & 2.711 & 2.450\\
+8 & $\tfrac{6435}{2048}$ & 3.142 & 3.139 & 3.124 & 2.718\\
+10 & $\tfrac{230945}{65536}$ & 3.524 & 3.521 & 3.526 & 2.929\\
+\bottomrule\end{tabular}}

@@ -716,6 +716,116 @@ def card_game_formula(w, m: int) -> int:
 
 
 # ---------------------------------------------------------------------------
+# 10. 實數序列的 Raney 引理（T. Neylon, Notes on Raney's Lemmas；notes/raney1960_導讀 附錄 A）
+#
+#    σ(x) = 好讀法的個數。和 > 0 時先轉到一個好讀法（最後一個最小值），
+#    σ(x) 就是「從右邊照來的水平光線照得到、而且低於 S_M 的點」的個數。
+# ---------------------------------------------------------------------------
+
+NEYLON_LEMMA1 = (3, -2, 4, -5, 1)                 # 原文引理 1 的例子（原文把 −5 印成 −1，和就變成 5）
+NEYLON_LEMMA2 = (-2, 1, 1, 0, -1, 1, 1, 1)        # 和 2，好讀法從第 1、5 點開始（原文的 x_2、x_6）
+NEYLON_VIEW = (2, -1, 2, 2, -3, 2, 1, 1, -1, -2)  # 原文的折線圖：看得到 S_0、S_2、S_5
+NEYLON_CONTRACT = (2, -1, 1, 3, -1, -1)           # 收縮的例子：(2,−1)(1)(3,−1,−1) → (1,1,1)
+
+
+def sigma(seq) -> int:
+    """好讀法的個數 σ(x)（整數、分數、浮點數都可以）。"""
+    return len(good_starts(seq))
+
+
+def visible_points(seq) -> list:
+    """S_0..S_{M−1} 中比後面每一點都低的點 i（S_i < S_k，i < k ≤ M），也就是從右邊照得到的點。
+    出發後高度都 > 0 的序列，這正好是 good_starts（原文性質 4 的條件 (2)）。"""
+    S = heights(seq)
+    out, low = [], S[-1]
+    for i in range(len(seq) - 1, -1, -1):
+        if S[i] < low:
+            out.append(i)
+            low = S[i]
+    return out[::-1]
+
+
+def sigma_fast(seq) -> int:
+    """和 > 0 時 O(M)：先轉到最後一個最小值（一定是好讀法），再數照得到的點。"""
+    return len(visible_points(reading(seq, last_minimum(seq) % len(seq))))
+
+
+def suffix_minima(seq) -> set:
+    """原文的 S(x) = {min_{j≤i≤M} S_i : 1 ≤ j ≤ M}；出發後高度都 > 0 時 #S(x) = σ(x)。"""
+    S = heights(seq)
+    return {min(S[j:]) for j in range(1, len(seq) + 1)}
+
+
+def sigma_bounds(seq) -> tuple:
+    """整數序列、和 > 0：⌈S_M / m⌉ ≤ σ ≤ S_M，m = max x_i（原文性質 5）。"""
+    s, m = sum(seq), max(seq)
+    return -(-s // m), s
+
+
+def contract_once(seq, j: int) -> tuple:
+    """把 x_j、x_{j+1}（1 起算，要求 x_{j+1} ≤ 0）合成一項。"""
+    seq = tuple(seq)
+    assert seq[j] <= 0
+    return seq[:j - 1] + (seq[j - 1] + seq[j],) + seq[j + 1:]
+
+
+def contract_all(seq, pick=min) -> tuple:
+    """一直合併到每一項都 > 0（序列要出發後高度都 > 0）。pick 從可合併的 j 中選一個；結果與選法無關。"""
+    seq = tuple(seq)
+    while True:
+        js = [j for j in range(1, len(seq)) if seq[j] <= 0]
+        if not js:
+            return seq
+        seq = contract_once(seq, pick(js))
+
+
+def good_blocks(seq) -> list:
+    """在每個好讀法的起點切開（序列要出發後高度都 > 0）。"""
+    cuts = good_starts(seq) + [len(seq)]
+    return [tuple(seq[a:b]) for a, b in zip(cuts, cuts[1:])]
+
+
+def stirling1(n: int) -> list:
+    """無號第一類 Stirling 數 c(n, k)，k = 0..n。"""
+    row = [1]
+    for i in range(n):
+        row = [(row[k - 1] if k else 0) + i * (row[k] if k < len(row) else 0) for k in range(len(row) + 1)]
+    return row
+
+
+def records_sigma_counts(n: int) -> list:
+    """原文第 3 節：S_1..S_n 是 1..n 的一個排列（n! 種一樣可能）時，σ = k 的排列數，k = 0..n。"""
+    from itertools import permutations
+    cnt = [0] * (n + 1)
+    for p in permutations(range(1, n + 1)):
+        cnt[sigma([p[0]] + [p[i] - p[i - 1] for i in range(1, n)])] += 1
+    return cnt
+
+
+def harmonic(n: int, power: int = 1) -> Fraction:
+    return sum((Fraction(1, k ** power) for k in range(1, n + 1)), Fraction(0))
+
+
+def symmetric_mean_sigma(n: int) -> Fraction:
+    """【補充】x_i 獨立、同一個對稱的連續分布、只看 S_n > 0：E[σ] = 2n·C(2n, n)/4^n（Sparre Andersen）。"""
+    return Fraction(2 * n * comb(2 * n, n), 4 ** n)
+
+
+def mc_mean_sigma(n: int, trials: int, seed: int = 0, draw=None) -> float:
+    """x_i 獨立（預設 Uniform[−1, 1]；draw(rng) 可換分布），只留 S_n > 0 的樣本，σ 的平均（蒙地卡羅）。"""
+    import random
+    rng = random.Random(seed)
+    draw = draw or (lambda r: r.uniform(-1, 1))
+    tot = cnt = 0
+    while cnt < trials:
+        x = [draw(rng) for _ in range(n)]
+        if sum(x) > 0:
+            tot += sigma_fast(x)
+            cnt += 1
+    return tot / cnt
+
+
+# ---------------------------------------------------------------------------
 # 自我檢查
 # ---------------------------------------------------------------------------
 
@@ -912,6 +1022,38 @@ def _self_test():
             assert is_word(word) and [h + 1 for h in head_ranks(word)][:-1] == draws_left(word[:-1])
     assert card_game_formula((0, 3), 3) == len(card_game_brute((0, 3), 3)) == 2
     print("Raney 引理（整數序列）、加強版、出棧、摸牌全部驗證通過")
+
+    # 第 10 節：實數序列（Neylon）
+    assert sum(NEYLON_LEMMA1) == 1 and good_starts(NEYLON_LEMMA1) == [4]
+    assert heights(reading(NEYLON_LEMMA1, 4))[1:] == [1, 4, 2, 6, 1]
+    assert good_starts(NEYLON_LEMMA2) == [1, 5] and sigma(NEYLON_LEMMA2) == sum(NEYLON_LEMMA2) == 2
+    assert visible_points(NEYLON_VIEW) == good_starts(NEYLON_VIEW) == [0, 2, 5]
+    assert contract_once((3, -1, -1, 2), 1) == (2, -1, 2)
+    assert good_blocks(NEYLON_CONTRACT) == [(2, -1), (1,), (3, -1, -1)] and contract_all(NEYLON_CONTRACT) == (1, 1, 1)
+    for M in range(1, 9):
+        for _ in range(600):
+            a = [rng.randint(-4, 4) for _ in range(M)]
+            if sum(a) <= 0:
+                continue
+            s = sigma(a)
+            assert s == sigma_fast(a)
+            b = reading(a, last_minimum(a) % M)
+            assert is_good_reading(b) and s == sigma(b) == len(suffix_minima(b)) == sigma_fast(b)
+            assert visible_points(b) == good_starts(b)
+            lo, hi = sigma_bounds(a)
+            assert lo <= s <= hi and (max(a) > 1 or s == sum(a))
+            ends = {contract_all(b, p) for p in (min, max, lambda js: js[len(js) // 2])}
+            assert ends == {tuple(sum(c) for c in good_blocks(b))} and len(ends.pop()) == s
+            f = [Fraction(rng.randint(-9, 9), rng.randint(1, 5)) for _ in range(M)]
+            if sum(f) > 0:
+                assert sigma(f) == sigma_fast(f) >= 1
+    for n in range(1, 8):
+        c = records_sigma_counts(n)
+        assert c == stirling1(n) and sum(c) == factorial(n)
+        assert sum(Fraction(k * ck, factorial(n)) for k, ck in enumerate(c)) == harmonic(n)
+    for n in range(1, 6):
+        assert abs(mc_mean_sigma(n, 4000, seed=n) - symmetric_mean_sigma(n)) < 0.08
+    print("實數序列的 Raney 引理（Neylon）：照得到的點、上下界、收縮、隨機序列的 H_n 與 2n·C(2n,n)/4^n 全部驗證通過")
 
 
 if __name__ == "__main__":
