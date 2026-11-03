@@ -397,7 +397,7 @@ manimgl main.py Scene00cTriangulationRecurrence -w --hd
 
 ## Raney 引理筆記（R01–R06，獨立）
 
-依 `../notes/ran_note015_改寫.pdf`（他人所寫的 `ran_note015.txt` 的勘誤與改寫）；數學在 `utils/raney.py` 第 9 節，畫圖在 `utils/raney_draw.py`；各場景開頭的 `check_math()` assert 畫面上的數字。用 `RaneyLemmaDemo` 連續播放。
+依 `../notes/ran_note015_改寫.pdf`（他人所寫的 `ran_note015.txt` 的勘誤與改寫；這兩份只留本機，不在公開的 repo 裡）；數學在 `utils/raney.py` 第 9 節，畫圖在 `utils/raney_draw.py`；各場景開頭的 `check_math()` assert 畫面上的數字。用 `RaneyLemmaDemo` 連續播放。
 
 | 代號 | 類別名稱 | 內容 | 長度 |
 |---|---|---|---|

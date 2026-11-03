@@ -181,7 +181,7 @@
 
 ### 版本控制（git）
 
-2026-10-13 起本資料夾（`catalan930/`）是一個獨立的 git repo，分支 `master`，沒有遠端。
+2026-10-13 起本資料夾（`catalan930/`）是一個獨立的 git repo，分支 `master`，遠端 https://github.com/newton313313/catalan930（公開）。`ref/` 與 `notes/ran_note015*`（他人的筆記及其改寫）只留本機，不公開。
 它位在 `C:\mypython\manim`（ManimGL 本身的 repo）裡面，但兩者無關：外層 repo 只會把 `projects/` 看成未追蹤的資料夾，不要把專案加進外層。
 
 - **不追蹤：** `codes/renders/`（影片，用 `render_all.bat` 重新輸出）、`codes/latex_cache/`、`__pycache__/`、LaTeX 的 `.aux/.log/.out/.toc`。講義 PDF 與 `ref/` 的原始資料**有**追蹤。
