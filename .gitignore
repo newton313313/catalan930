@@ -18,3 +18,5 @@ __pycache__/
 *.fls
 *.fdb_latexmk
 *.xdv
+# 他人所寫的 ran_note015 與其改寫：只留本機，不公開
+notes/ran_note015*
